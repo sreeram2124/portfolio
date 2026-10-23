@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script defer src="script.js"></script>
-<!-- GitHub Pages publish refresh -->
 </head>
 <body>
   <div class="wallpaper" aria-hidden="true"><div class="wallpaper-orb orb-a"></div><div class="wallpaper-orb orb-b"></div><div class="wallpaper-orb orb-c"></div><div class="wallpaper-noise"></div></div>
@@ -92,8 +91,10 @@
   </script>
 
   <script type="text/template" id="settings-template">
-    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>SETTINGS / PREFERENCES</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content settings-content"><div class="file-kicker"><span class="file-icon">⚙</span> PREFERENCES.JSON</div><h1 class="page-title">Settings<span>.</span></h1><p class="page-lede">Tune the workspace to your preference.</p><div class="setting-row"><div><strong>Reduce motion</strong><small>Turn off animated transitions and background effects.</small></div><label class="switch"><input id="motion-setting" type="checkbox"><span></span></label></div><div class="setting-row"><div><strong>High contrast</strong><small>Increase contrast for text and interface controls.</small></div><label class="switch"><input id="contrast-setting" type="checkbox"><span></span></label></div><div class="setting-row"><div><strong>Profile document</strong><small>Download a copy of my current resume.</small></div><a class="secondary-action" href="assets/sreeram-resume.pdf" download><span>Download resume</span><b>↓</b></a></div><div class="page-footnote">Settings are saved in this browser only.</div></div><div class="window-status"><span><i></i> PERSONALIZED WORKSPACE</span><span>LOCAL SETTINGS</span><span>PORTFOLIO.APP</span></div></section>
-  </script>
+    <section class="settings-window" aria-label="System settings"><header class="settings-titlebar"><div class="window-dots"><i></i><i></i><i></i></div></header><aside class="settings-sidebar"><span class="settings-sidebar-label">SYSTEM SETTINGS</span><button class="settings-tab" data-settings-tab="appearance"><span>▱</span>Appearance</button><button class="settings-tab" data-settings-tab="background"><span>◉</span>Background</button><button class="settings-tab" data-settings-tab="typography"><span>T</span>Typography</button></aside><main id="settings-panel" class="settings-panel"></main></section>
+  </script>t>
 </body>
 </html>
+
+
 

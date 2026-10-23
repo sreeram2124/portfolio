@@ -1,129 +1,98 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090614">
-  <meta name="description" content="M Sreeram Reddy — Computer Science graduate specializing in Big Data Analytics, business intelligence, data visualization, and applied machine learning.">
-  <title>M Sreeram Reddy — Data in Motion</title>
+  <meta name="theme-color" content="#101323">
+  <meta name="description" content="M Sreeram Reddy — Full Stack Engineer and data analyst based in Bengaluru, India.">
+  <title>M Sreeram Reddy — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script defer src="https://unpkg.com/lucide@latest"></script>
   <script defer src="script.js"></script>
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="scroll-progress" aria-hidden="true"><span id="progress-bar"></span></div>
-  <div class="cursor cursor-dot" aria-hidden="true"></div><div class="cursor cursor-ring" aria-hidden="true"></div>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="Sreeram home"><span class="brand-mark">S<span>.</span></span><span class="brand-name">SREERAM<span>REDDY</span></span></a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#about">About</a><a href="#toolkit">Toolkit</a><a href="#projects">Projects</a><a href="#playground">Playground</a>
+  <div class="wallpaper" aria-hidden="true"><div class="wallpaper-orb orb-a"></div><div class="wallpaper-orb orb-b"></div><div class="wallpaper-orb orb-c"></div><div class="wallpaper-noise"></div></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="M Sreeram Reddy home"><span class="brand-icon">S</span><span>M Sreeram Reddy</span></a>
+    <nav class="top-nav" aria-label="Portfolio pages">
+      <a href="#home" data-page="home">Home</a><a href="#projects" data-page="projects">Projects</a><a href="#skills" data-page="skills">Skills</a><a href="#experience" data-page="experience">Experience</a><a href="#calendar" data-page="calendar">Calendar</a><a href="#contact" data-page="contact">Contact</a>
     </nav>
-    <a class="nav-cta magnetic" href="#contact">Let's talk <i data-lucide="arrow-up-right"></i></a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
+    <div class="system-tray"><span class="tray-icon">▦</span><span class="tray-icon">◷</span><span id="system-date">BENGALURU · IST</span><span>⌁</span><span>◉</span></div>
+    <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation" aria-expanded="false">☰</button>
   </header>
-  <div class="mobile-nav" aria-hidden="true">
-    <a href="#about">About <i data-lucide="arrow-up-right"></i></a><a href="#toolkit">Toolkit <i data-lucide="arrow-up-right"></i></a><a href="#projects">Projects <i data-lucide="arrow-up-right"></i></a><a href="#playground">Playground <i data-lucide="arrow-up-right"></i></a><a href="#contact">Contact <i data-lucide="arrow-up-right"></i></a>
-  </div>
-  <main>
-    <section class="hero section-shell" id="home">
-      <div class="hero-grid"></div><canvas id="particle-canvas" aria-hidden="true"></canvas>
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="status-dot"></span> OPEN TO OPPORTUNITIES <span class="eyebrow-line"></span> INDIA · 2026</div>
-        <p class="hero-greeting reveal">Hey, I’m <span>Sreeram.</span></p>
-        <h1 class="hero-title reveal">I TURN DATA<br>INTO <span class="gradient-text">VISUAL</span><br><span class="outlined-text">STORIES<span class="title-period">.</span></span></h1>
-        <p class="hero-description reveal">Computer Science graduate exploring the space between <b>analytics</b>, <b>business intelligence</b>, and <b>applied machine learning</b>.</p>
-        <div class="hero-actions reveal"><a class="button button-primary magnetic" href="#projects">Explore my work <i data-lucide="arrow-down-right"></i></a><a class="button button-ghost magnetic" href="#contact">Let’s connect <i data-lucide="arrow-up-right"></i></a></div>
-        <div class="hero-meta reveal"><span><i data-lucide="map-pin"></i> Bengaluru, India</span><span class="meta-divider"></span><span>CURIOUS BY NATURE <span class="meta-spark">✳</span></span></div>
-      </div>
-      <div class="hero-art" aria-label="Abstract animated data sculpture">
-        <div class="art-label art-label-top"><span class="tiny-pulse"></span> DATA / VISUAL / INSIGHT</div>
-        <div class="orbital orbital-one"></div><div class="orbital orbital-two"></div><div class="orbital orbital-three"></div>
-        <div class="core-glow"></div>
-        <div class="glass-core"><span class="core-letter">S<span>.</span></span><div class="core-ring"></div></div>
-        <span class="orbit-dot dot-one"></span><span class="orbit-dot dot-two"></span><span class="orbit-dot dot-three"></span><span class="orbit-dot dot-four"></span>
-        <div class="floating-card card-metric"><span class="card-kicker">SIGNAL FOUND</span><strong>01<span>/03</span></strong><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        <div class="floating-card card-chart"><span class="card-kicker">PATTERN / 24</span><svg viewBox="0 0 160 60" role="img" aria-label="Decorative trend line"><defs><linearGradient id="lineGrad"><stop stop-color="#25e7f2"/><stop offset="1" stop-color="#ff64c8"/></linearGradient></defs><path d="M2 49 C20 38 25 50 42 35 S62 43 78 22 S106 31 120 14 S140 20 158 4" fill="none" stroke="url(#lineGrad)" stroke-width="2.5"/><path d="M2 49 C20 38 25 50 42 35 S62 43 78 22 S106 31 120 14 S140 20 158 4 L158 60 L2 60Z" fill="url(#lineGrad)" opacity=".12"/></svg></div>
-        <div class="art-label art-label-bottom">FIG. 001 <span>THE SHAPE OF CURIOSITY</span></div>
-      </div>
-      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><span class="scroll-motif"><i></i></span><span>01 — 05</span></div>
-    </section>
+  <div class="mobile-links" id="mobile-links"><a href="#home">Home</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#calendar">Calendar</a><a href="#contact">Contact</a></div>
 
-    <section id="about" class="about section-shell section-pad">
-      <div class="section-top reveal"><span class="section-index">01 / THE PERSON</span><span class="section-note">A little context, a lot of curiosity</span></div>
-      <div class="about-layout">
-        <div class="about-heading reveal"><p class="eyebrow small-eyebrow">NOT JUST NUMBERS <span class="eyebrow-line"></span></p><h2>I like the moment<br>data <span class="gradient-text gradient-warm">makes sense.</span></h2><div class="about-sticker"><span>✳</span> THINK<br>IN PATTERNS</div></div>
-        <div class="about-copy reveal"><p class="lead">I’m a Computer Science and Engineering graduate specializing in <span class="text-cyan">Big Data Analytics</span> at SRM Institute of Science and Technology.</p><p>I’m drawn to the process of turning raw information into something people can understand and use—whether that’s a clear dashboard, a useful analysis, or an experiment with predictive models.</p><p>This portfolio is a home for projects around sales, climate, air quality, and machine learning. The visuals are playful; the goal is practical: make information easier to explore.</p><a class="text-link" href="https://github.com/sreeram2124" target="_blank" rel="noreferrer">Explore my repositories <i data-lucide="arrow-up-right"></i></a></div>
-      </div>
-      <div class="stat-strip reveal"><div class="stat-label">CURRENT INTERESTS</div><div><span class="stat-symbol">↗</span> Data storytelling</div><div><span class="stat-symbol">⌘</span> Business intelligence</div><div><span class="stat-symbol">◎</span> Applied ML</div><div><span class="stat-symbol">⌁</span> Environmental data</div></div>
-    </section>
+  <aside class="side-rail" aria-label="Quick navigation">
+    <a href="#home" data-page="home" class="rail-link active" aria-label="Home" title="Home"><span>⌂</span></a>
+    <a href="#projects" data-page="projects" class="rail-link" aria-label="Projects" title="Projects"><span>‹›</span></a>
+    <a href="#skills" data-page="skills" class="rail-link" aria-label="Skills" title="Skills"><span>▦</span></a>
+    <a href="#experience" data-page="experience" class="rail-link" aria-label="Experience" title="Experience"><span>▤</span></a>
+    <a href="#contact" data-page="contact" class="rail-link" aria-label="Contact" title="Contact"><span>✉</span></a>
+    <a href="#settings" data-page="settings" class="rail-link rail-settings" aria-label="Settings" title="Settings"><span>⚙</span></a>
+  </aside>
 
-    <section id="toolkit" class="toolkit section-shell section-pad">
-      <div class="section-top reveal"><span class="section-index">02 / THE TOOLKIT</span><span class="section-note">Tools used across projects and learning</span></div>
-      <div class="section-heading-row reveal"><h2>A box of <span class="gradient-text">possibilities.</span></h2><p>Not a wall of badges. A map of the technologies I’ve explored.</p></div>
-      <div class="skills-layout">
-        <div class="skill-orbit reveal" aria-hidden="true"><div class="skill-orbit-ring ring-a"></div><div class="skill-orbit-ring ring-b"></div><div class="skill-orbit-ring ring-c"></div><div class="skill-sun"><span>DATA</span><b>✳</b><span>TO INSIGHT</span></div><span class="orbit-skill s-python">Py</span><span class="orbit-skill s-sql">SQL</span><span class="orbit-skill s-bi">BI</span><span class="orbit-skill s-ml">ML</span><span class="orbit-skill s-viz">Viz</span></div>
-        <div class="skill-groups">
-          <article class="skill-group reveal" data-accent="cyan"><div class="skill-group-head"><span class="skill-number">01</span><div><h3>Analytics & BI</h3><p>Find the signal in the noise.</p></div><i data-lucide="chart-no-axes-combined"></i></div><div class="skill-chips"><span>Python</span><span>SQL</span><span>Pandas</span><span>NumPy</span><span>Power BI</span><span>DAX</span><span>Power Query</span></div></article>
-          <article class="skill-group reveal" data-accent="pink"><div class="skill-group-head"><span class="skill-number">02</span><div><h3>Machine Learning</h3><p>Explore patterns and predictions.</p></div><i data-lucide="brain-circuit"></i></div><div class="skill-chips"><span>Scikit-learn</span><span>TensorFlow</span><span>XGBoost</span></div></article>
-          <article class="skill-group reveal" data-accent="lime"><div class="skill-group-head"><span class="skill-number">03</span><div><h3>Data & Cloud Tools</h3><p>Move, store, and explore data.</p></div><i data-lucide="database"></i></div><div class="skill-chips"><span>MySQL</span><span>PostgreSQL</span><span>MongoDB</span><span>JDBC</span><span>Azure Data Factory</span><span>AWS CLI</span></div></article>
-          <article class="skill-group reveal" data-accent="orange"><div class="skill-group-head"><span class="skill-number">04</span><div><h3>Development & Visualization</h3><p>Build interfaces for information.</p></div><i data-lucide="panels-top-left"></i></div><div class="skill-chips"><span>JavaScript</span><span>TypeScript</span><span>Chart.js</span><span>Leaflet</span><span>Git</span><span>GitHub</span><span>VS Code</span><span>Java</span></div></article>
-        </div>
-      </div>
-      <p class="skill-footnote reveal"><i data-lucide="info"></i> Technologies listed reflect tools I’ve used across projects and learning; proficiency varies by tool.</p>
-    </section>
+  <main id="app" class="app-view" tabindex="-1"></main>
 
-    <section class="project-section section-pad" id="projects">
-      <div class="section-shell">
-        <div class="section-top reveal"><span class="section-index">03 / SELECTED WORK</span><span class="section-note">Small experiments. Real questions.</span></div>
-        <div class="section-heading-row reveal"><h2>Projects with a <span class="gradient-text gradient-warm">point of view.</span></h2><p>Each project opens the source repository. Artworks are conceptual—not screenshots of the actual dashboards.</p></div>
-        <div class="projects-grid">
-          <article class="project-card project-choco reveal" tabindex="0" role="link" aria-label="Open Chocolate Sales Analytics repository" data-url="https://github.com/sreeram2124/Chocolate-Sales-PowerBI-Dashboard"><div class="project-art art-choco"><span class="project-stamp">BUSINESS INTELLIGENCE / 01</span><div class="mock-dashboard"><div class="mock-top"><span>SALES / OVERVIEW</span><span>↗</span></div><div class="mock-kpis"><div><small>TOTAL SALES</small><b>$64<span>M</span></b></div><div><small>PROFIT</small><b>$37<span>M</span></b></div></div><div class="mock-chart"><div class="chart-lines"></div><div class="chart-bars"><i style="--h:36%"></i><i style="--h:55%"></i><i style="--h:43%"></i><i style="--h:71%"></i><i style="--h:59%"></i><i style="--h:82%"></i><i style="--h:66%"></i><i style="--h:94%"></i><i style="--h:72%"></i></div></div><span class="mock-foot">PERFORMANCE / PRODUCT / REGION</span></div><span class="art-orbit"></span><span class="art-tag">01 — SALES</span></div><div class="project-info"><div class="project-label">POWER BI <span>·</span> DAX <span>·</span> POWER QUERY</div><h3>Chocolate Sales Analytics</h3><p>Explore sales performance, product profitability, shipment trends, and regional distribution in an interactive Power BI dashboard.</p><div class="project-footer"><span>View repository</span><i data-lucide="arrow-up-right"></i></div></div></article>
-          <article class="project-card project-climate reveal" tabindex="0" role="link" aria-label="Open Global Warming Dashboard repository" data-url="https://github.com/sreeram2124/GlobalWarming-power-BI-project"><div class="project-art art-climate"><span class="project-stamp">CLIMATE / VISUAL STORY / 02</span><div class="climate-sphere"><div class="sphere-grid"></div><div class="sphere-land land-one"></div><div class="sphere-land land-two"></div><div class="sphere-glint"></div></div><div class="climate-data">+<span>°</span><small>CLIMATE<br>DATA</small></div><span class="art-tag">02 — EARTH</span></div><div class="project-info"><div class="project-label">POWER BI <span>·</span> CLIMATE DATA <span>·</span> VISUALIZATION</div><h3>Global Warming Dashboard</h3><p>Visual reporting around global temperature patterns, carbon emissions, regional comparisons, and climate projections.</p><div class="project-footer"><span>View repository</span><i data-lucide="arrow-up-right"></i></div></div></article>
-          <article class="project-card project-wildfire reveal" tabindex="0" role="link" aria-label="Open Wildfire Smoke and AQI project repository" data-url="https://github.com/sreeram2124/wildfire-smoke-prediction-and-AQI-trends-using-NASA-FIRMS"><div class="project-art art-wildfire"><span class="project-stamp">ENVIRONMENTAL SIGNALS / 03</span><div class="fire-core"><div class="fire-ring"></div><div class="fire-ring ring-inner"></div><span>FIRMS</span></div><div class="fire-trace"></div><span class="art-tag">03 — AIR</span></div><div class="project-info"><div class="project-label">NASA FIRMS <span>·</span> AIR QUALITY <span>·</span> DATA EXPLORATION</div><h3>Wildfire Smoke & AQI Trends</h3><p>Explore wildfire-related signals using NASA FIRMS alongside air-quality trends in an environmental data project.</p><div class="project-footer"><span>View repository</span><i data-lucide="arrow-up-right"></i></div></div></article>
-          <article class="project-card project-city reveal" tabindex="0" role="link" aria-label="Open Smart City and NASA FIRMS repository" data-url="https://github.com/sreeram2124/SMART-CITY-NASA-FIRMS"><div class="project-art art-city"><span class="project-stamp">GEOSPATIAL / SMART CITY / 04</span><div class="city-grid"></div><svg class="city-route" viewBox="0 0 500 230" aria-hidden="true"><path d="M10 170 C80 160 65 60 165 90 S240 200 310 120 S400 20 490 55" fill="none" stroke="#53efff" stroke-width="2"/><path d="M10 170 C80 160 65 60 165 90 S240 200 310 120 S400 20 490 55" fill="none" stroke="#53efff" stroke-width="10" opacity=".12"/></svg><span class="city-node node-a"></span><span class="city-node node-b"></span><span class="city-node node-c"></span><span class="art-tag">04 — CITY</span></div><div class="project-info"><div class="project-label">NASA FIRMS <span>·</span> GEO DATA <span>·</span> SMART CITY</div><h3>Smart City Data Explorer</h3><p>A smart-city themed project exploring environmental information and NASA FIRMS data through a geospatial lens.</p><div class="project-footer"><span>View repository</span><i data-lucide="arrow-up-right"></i></div></div></article>
-          <article class="project-card project-fraud reveal" tabindex="0" role="link" aria-label="Open Credit Card Fraud Detection repository" data-url="https://github.com/sreeram2124/CREDIT-CARD-FRAUD-DETECTION"><div class="project-art art-fraud"><span class="project-stamp">APPLIED ML / CLASSIFICATION / 05</span><div class="fraud-network"><span class="net-node n1"></span><span class="net-node n2"></span><span class="net-node n3"></span><span class="net-node n4"></span><span class="net-node n5"></span><span class="net-node n6"></span><svg viewBox="0 0 440 220" aria-hidden="true"><path d="M20 30 L120 100 L60 190 M120 100 L230 25 L290 95 L390 40 M230 25 L250 190 L390 40 M120 100 L250 190 L390 180 L290 95 M60 190 L250 190" fill="none" stroke="#fa68ce" stroke-opacity=".6" stroke-width="1.5"/></svg></div><div class="fraud-scan"></div><span class="art-tag">05 — TRUST</span></div><div class="project-info"><div class="project-label">MACHINE LEARNING <span>·</span> CLASSIFICATION</div><h3>Credit Card Fraud Detection</h3><p>An applied machine-learning notebook project focused on fraud detection and classification.</p><div class="project-footer"><span>View repository</span><i data-lucide="arrow-up-right"></i></div></div></article>
-          <article class="project-card project-air reveal" tabindex="0" role="link" aria-label="Open Air Quality Prediction repository" data-url="https://github.com/sreeram2124/Air-Quality-Prediction"><div class="project-art art-air"><span class="project-stamp">PREDICTIVE MODELLING / 06</span><div class="air-waves"><span></span><span></span><span></span><span></span><span></span></div><div class="air-sun"></div><div class="air-dots"></div><span class="art-tag">06 — ATMOSPHERE</span></div><div class="project-info"><div class="project-label">PYTHON <span>·</span> AIR QUALITY <span>·</span> PREDICTION</div><h3>Air Quality Prediction</h3><p>A prediction project exploring air-quality data and modelling approaches. Visit the repository for implementation details.</p><div class="project-footer"><span>View repository</span><i data-lucide="arrow-up-right"></i></div></div></article>
-        </div>
-        <div class="projects-note reveal"><span class="note-icon">↳</span><p>Want the details behind the visuals? The repository is the source of truth for code, files, and implementation.</p><a href="https://github.com/sreeram2124?tab=repositories" target="_blank" rel="noreferrer">All repositories <i data-lucide="arrow-up-right"></i></a></div>
-      </div>
-    </section>
+  <nav class="dock" aria-label="Portfolio dock">
+    <a href="#home" data-page="home" class="dock-link active" title="Home"><span>⌂</span><small>Home</small></a>
+    <a href="#calendar" data-page="calendar" class="dock-link" title="Calendar"><span>▣</span><small>Meet</small></a>
+    <a href="#projects" data-page="projects" class="dock-link" title="Projects"><span>‹›</span><small>Work</small></a>
+    <a href="#skills" data-page="skills" class="dock-link" title="Skills"><span>▦</span><small>Skills</small></a>
+    <a href="#experience" data-page="experience" class="dock-link" title="Experience"><span>▤</span><small>Career</small></a>
+    <a href="#contact" data-page="contact" class="dock-link" title="Contact"><span>✉</span><small>Contact</small></a>
+    <a href="#settings" data-page="settings" class="dock-link" title="Settings"><span>⚙</span><small>Settings</small></a>
+    <span class="dock-divider"></span>
+    <button class="dock-avatar" id="profile-shortcut" title="Profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"></button>
+  </nav>
 
-    <section id="playground" class="playground section-shell section-pad">
-      <div class="section-top reveal"><span class="section-index">04 / THE PLAYGROUND</span><span class="section-note">Interactive · Sample data · Try it</span></div>
-      <div class="section-heading-row reveal"><h2>Make the data <span class="gradient-text">dance.</span></h2><p>Change the view. Switch the dataset. See how the same values tell different stories.</p></div>
-      <div class="playground-panel reveal">
-        <div class="playground-head"><div><span class="panel-kicker"><span class="status-dot"></span> LIVE DATA PLAYGROUND</span><h3>Signal explorer<span class="panel-period">_</span></h3></div><div class="sample-label"><i data-lucide="flask-conical"></i> Illustrative sample data</div></div>
-        <div class="play-controls"><div class="control-field"><label for="dataset-select">DATASET</label><select id="dataset-select"><option value="sales">Monthly sales (fictional)</option><option value="air">Air quality index (illustrative)</option><option value="climate">Temperature anomaly (illustrative)</option></select></div><div class="control-field"><label>CHART STYLE</label><div class="chart-toggle" role="group" aria-label="Chart style"><button class="active" data-chart="bar" aria-pressed="true">Bars</button><button data-chart="line" aria-pressed="false">Line</button><button data-chart="area" aria-pressed="false">Area</button></div></div><div class="control-field range-field"><label for="range-select">VISIBLE POINTS <output id="range-output">8</output></label><input id="range-select" type="range" min="4" max="8" value="8"></div></div>
-        <div class="chart-heading"><div><span id="chart-unit">REVENUE / SAMPLE USD</span><h4 id="dataset-title">Sales over time</h4></div><div class="chart-current"><span>VISIBLE TOTAL</span><strong id="chart-total">$ 57.4k</strong></div></div>
-        <div class="chart-wrap"><div class="y-axis" id="y-axis"><span>80k</span><span>60k</span><span>40k</span><span>20k</span><span>0</span></div><div class="chart-main"><div class="chart-grid-lines"><i></i><i></i><i></i><i></i><i></i></div><div id="chart-plot" class="chart-plot" aria-label="Interactive sample data chart"></div><div id="chart-x-axis" class="chart-x-axis"></div><div class="chart-tooltip" id="chart-tooltip" role="status"></div></div></div>
-        <div class="chart-footer"><span><i class="legend-dot"></i><span id="legend-name">Sample revenue</span></span><span id="chart-insight">Highest visible value: Aug</span><span class="chart-disclaimer">Fictional / illustrative — not project results</span></div>
-      </div>
-      <div class="playground-bottom reveal"><div class="bottom-spark">✳</div><p><b>Different lens, different story.</b><br>Interactive charts are here to demonstrate the thinking—not to pass sample values off as real findings.</p><span class="mono-tag">INPUT → VISUAL → INSIGHT</span></div>
-    </section>
+  <button class="chat-launcher" id="chat-launcher" aria-label="Chat with Sreeram's portfolio bot" aria-expanded="false"><span class="chat-launch-icon">▢</span><span class="chat-pulse"></span></button>
+  <section class="chat-window" id="chat-window" aria-label="Portfolio chat" aria-hidden="true">
+    <header class="chat-head"><div class="bot-avatar">S<span>.</span></div><div><strong>Ask Sreeram</strong><small><i></i> Portfolio assistant</small></div><button id="chat-close" aria-label="Close chat">×</button></header>
+    <div class="chat-messages" id="chat-messages"><div class="bot-message">Hi! I can answer quick questions about Sreeram’s projects, skills, experience, and availability.</div><div class="quick-questions"><button data-question="What projects has Sreeram built?">Projects</button><button data-question="What skills does Sreeram have?">Skills</button><button data-question="How can I contact Sreeram?">Contact</button></div></div>
+    <form class="chat-form" id="chat-form"><input id="chat-input" type="text" placeholder="Ask a question…" autocomplete="off" aria-label="Ask a question"><button type="submit" aria-label="Send message">↑</button></form>
+    <div class="chat-note">Portfolio FAQ bot · No external AI service</div>
+  </section>
 
-    <section id="timeline" class="timeline-section section-shell section-pad">
-      <div class="section-top reveal"><span class="section-index">05 / THE JOURNEY</span><span class="section-note">Foundations before milestones</span></div>
-      <div class="section-heading-row reveal"><h2>Still learning.<br><span class="gradient-text gradient-warm">Always building.</span></h2><p>A straightforward snapshot of the formal foundation and the projects I’ve explored.</p></div>
-      <div class="timeline">
-        <div class="timeline-line"><span></span></div>
-        <article class="timeline-item reveal"><div class="timeline-marker"><i data-lucide="graduation-cap"></i></div><div class="timeline-date">EDUCATION / 2026</div><div class="timeline-content"><span class="timeline-tag">FOUNDATION</span><h3>B.Tech · Computer Science & Engineering</h3><p>Specialization in Big Data Analytics</p><span class="timeline-place">SRM Institute of Science and Technology</span></div></article>
-        <article class="timeline-item reveal"><div class="timeline-marker"><i data-lucide="bar-chart-3"></i></div><div class="timeline-date">PROJECT WORK</div><div class="timeline-content"><span class="timeline-tag">EXPLORATION</span><h3>From raw data to readable dashboards</h3><p>Explored sales analytics and climate visualization through Power BI projects.</p><span class="timeline-place">Chocolate Sales Analytics · Global Warming Dashboard</span></div></article>
-        <article class="timeline-item reveal"><div class="timeline-marker"><i data-lucide="activity"></i></div><div class="timeline-date">PROJECT WORK</div><div class="timeline-content"><span class="timeline-tag">EXPERIMENTATION</span><h3>Environment, prediction, and patterns</h3><p>Explored environmental data projects and machine-learning classification/prediction.</p><span class="timeline-place">NASA FIRMS · Air Quality · Fraud Detection</span></div></article>
+  <script type="text/template" id="home-template">
+    <section class="desktop-window home-window">
+      <div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>M_SREERAM_REDDY — PROFILE</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div>
+      <div class="window-content home-content">
+        <div class="portrait-wrap"><div class="portrait-frame"><img src="assets/sreeram-profile.jpg" alt="Portrait of M Sreeram Reddy"><span class="portrait-reflect"></span></div><div class="portrait-caption"><span class="live-dot"></span> BASED IN BENGALURU, INDIA <b>· OPEN TO ANY WORK MODE</b></div><div class="portrait-meta"><span>CS · BIG DATA ANALYTICS</span><span>AVAILABLE FOR OPPORTUNITIES</span></div></div>
+        <div class="home-copy"><div class="file-kicker"><span class="file-icon">⌂</span> WELCOME.TXT <span class="file-dirty"></span></div><div class="home-heading"><span class="eyebrow">FULL STACK ENGINEER</span><h1>M Sreeram<br>Reddy<span class="heading-period">.</span></h1></div><div class="typing-line"><span class="typing-prefix">I work with</span><strong id="rotating-role">data, code & ideas</strong><span class="typing-caret"></span></div><p class="hero-bio">I build useful digital experiences and turn complex data into clear insights. My work sits across full stack development, analytics, business intelligence, and applied machine learning.</p><div class="hero-actions"><a class="primary-action" href="#projects"><span>Explore Projects</span><b>↗</b></a><a class="secondary-action" href="#calendar"><span>Book a Meeting</span><b>↗</b></a><a class="resume-action" href="assets/sreeram-resume.pdf" download><span>↓</span> Resume</a></div><div class="home-footer"><div class="social-line"><a href="https://github.com/sreeram2124" target="_blank" rel="noreferrer">GITHUB ↗</a><span></span><a href="https://www.linkedin.com/in/m-sreeram-reddy-3820b1261/" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span></span><a href="mailto:sreeram2124@gmail.com">EMAIL ↗</a></div><div class="hero-index"><span>01</span><i></i> 06</div></div></div>
       </div>
-      <p class="timeline-footnote reveal">Project descriptions summarize repository themes. They are not claims of measured business impact or independent production deployments.</p>
+      <div class="window-status"><span><i></i> SYSTEM ONLINE</span><span>PORTFOLIO.APP</span><span>© 2026 M SREERAM REDDY</span></div>
     </section>
+  </script>
 
-    <section id="contact" class="contact-section section-shell">
-      <div class="contact-backdrop" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="section-top reveal"><span class="section-index">06 / OPEN CHANNEL</span><span class="section-note">Good questions welcome</span></div>
-      <div class="contact-content reveal"><p class="eyebrow small-eyebrow"><span class="status-dot"></span> LET’S MAKE SOMETHING CLEARER</p><h2>Have a question?<br><span class="gradient-text">Let’s connect.</span></h2><p class="contact-copy">For early-career opportunities, analytics projects, or a conversation about data and visualization.</p><a class="button button-primary button-large magnetic" href="mailto:sreeram2124@gmail.com">Say hello <i data-lucide="arrow-up-right"></i></a><div class="contact-links"><a href="mailto:sreeram2124@gmail.com"><i data-lucide="mail"></i> Email</a><a href="https://www.linkedin.com/in/m-sreeram-reddy-3820b1261/" target="_blank" rel="noreferrer"><i data-lucide="linkedin"></i> LinkedIn</a><a href="https://github.com/sreeram2124" target="_blank" rel="noreferrer"><i data-lucide="github"></i> GitHub</a></div></div>
-      <footer class="site-footer"><a class="brand" href="#home"><span class="brand-mark">S<span>.</span></span><span class="brand-name">SREERAM<span>REDDY</span></span></a><span>DESIGNED AROUND CURIOSITY <b>✳</b></span><a class="back-top" href="#home">BACK TO TOP ↑</a><p>© <span id="year"></span> M Sreeram Reddy</p></footer>
+  <script type="text/template" id="projects-template">
+    <section class="desktop-window page-window project-window">
+      <div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>EXPLORER / PROJECTS</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div>
+      <div class="project-layout"><aside class="explorer"><div class="explorer-head">EXPLORER <button aria-label="Explorer options">···</button></div><div class="folder-title">⌄ &nbsp; SREERAM-PORTFOLIO</div><div class="folder-subtitle">⌄ &nbsp; PROJECTS</div><div id="project-file-list" class="project-file-list"></div><div class="explorer-bottom"><span>OUTLINE</span><span>▸</span></div></aside><section class="editor"><div class="editor-tabs"><span class="editor-tab active"><i>JS</i><b id="active-project-file">chocolate_sales.js</b><button>×</button></span><span class="editor-tab-spacer"></span><button class="editor-more">···</button></div><div class="editor-breadcrumb">projects &nbsp;›&nbsp; <span id="breadcrumb-file">chocolate_sales.js</span></div><div id="project-detail" class="project-detail"></div><div class="editor-foot"><span>UTF-8</span><span>JavaScript</span><span>Ln 1, Col 1</span></div></section></div>
+      <div class="window-status"><span><i></i> 6 PROJECTS</span><span>GIT: MAIN*</span><span>PORTFOLIO.APP</span></div>
     </section>
-  </main>
-  <div class="project-toast" role="status" aria-live="polite">Opening repository ↗</div>
+  </script>
+
+  <script type="text/template" id="skills-template">
+    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>SKILLS / TOOLKIT</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content"><div class="page-toolbar"><div><div class="file-kicker"><span class="file-icon">▦</span> TOOLKIT.JSON</div><h1 class="page-title">Skills<span>.</span></h1></div><div class="page-indicator">PROFILE / 02</div></div><p class="page-lede">Tools and technologies I’ve used across analytics, software, and applied machine learning.</p><div id="skill-filters" class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="analytics">Analytics & BI</button><button class="filter" data-filter="engineering">Engineering</button><button class="filter" data-filter="data">Data & Cloud</button><button class="filter" data-filter="other">Other</button></div><div id="skills-grid" class="skills-grid"></div><div class="page-footnote">A snapshot of skills from projects, education, and work experience. Proficiency varies by tool.</div></div><div class="window-status"><span><i></i> 4 CATEGORIES</span><span>TOOLS / TECHNOLOGIES</span><span>PORTFOLIO.APP</span></div></section>
+  </script>
+
+  <script type="text/template" id="experience-template">
+    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>EXPERIENCE / PROFILE</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="experience-layout"><aside class="experience-folders"><div class="explorer-head">FOLDERS</div><button class="folder-button active" data-exp-tab="work"><span>▸</span> Work Experience <small>2</small></button><button class="folder-button" data-exp-tab="education"><span>▸</span> Education <small>1</small></button><button class="folder-button" data-exp-tab="certifications"><span>▸</span> Certifications <small>4</small></button><div class="folder-divider"></div><div class="explorer-head">SMART FOLDERS</div><div class="smart-folder">▱ &nbsp; Recent</div><div class="smart-folder">☆ &nbsp; Highlights</div></aside><div id="experience-content" class="experience-content"></div></div><div class="window-status"><span><i></i> PROFILE RECORDS</span><span>UPDATED OCT 2026</span><span>PORTFOLIO.APP</span></div></section>
+  </script>
+
+  <script type="text/template" id="calendar-template">
+    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>CALENDAR / CONNECT</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content calendar-content"><div class="file-kicker"><span class="file-icon">▣</span> OPEN_CALENDAR.EXE</div><div class="calendar-card"><div class="calendar-visual"><div class="calendar-month">OCTOBER <span>2026</span></div><div class="calendar-big">23<span>FRI</span></div><div class="calendar-grid"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>19</span><span>20</span><span>21</span><span>22</span><span class="today">23</span><span>24</span><span>25</span></div></div><div class="calendar-copy"><span class="eyebrow">LET’S FIND A TIME</span><h1 class="page-title">Book a<br>conversation<span>.</span></h1><p class="page-lede">Choose whichever scheduling link works best for you. I’m open to conversations about roles, collaboration, analytics, and software projects.</p><a class="primary-action calendar-cta" href="https://cal.com/m-sreeram-reddy-d4ftjr" target="_blank" rel="noreferrer"><span>Schedule with Cal.com</span><b>↗</b></a><a class="secondary-action calendar-cta" href="https://calendly.com/sreeram2124/new-meeting" target="_blank" rel="noreferrer"><span>Schedule with Calendly</span><b>↗</b></a><small class="muted-note">External scheduling pages open in a new tab.</small></div></div></div><div class="window-status"><span><i></i> SCHEDULING AVAILABLE</span><span>BENGALURU · IST</span><span>PORTFOLIO.APP</span></div></section>
+  </script>
+
+  <script type="text/template" id="contact-template">
+    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>CONTACT / OPEN CHANNEL</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content contact-content"><div class="contact-copy"><div class="file-kicker"><span class="file-icon">✉</span> LETS_CONNECT.TXT</div><span class="eyebrow"><i class="live-dot"></i> OPEN TO OPPORTUNITIES</span><h1 class="page-title contact-title">Let’s make<br>something useful<span>.</span></h1><p class="page-lede">For early-career opportunities, analytics projects, or a conversation about software and data, reach out.</p><a class="primary-action" href="mailto:sreeram2124@gmail.com"><span>Email Sreeram</span><b>↗</b></a></div><div class="contact-cards"><a class="contact-card" href="mailto:sreeram2124@gmail.com"><span class="contact-icon">✉</span><span><small>EMAIL</small><strong>sreeram2124@gmail.com</strong></span><b>↗</b></a><a class="contact-card" href="https://www.linkedin.com/in/m-sreeram-reddy-3820b1261/" target="_blank" rel="noreferrer"><span class="contact-icon">in</span><span><small>LINKEDIN</small><strong>m-sreeram-reddy</strong></span><b>↗</b></a><a class="contact-card" href="https://github.com/sreeram2124" target="_blank" rel="noreferrer"><span class="contact-icon">⌘</span><span><small>GITHUB</small><strong>sreeram2124</strong></span><b>↗</b></a><a class="contact-card" href="#calendar"><span class="contact-icon">▣</span><span><small>BOOK A MEETING</small><strong>Choose a time to connect</strong></span><b>↗</b></a><div class="contact-location"><span>⌖</span><div><small>LOCATION</small><strong>Bengaluru, India</strong></div><span class="location-status">OPEN TO ANY WORK MODE</span></div></div></div><div class="window-status"><span><i></i> AVAILABLE FOR A CONVERSATION</span><span>BENGALURU · IST</span><span>PORTFOLIO.APP</span></div></section>
+  </script>
+
+  <script type="text/template" id="settings-template">
+    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>SETTINGS / PREFERENCES</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content settings-content"><div class="file-kicker"><span class="file-icon">⚙</span> PREFERENCES.JSON</div><h1 class="page-title">Settings<span>.</span></h1><p class="page-lede">Tune the workspace to your preference.</p><div class="setting-row"><div><strong>Reduce motion</strong><small>Turn off animated transitions and background effects.</small></div><label class="switch"><input id="motion-setting" type="checkbox"><span></span></label></div><div class="setting-row"><div><strong>High contrast</strong><small>Increase contrast for text and interface controls.</small></div><label class="switch"><input id="contrast-setting" type="checkbox"><span></span></label></div><div class="setting-row"><div><strong>Profile document</strong><small>Download a copy of my current resume.</small></div><a class="secondary-action" href="assets/sreeram-resume.pdf" download><span>Download resume</span><b>↓</b></a></div><div class="page-footnote">Settings are saved in this browser only.</div></div><div class="window-status"><span><i></i> PERSONALIZED WORKSPACE</span><span>LOCAL SETTINGS</span><span>PORTFOLIO.APP</span></div></section>
+  </script>
 </body>
 </html>
+

@@ -1,295 +1,90 @@
-(() => {
-  const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+﻿const projects = [
+  {file:"chocolate_sales.js", title:"Chocolate Sales Analytics", kind:"BUSINESS INTELLIGENCE", date:"POWER BI · DAX · POWER QUERY", desc:"An interactive sales dashboard exploring product performance, profitability, shipment trends, and regional distribution.", stack:["Power BI","DAX","Power Query","Data Visualization"], url:"https://github.com/sreeram2124/Chocolate-Sales-PowerBI-Dashboard", code:["const dashboard = {","  name: 'Chocolate Sales Analytics',","  focus: ['sales', 'profit', 'shipments'],","  tools: ['Power BI', 'DAX', 'Power Query'],","  output: 'interactive business insights'","};"]},
+  {file:"global_warming.py", title:"Global Warming Analytics Dashboard", kind:"CLIMATE DATA", date:"POWER BI · PYTHON · DAX", desc:"A climate analytics project using cleaned temperature and emissions data, interactive filters, and regional drill-downs to make long-term patterns easier to explore.", stack:["Power BI","Python","Pandas","DAX","Climate Data"], url:"https://github.com/sreeram2124/GlobalWarming-power-BI-project", code:["const climateDashboard = {","  question: 'How are climate patterns changing?',","  prepare: ['clean', 'model', 'validate'],","  explore: ['temperature', 'emissions', 'region'],","  view: 'interactive Power BI report'","};"]},
+  {file:"wildfire_aqi.py", title:"Wildfire Smoke & AQI Trends", kind:"ENVIRONMENTAL DATA", date:"NASA FIRMS · AIR QUALITY · PYTHON", desc:"An environmental data project exploring wildfire signals from NASA FIRMS alongside air-quality trends and geospatial patterns.", stack:["Python","NASA FIRMS","Air Quality","Geospatial Data"], url:"https://github.com/sreeram2124/wildfire-smoke-prediction-and-AQI-trends-using-NASA-FIRMS", code:["const environmentStudy = {","  signals: ['NASA FIRMS', 'air quality'],","  methods: ['explore', 'compare', 'visualize'],","  focus: 'wildfire smoke and AQI trends',","  goal: 'make environmental data easier to read'","};"]},
+  {file:"smart_city.ts", title:"Smart City Data Explorer", kind:"GEOSPATIAL ANALYTICS", date:"NASA FIRMS · GEO DATA · SMART CITY", desc:"A smart-city themed project that explores environmental information and fire activity through a geospatial lens.", stack:["Geospatial Data","NASA FIRMS","Smart City","Data Exploration"], url:"https://github.com/sreeram2124/SMART-CITY-NASA-FIRMS", code:["const cityExplorer = {","  view: 'geospatial',","  layers: ['city context', 'fire activity'],","  source: 'NASA FIRMS',","  purpose: 'explore environmental signals'","};"]},
+  {file:"fraud_detection.py", title:"Credit Card Fraud Detection", kind:"APPLIED MACHINE LEARNING", date:"PYTHON · CLASSIFICATION · POWER BI", desc:"A transaction-risk analysis project covering exploratory analysis, imbalanced data, classification models, feature engineering, and fraud-trend reporting.", stack:["Python","Pandas","Logistic Regression","Random Forest","Power BI"], url:"https://github.com/sreeram2124/CREDIT-CARD-FRAUD-DETECTION", code:["const fraudAnalysis = {","  task: 'transaction risk classification',","  models: ['Logistic Regression', 'Random Forest'],","  workflow: ['EDA', 'features', 'evaluation'],","  report: 'fraud trends and model metrics'","};"]},
+  {file:"air_quality.py", title:"Air Quality Prediction", kind:"PREDICTIVE ANALYTICS", date:"PYTHON · AIR QUALITY · MODELLING", desc:"A machine-learning project exploring air-quality data and predictive modelling. See the repository for implementation details.", stack:["Python","Machine Learning","Air Quality","Prediction"], url:"https://github.com/sreeram2124/Air-Quality-Prediction", code:["const airQualityModel = {","  domain: 'air quality',","  stages: ['prepare data', 'fit model', 'review'],","  goal: 'explore air-quality prediction',","  status: 'see source repository'","};"]}
+];
+const skills = [
+  {category:"analytics", title:"Analytics & BI", icon:"▥", note:"Turn data into useful decisions.", tags:["SQL","Python","Pandas","NumPy","Power BI","DAX","Excel (Advanced)","Tableau","Dashboarding","KPI Tracking","Business Analysis","Forecasting","Statistics"]},
+  {category:"engineering", title:"Software & Data Engineering", icon:"‹›", note:"Build, integrate, and move data.", tags:["ETL Pipelines","Data Modeling","Java","JDBC","Collections","Git","Linux"]},
+  {category:"data", title:"Cloud & Databases", icon:"▦", note:"Work across cloud platforms and data stores.", tags:["AWS","OCI","PostgreSQL","MySQL","MongoDB"]},
+  {category:"other", title:"Tools & Methods", icon:"⌘", note:"Practical workflows for analysis and delivery.", tags:["Power Query","Data Cleaning","Feature Engineering","Data Visualization","Requirements Gathering"]}
+];
+const work = [
+  {type:"WORK EXPERIENCE", title:"Apprentice · Java Full Stack", place:"LTIMindtree · Navi Mumbai", date:"Jun 2026 — Jul 2026", desc:"Developed reusable DAOs and JDBC connectors to streamline data integration for internal tooling projects. Designed PostgreSQL schemas with attention to data integrity and query optimization, and collaborated with cross-functional teams to deliver data-driven solutions.", tags:["Java","JDBC","PostgreSQL","Data Integration"]},
+  {type:"INTERNSHIP", title:"AI & ML Intern", place:"Kodacy · Remote", date:"Sep 2023 — Oct 2023", desc:"Engineered optimized Python ETL pipelines that reduced data-processing latency by 35%. Built interactive Power BI dashboards to track KPIs and improve data interpretation efficiency by 40%.", tags:["Python","ETL","Power BI","Machine Learning"]}
+];
+const education = [{type:"EDUCATION",title:"B.Tech · Computer Science & Engineering",place:"SRM Institute of Science and Technology",date:"Jun 2022 — May 2026",desc:"Specialization in Big Data Analytics. Graduated with a CGPA of 9.01 / 10.",tags:["Big Data Analytics","CGPA 9.01 / 10"]}];
+const certifications = [
+  {type:"CERTIFICATION",title:"Google Data Analytics Professional Certificate",place:"Google",date:"Sep 2023",desc:"Professional certificate in data analytics.",tags:["Data Analytics"]},
+  {type:"CERTIFICATION",title:"IBM Data Science Professional Certificate",place:"IBM",date:"Oct 2023",desc:"Professional certificate in data science.",tags:["Data Science"]},
+  {type:"CERTIFICATION",title:"AWS Cloud Solutions Architect",place:"Amazon Web Services",date:"Dec 2023",desc:"Cloud architecture certification.",tags:["AWS","Cloud"]},
+  {type:"CERTIFICATION",title:"Oracle Cloud Infrastructure Foundations Associate",place:"Oracle",date:"Jan 2024",desc:"Foundational certification in Oracle Cloud Infrastructure.",tags:["OCI","Cloud"]}
+];
+const app = document.getElementById("app");
+const pageNames = ["home","projects","skills","experience","calendar","contact","settings"];
+let currentProject = 0;
+const htmlEscape = value => String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char]));
+function pageFromHash(){const page=location.hash.replace(/^#\/?/,"").toLowerCase();return pageNames.includes(page)?page:"home";}
+function template(name){return document.getElementById(`${name}-template`).innerHTML.trim();}
+function updateNavigation(page){document.querySelectorAll("[data-page]").forEach(link=>{const active=link.dataset.page===page;link.classList.toggle("active",active);if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});}
+function render(page=pageFromHash()){
+  app.innerHTML=template(page);
+  updateNavigation(page);
+  document.title=`${page[0].toUpperCase()+page.slice(1)} — M Sreeram Reddy`;
+  renderCalendarDate();
+  if(page==="projects")renderProjects();
+  if(page==="skills")renderSkills();
+  if(page==="experience")renderExperience("work");
+  if(page==="calendar")renderCalendarDate();
+  if(page==="settings")initSettings();
+  app.focus({preventScroll:true});
+  document.getElementById("mobile-links").classList.remove("open");
+  document.getElementById("mobile-menu").setAttribute("aria-expanded","false");
+}
+function renderProjects(){
+  const list=document.getElementById("project-file-list");
+  list.innerHTML=projects.map((project,index)=>`<button class="project-file ${index===currentProject?"active":""}" data-project-index="${index}"><span>▣</span><span>${htmlEscape(project.file)}</span><span class="file-extension">${project.file.endsWith(".py")?"PY":"JS"}</span></button>`).join("");
+  list.querySelectorAll("[data-project-index]").forEach(button=>button.addEventListener("click",()=>{currentProject=Number(button.dataset.projectIndex);renderProjects();}));
+  const project=projects[currentProject];
+  document.getElementById("active-project-file").textContent=project.file;
+  document.getElementById("breadcrumb-file").textContent=project.file;
+  const code=project.code.map((line,index)=>`<div class="code-line"><span class="line-number">${index+1}</span><span>${colourize(line)}</span></div>`).join("");
+  document.getElementById("project-detail").innerHTML=`<div class="code-meta"><span>${project.kind}</span><span>UPDATED 2026</span><span>UTF-8</span></div><div class="code-block">${code}</div><h2 class="code-title">${htmlEscape(project.title)}</h2><p class="project-description">${htmlEscape(project.desc)}</p><div class="stack-row">${project.stack.map(tag=>`<span class="stack-chip">${htmlEscape(tag)}</span>`).join("")}</div><a class="project-open" href="${project.url}" target="_blank" rel="noreferrer">OPEN GITHUB REPOSITORY ↗</a>`;
+}
+function colourize(line){let escaped=htmlEscape(line);escaped=escaped.replace(/\b(const|let|return)\b/g,'<span class="code-key">$1</span>').replace(/'([^']*)'/g,'<span class="code-string">\'$1\'</span>').replace(/(dashboard|climateDashboard|environmentStudy|cityExplorer|fraudAnalysis|airQualityModel)/g,'<span class="code-var">$1</span>');return escaped;}
+function renderSkills(filter="all"){
+  const grid=document.getElementById("skills-grid");
+  grid.innerHTML=skills.filter(skill=>filter==="all"||skill.category===filter).map(skill=>`<article class="skill-card"><div class="skill-card-head"><span class="skill-card-icon">${skill.icon}</span><div><h3>${htmlEscape(skill.title)}</h3><p>${htmlEscape(skill.note)}</p></div></div><div class="skill-chips">${skill.tags.map(tag=>`<span>${htmlEscape(tag)}</span>`).join("")}</div></article>`).join("");
+  document.querySelectorAll(".filter").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(item=>item.classList.toggle("active",item===button));renderSkills(button.dataset.filter);}));
+}
+function renderExperience(tab){
+  const entries=tab==="work"?work:tab==="education"?education:certifications;
+  const content=document.getElementById("experience-content");
+  content.innerHTML=`<h1 class="experience-title">${tab==="work"?"Work Experience":tab==="education"?"Academic Education":"Certifications"}<span class="experience-count">${entries.length}</span></h1>${entries.map(entry=>`<article class="experience-record"><div class="record-top"><span class="record-label">${entry.type}</span><span class="record-date">${entry.date}</span></div><h3>${htmlEscape(entry.title)}</h3><div class="record-place">${htmlEscape(entry.place)}</div><p>${htmlEscape(entry.desc)}</p><div class="record-tags">${entry.tags.map(tag=>`<span>${htmlEscape(tag)}</span>`).join("")}</div></article>`).join("")}`;
+  document.querySelectorAll("[data-exp-tab]").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("[data-exp-tab]").forEach(item=>item.classList.toggle("active",item===button));renderExperience(button.dataset.expTab);}));
+}
+function renderCalendarDate(){
+  const now=new Date();
+  const local=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",month:"long",year:"numeric"}).format(now).toUpperCase();
+  const day=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",day:"2-digit"}).format(now);
+  const weekday=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",weekday:"short"}).format(now).toUpperCase();
+  const monthYear=document.querySelector(".calendar-month");if(monthYear)monthYear.innerHTML=`${local.split(" ")[0]} <span>${local.split(" ")[1]}</span>`;
+  const big=document.querySelector(".calendar-big");if(big)big.innerHTML=`${Number(day)}<span>${weekday}</span>`;
+  const dateLabel=document.getElementById("system-date");if(dateLabel)dateLabel.textContent=`${new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",weekday:"short",month:"short",day:"numeric"}).format(now)} · ${new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",hour:"numeric",minute:"2-digit",hour12:true}).format(now)} IST`;
+}
+function initSettings(){const motion=document.getElementById("motion-setting"),contrast=document.getElementById("contrast-setting");motion.checked=localStorage.getItem("portfolio-reduce-motion")==="true";contrast.checked=localStorage.getItem("portfolio-high-contrast")==="true";document.body.classList.toggle("reduce-motion",motion.checked);document.body.classList.toggle("high-contrast",contrast.checked);motion.addEventListener("change",()=>{localStorage.setItem("portfolio-reduce-motion",motion.checked);document.body.classList.toggle("reduce-motion",motion.checked);});contrast.addEventListener("change",()=>{localStorage.setItem("portfolio-high-contrast",contrast.checked);document.body.classList.toggle("high-contrast",contrast.checked);});}
+function answerFor(question){const q=question.toLowerCase();if(/project|work|built|github/.test(q))return "Sreeram’s portfolio highlights six projects: Chocolate Sales Analytics, a Global Warming dashboard, Wildfire Smoke & AQI Trends, Smart City Data Explorer, Credit Card Fraud Detection, and Air Quality Prediction. Each project links to its GitHub repository.";if(/skill|technology|tool|stack/.test(q))return "His toolkit includes SQL, Python, Pandas, NumPy, Power BI, DAX, Excel, Tableau, ETL, Java, JDBC, Git, Linux, AWS, OCI, PostgreSQL, MySQL, and MongoDB.";if(/experience|job|work|intern/.test(q))return "Sreeram completed an AI & ML internship at Kodacy (Sep–Oct 2023) and a Java Full Stack apprenticeship at LTIMindtree (Jun–Jul 2026). See the Experience page for details.";if(/education|degree|college|srm|cgpa/.test(q))return "He earned a B.Tech in Computer Science & Engineering, specializing in Big Data Analytics, from SRM Institute of Science and Technology (Jun 2022–May 2026), with a CGPA of 9.01/10.";if(/contact|email|linkedin|reach/.test(q))return "You can reach Sreeram at sreeram2124@gmail.com, connect on LinkedIn at linkedin.com/in/m-sreeram-reddy-3820b1261, or use either booking link on the Calendar page.";if(/available|location|remote|bengaluru|bangalore/.test(q))return "Sreeram is based in Bengaluru, India and is open to any work mode. He is open to opportunities and conversations.";if(/resume|cv/.test(q))return "You can download Sreeram’s resume using the Resume button on the home page or in Settings.";return "I can help with Sreeram’s projects, skills, experience, education, resume, location, or contact details. What would you like to know?";}
+function addMessage(text,kind){const box=document.getElementById("chat-messages");const node=document.createElement("div");node.className=kind==="user"?"user-message":"bot-message";node.textContent=text;box.appendChild(node);box.scrollTop=box.scrollHeight;}
+function sendQuestion(question){const cleaned=question.trim();if(!cleaned)return;addMessage(cleaned,"user");window.setTimeout(()=>addMessage(answerFor(cleaned),"bot"),260);}
+window.addEventListener("hashchange",()=>render());
+const launcher=document.getElementById("chat-launcher"),chat=document.getElementById("chat-window");function toggleChat(open){chat.classList.toggle("open",open);chat.setAttribute("aria-hidden",String(!open));launcher.setAttribute("aria-expanded",String(open));if(open)document.getElementById("chat-input").focus();}
+launcher.addEventListener("click",()=>toggleChat(!chat.classList.contains("open")));document.getElementById("chat-close").addEventListener("click",()=>toggleChat(false));document.addEventListener("keydown",event=>{if(event.key==="Escape")toggleChat(false);});
+document.getElementById("chat-form").addEventListener("submit",event=>{event.preventDefault();const input=document.getElementById("chat-input");sendQuestion(input.value);input.value="";});document.querySelectorAll("[data-question]").forEach(button=>button.addEventListener("click",()=>sendQuestion(button.dataset.question)));
+document.getElementById("mobile-menu").addEventListener("click",event=>{const open=!document.getElementById("mobile-links").classList.contains("open");document.getElementById("mobile-links").classList.toggle("open",open);event.currentTarget.setAttribute("aria-expanded",String(open));});
+document.getElementById("profile-shortcut").addEventListener("click",()=>{location.hash="#home";});
+render();window.setInterval(renderCalendarDate,30000);
 
-  // Icon enhancement: the page remains usable if the icon CDN fails.
-  const makeIcons = () => { if (window.lucide?.createIcons) window.lucide.createIcons(); };
-  window.addEventListener("load", makeIcons);
 
-  // Mobile menu with Escape and close-on-navigation support.
-  const menuButton = $(".menu-toggle");
-  const mobileNav = $(".mobile-nav");
-  function setMenu(open) {
-    menuButton?.setAttribute("aria-expanded", String(open));
-    menuButton?.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-    mobileNav?.classList.toggle("open", open);
-    mobileNav?.setAttribute("aria-hidden", String(!open));
-    document.body.classList.toggle("menu-open", open);
-  }
-  menuButton?.addEventListener("click", () => setMenu(menuButton.getAttribute("aria-expanded") !== "true"));
-  $$(".mobile-nav a").forEach(link => link.addEventListener("click", () => setMenu(false)));
-  document.addEventListener("keydown", event => { if (event.key === "Escape") setMenu(false); });
-
-  // Scroll progress and active reading progress.
-  const progress = $("#progress-bar");
-  const updateProgress = () => {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.width = (scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0) + "%";
-  };
-  window.addEventListener("scroll", updateProgress, { passive: true });
-  updateProgress();
-
-  // Respect reduced-motion, while preserving the content flow.
-  const revealItems = $$(".reveal");
-  if ("IntersectionObserver" in window && !reducedMotion) {
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -36px 0px" });
-    revealItems.forEach(item => revealObserver.observe(item));
-    const timeline = $(".timeline");
-    if (timeline) {
-      const timelineObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (entry.isIntersecting) { timeline.classList.add("is-visible"); timelineObserver.disconnect(); }
-      }), { threshold: 0.12 });
-      timelineObserver.observe(timeline);
-    }
-  } else {
-    revealItems.forEach(item => item.classList.add("is-visible"));
-    $(".timeline")?.classList.add("is-visible");
-  }
-
-  // Desktop custom cursor, disabled on touch and reduced-motion setups.
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const dot = $(".cursor-dot");
-  const ring = $(".cursor-ring");
-  if (finePointer && !reducedMotion && dot && ring) {
-    let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y;
-    let visible = false;
-    window.addEventListener("mousemove", event => {
-      x = event.clientX; y = event.clientY;
-      if (!visible) {
-        visible = true;
-        dot.style.opacity = ring.style.opacity = "1";
-      }
-      dot.style.left = x + "px"; dot.style.top = y + "px";
-    }, { passive: true });
-    const moveRing = () => {
-      rx += (x - rx) * .16; ry += (y - ry) * .16;
-      ring.style.left = rx + "px"; ring.style.top = ry + "px";
-      requestAnimationFrame(moveRing);
-    };
-    requestAnimationFrame(moveRing);
-    $$("a,button,.project-card,.skill-chips span,select,input").forEach(el => {
-      el.addEventListener("mouseenter", () => ring.classList.add("hovering"));
-      el.addEventListener("mouseleave", () => ring.classList.remove("hovering"));
-    });
-    window.addEventListener("mouseleave", () => { dot.style.opacity = ring.style.opacity = "0"; });
-  }
-
-  // Magnetic movement is intentionally subtle and only enabled with a mouse.
-  if (finePointer && !reducedMotion) {
-    $$(".magnetic").forEach(el => {
-      el.addEventListener("mousemove", event => {
-        const rect = el.getBoundingClientRect();
-        const dx = (event.clientX - rect.left - rect.width / 2) * .08;
-        const dy = (event.clientY - rect.top - rect.height / 2) * .12;
-        el.style.transform = `translate(${dx}px,${dy - 2}px)`;
-      });
-      el.addEventListener("mouseleave", () => { el.style.transform = ""; });
-      el.addEventListener("blur", () => { el.style.transform = ""; });
-    });
-  }
-
-  // Animated particle field: canvas is decorative, low-cost, and responsive.
-  const canvas = $("#particle-canvas");
-  const ctx = canvas?.getContext("2d", { alpha: true });
-  if (canvas && ctx && !reducedMotion) {
-    let width = 0, height = 0, particles = [], frame = 0;
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.6);
-      width = rect.width; height = rect.height;
-      canvas.width = Math.floor(width * dpr); canvas.height = Math.floor(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(74, Math.max(24, Math.floor(width / 15)));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * width, y: Math.random() * height,
-        r: Math.random() * 1.5 + .4, vx: (Math.random() - .5) * .22,
-        vy: (Math.random() - .5) * .19,
-        hue: [180, 250, 310][Math.floor(Math.random() * 3)],
-        alpha: Math.random() * .4 + .15
-      }));
-    };
-    const draw = () => {
-      frame = requestAnimationFrame(draw);
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach((p, i) => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 90%, 75%, ${p.alpha})`; ctx.fill();
-        for (let j = i + 1; j < particles.length; j++) {
-          const q = particles[j], dx = p.x - q.x, dy = p.y - q.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 105) {
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = `rgba(148, 126, 220, ${(1 - dist / 105) * .1})`;
-            ctx.lineWidth = .6; ctx.stroke();
-          }
-        }
-      });
-    };
-    resize(); draw();
-    window.addEventListener("resize", resize, { passive: true });
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) cancelAnimationFrame(frame);
-      else { cancelAnimationFrame(frame); draw(); }
-    });
-  }
-
-  // Project cards open real repository destinations. Keyboard activation works too.
-  const toast = $(".project-toast");
-  let toastTimer;
-  function openProject(card) {
-    const url = card.dataset.url;
-    if (!url) return;
-    if (toast) {
-      toast.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("show"), 900);
-    }
-    window.open(url, "_blank", "noopener,noreferrer");
-  }
-  $$(".project-card").forEach(card => {
-    card.addEventListener("click", () => openProject(card));
-    card.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault(); openProject(card);
-      }
-    });
-    if (finePointer && !reducedMotion) {
-      card.addEventListener("mousemove", event => {
-        const rect = card.getBoundingClientRect();
-        const px = (event.clientX - rect.left) / rect.width;
-        const py = (event.clientY - rect.top) / rect.height;
-        card.style.transform = `perspective(900px) rotateX(${(0.5 - py) * 3.2}deg) rotateY(${(px - 0.5) * 3.2}deg) translateY(-4px)`;
-      });
-      card.addEventListener("mouseleave", () => { card.style.transform = ""; });
-      card.addEventListener("blur", () => { card.style.transform = ""; });
-    }
-  });
-
-  // Working chart playground — values are demonstrative, never project results.
-  const datasets = {
-    sales: {
-      title: "Sales over time", unit: "REVENUE / SAMPLE USD", legend: "Sample revenue", prefix: "$", suffix: "k",
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-      values: [4.2, 5.8, 5.1, 7.4, 6.3, 8.2, 7.1, 9.3], decimals: 1,
-      insight: "Highest visible value: "
-    },
-    air: {
-      title: "Air quality index", unit: "AQI / ILLUSTRATIVE INDEX", legend: "Illustrative AQI", prefix: "", suffix: "",
-      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon"],
-      values: [42, 58, 37, 73, 66, 51, 84, 61], decimals: 0,
-      insight: "Highest visible index: "
-    },
-    climate: {
-      title: "Temperature anomaly", unit: "ANOMALY / ILLUSTRATIVE °C", legend: "Illustrative anomaly", prefix: "+", suffix: "°",
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-      values: [.5, .7, .6, .9, 1.0, .8, 1.2, 1.1], decimals: 1,
-      insight: "Highest visible value: "
-    }
-  };
-  let chartKind = "bar";
-  const datasetSelect = $("#dataset-select");
-  const rangeSelect = $("#range-select");
-  const rangeOutput = $("#range-output");
-  const chartPlot = $("#chart-plot");
-  const chartTooltip = $("#chart-tooltip");
-  const chartTotal = $("#chart-total");
-  const chartTitle = $("#dataset-title");
-  const chartUnit = $("#chart-unit");
-  const legendName = $("#legend-name");
-  const chartInsight = $("#chart-insight");
-  const yAxis = $("#y-axis");
-  const chartToggleButtons = $$("[data-chart]");
-  const formatVal = (value, data) => data.prefix + Number(value).toLocaleString("en-US", { maximumFractionDigits: data.decimals }) + data.suffix;
-  function renderChart() {
-    if (!chartPlot) return;
-    const data = datasets[datasetSelect.value] || datasets.sales;
-    const count = Number(rangeSelect.value);
-    const labels = data.labels.slice(0, count);
-    const values = data.values.slice(0, count);
-    const max = Math.max(...data.values) * 1.16;
-    const total = values.reduce((sum, value) => sum + value, 0);
-    chartTitle.textContent = data.title;
-    chartUnit.textContent = data.unit;
-    legendName.textContent = data.legend;
-    rangeOutput.textContent = count;
-    chartTotal.textContent = datasetSelect.value === "sales"
-      ? "$ " + (total * 1000).toLocaleString("en-US", { maximumFractionDigits: 0 })
-      : (datasetSelect.value === "climate" ? "+" : "") + total.toLocaleString("en-US", { maximumFractionDigits: data.decimals }) + (datasetSelect.value === "climate" ? "°" : "");
-    const peak = values.reduce((best, value, i) => value > values[best] ? i : best, 0);
-    chartInsight.textContent = data.insight + labels[peak];
-    yAxis.innerHTML = "";
-    for (let tick = 4; tick >= 0; tick--) {
-      const el = document.createElement("span");
-      const value = max * tick / 4;
-      el.textContent = datasetSelect.value === "sales" ? (value ? Math.round(value) + "k" : "0") :
-        datasetSelect.value === "climate" ? value.toFixed(1) + "°" : Math.round(value);
-      yAxis.append(el);
-    }
-    chartPlot.innerHTML = "";
-    values.forEach((value, index) => {
-      const percent = Math.max(3, value / max * 100);
-      const col = document.createElement("button");
-      col.type = "button";
-      col.className = "chart-column";
-      col.style.setProperty("--height", percent + "%");
-      col.setAttribute("aria-label", labels[index] + ": " + formatVal(value, data));
-      col.dataset.label = labels[index];
-      col.dataset.value = formatVal(value, data);
-      const visual = document.createElement("span");
-      visual.className = chartKind === "area" ? "area" : "bar";
-      if (chartKind === "line") {
-        const point = document.createElement("span");
-        point.className = "point";
-        visual.append(point);
-      }
-      col.append(visual);
-      if (chartKind === "line") {
-        const line = document.createElement("span");
-        line.className = "point-line";
-        col.append(line);
-      }
-      const label = document.createElement("span");
-      label.className = "x-label";
-      label.textContent = labels[index];
-      col.append(label);
-      const showTooltip = () => {
-        const plotRect = chartPlot.getBoundingClientRect();
-        const colRect = col.getBoundingClientRect();
-        chartTooltip.textContent = labels[index] + " · " + formatVal(value, data);
-        chartTooltip.style.left = (colRect.left - plotRect.left + colRect.width / 2) + "px";
-        chartTooltip.style.top = Math.max(10, colRect.top - plotRect.top + Math.max(0, plotRect.height * (1 - percent / 100))) + "px";
-        chartTooltip.classList.add("visible");
-      };
-      col.addEventListener("mouseenter", showTooltip);
-      col.addEventListener("focus", showTooltip);
-      col.addEventListener("mouseleave", () => chartTooltip.classList.remove("visible"));
-      col.addEventListener("blur", () => chartTooltip.classList.remove("visible"));
-      chartPlot.append(col);
-    });
-  }
-  datasetSelect?.addEventListener("change", renderChart);
-  rangeSelect?.addEventListener("input", renderChart);
-  chartToggleButtons.forEach(button => button.addEventListener("click", () => {
-    chartKind = button.dataset.chart;
-    chartToggleButtons.forEach(item => {
-      const active = item === button;
-      item.classList.toggle("active", active);
-      item.setAttribute("aria-pressed", String(active));
-    });
-    renderChart();
-  }));
-  renderChart();
-
-  $("#year").textContent = new Date().getFullYear();
-})();

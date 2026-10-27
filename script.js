@@ -18,17 +18,17 @@ const projects = [
 ].map(project => Object.assign(project, {url:"https://github.com/sreeram2124/" + project.repo}));
 
 const skillItems = [
-  ["Python","languages","Py"],["Java","languages","☕"],["SQL","languages","▤"],["JavaScript","languages","JS"],
-  ["Power BI","data","▥"],["DAX","data","ƒx"],["Excel","data","▦"],["Tableau","data","▨"],
-  ["Pandas","data","Pd"],["NumPy","data","№"],["Data Visualization","data","◫"],["Statistics","data","∑"],
-  ["Business Analysis","data","◉"],["KPI Tracking","data","↗"],["Forecasting","data","⌁"],["Data Cleaning","data","⌕"],
-  ["Machine Learning","ai","✳"],["Deep Learning","ai","◉"],["Computer Vision","ai","◈"],["Feature Engineering","ai","⚙"],
-  ["ETL Pipelines","backend","⇄"],["Data Modeling","backend","◇"],["JDBC","backend","↔"],["Collections","backend","▧"],
-  ["PostgreSQL","backend","▤"],["MySQL","backend","▤"],["MongoDB","backend","◉"],["AWS","tools","☁"],
-  ["OCI","tools","☁"],["Git","tools","⑂"],["GitHub","tools","⌘"],["Linux","tools","⌘"],
-  ["Power Query","tools","↻"],["Requirements Gathering","tools","☷"],["Data Integration","backend","⇄"],["HTML","frontend","5"],
-  ["CSS","frontend","3"],["React","frontend","⚛"],["Responsive Design","frontend","▣"],["UI Development","frontend","◩"]
-].map(([name, category, icon]) => ({name, category, icon}));
+  ["Python","languages","python.svg","linear-gradient(145deg,#306998,#ffd43b)"],["Java","languages","java.svg","#176b91"],["SQL","languages","database.svg","#355d8b"],["JavaScript","languages","javascript.svg","#f7df1e"],
+  ["Power BI","data","powerbi.svg","#27251f"],["DAX","data","powerbi.svg","#24252a"],["Excel","data","excel.svg","#176b43"],["Tableau","data","tableau.svg","#202a45"],
+  ["Pandas","data","pandas.svg","#150458"],["NumPy","data","numpy.svg","#013243"],["Data Visualization","data","chart.svg","#35677d"],["Statistics","data","sigma.svg","#514b78"],
+  ["Business Analysis","data","briefcase.svg","#526a8d"],["KPI Tracking","data","gauge.svg","#426455"],["Forecasting","data","chart-line.svg","#267267"],["Data Cleaning","data","cleaning.svg","#647950"],
+  ["Machine Learning","ai","tensorflow.svg","#e96c16"],["Deep Learning","ai","pytorch.svg","#2d2421"],["Computer Vision","ai","opencv.svg","#1b5379"],["Feature Engineering","ai","settings.svg","#775b38"],
+  ["ETL Pipelines","backend","workflow.svg","#2a6272"],["Data Modeling","backend","database.svg","#365777"],["JDBC","backend","java.svg","#176b91"],["Collections","backend","table.svg","#3c5d83"],
+  ["PostgreSQL","backend","postgresql.svg","#263c54"],["MySQL","backend","mysql.svg","#0e536e"],["MongoDB","backend","mongodb.svg","#173e36"],["AWS","tools","aws.svg","#232f3e"],
+  ["OCI","tools","oracle.svg","#342222"],["Git","tools","git.svg","#f05032"],["GitHub","tools","github.svg","#181717"],["Linux","tools","linux.svg","#3d3521"],
+  ["Power Query","tools","excel.svg","#1d3d70"],["Requirements Gathering","tools","clipboard-check.svg","#565d88"],["Data Integration","backend","workflow.svg","#2d6968"],["HTML","frontend","html5.svg","#e34f26"],
+  ["CSS","frontend","css3.svg","#1572b6"],["React","frontend","react.svg","#20232a"],["Responsive Design","frontend","monitor-smartphone.svg","#425e9c"],["UI Development","frontend","figma.svg","#27252a"]
+].map(([name, category, icon, background]) => ({name, category, icon, background}));
 
 const experienceData = {
   work: [
@@ -61,8 +61,11 @@ let skillPage = 0;
 let experienceFolder = "work";
 let selectedExperience = 0;
 let experienceQuery = "";
-let settingsSection = localStorage.getItem("portfolio-settings-tab") || "background";
+let settingsSection = localStorage.getItem("portfolio-settings-tab") || "appearance";
 let toastTimer;
+let renderTimer = 0;
+let chatCloseTimer = 0;
+let wallpaperSwapTimer = 0;
 
 function activePage() {
   const route = location.hash.replace(/^#\/?/, "").toLowerCase();
@@ -79,8 +82,13 @@ function updateNav(page) {
     if (current) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current");
   });
 }
-function render(page = activePage()) {
+function renderPage(page) {
+  window.scrollTo(0, 0);
   app.innerHTML = sourceTemplate(page);
+  app.dataset.page = page;
+  app.classList.remove("page-exiting", "page-minimizing", "page-entering", "is-maximized");
+  requestAnimationFrame(() => app.classList.add("page-entering"));
+  window.setTimeout(() => app.classList.remove("page-entering"), 480);
   updateNav(page);
   document.title = (page[0].toUpperCase() + page.slice(1)) + " — M Sreeram Reddy";
   if (page === "projects") renderProjects();
@@ -91,6 +99,19 @@ function render(page = activePage()) {
   updateDate();
   $("#mobile-links").classList.remove("open");
   $("#mobile-menu").setAttribute("aria-expanded", "false");
+}
+function render(page = activePage()) {
+  if (renderTimer) window.clearTimeout(renderTimer);
+  if (app.dataset.page && app.dataset.page !== page) {
+    app.classList.remove("page-entering", "is-maximized");
+    app.classList.add("page-exiting");
+    renderTimer = window.setTimeout(() => {
+      renderTimer = 0;
+      renderPage(page);
+    }, 190);
+    return;
+  }
+  renderPage(page);
 }
 function updateDate() {
   const now = new Date();
@@ -156,10 +177,10 @@ function renderSkills(query = "") {
   const grid = $("#skill-grid");
   if (!grid) return;
   const items = skillItems.filter(skill => (skillFilter === "all" || skill.category === skillFilter) && skill.name.toLowerCase().includes(query.toLowerCase()));
-  const perPage = window.innerWidth <= 760 ? 18 : 32;
+  const perPage = window.innerWidth < 640 ? 16 : 18;
   const pages = Math.max(1, Math.ceil(items.length / perPage));
   skillPage = Math.min(skillPage, pages - 1);
-  grid.innerHTML = items.slice(skillPage * perPage, (skillPage + 1) * perPage).map(skill => '<button class="skill-icon-card" title="' + escapeHTML(skill.name) + '" aria-label="' + escapeHTML(skill.name) + '"><span class="skill-app-icon skill-' + escapeHTML(skill.category) + '">' + escapeHTML(skill.icon) + '</span><span>' + escapeHTML(skill.name) + '</span></button>').join("");
+  grid.innerHTML = items.slice(skillPage * perPage, (skillPage + 1) * perPage).map(skill => '<button class="skill-icon-card" title="' + escapeHTML(skill.name) + '" aria-label="' + escapeHTML(skill.name) + '"><span class="skill-app-icon skill-' + escapeHTML(skill.category) + '" style="--skill-bg:' + escapeHTML(skill.background) + '"><img src="assets/skills/' + escapeHTML(skill.icon) + '" alt="" loading="lazy"></span><span>' + escapeHTML(skill.name) + '</span></button>').join("");
   const count = $("#skills-page-count");
   if (count) count.textContent = "Page " + (skillPage + 1) + " of " + pages;
   const dots = $("#skill-dots");
@@ -185,15 +206,42 @@ function renderExperience() {
 }
 
 const wallpapers = [
-  {id:"abstract", name:"Abstract Dark", background:"linear-gradient(130deg,#e99a6b 0%,#c56caa 38%,#6530a7 68%,#211875 100%)"},
-  {id:"mountain", name:"Mountain", background:"linear-gradient(150deg,#e1c4a7 0%,#8c7894 47%,#263451 100%)"},
-  {id:"ocean", name:"Ocean", background:"linear-gradient(155deg,#a5ddd5 0%,#338bb3 48%,#122e5c 100%)"},
-  {id:"gradient", name:"Gradient", background:"linear-gradient(132deg,#e89268 0%,#b76dc4 31%,#6029aa 64%,#23167c 100%)"},
-  {id:"forest", name:"Forest", background:"linear-gradient(145deg,#c9d7a4 0%,#507965 47%,#163746 100%)"},
-  {id:"space", name:"Space", background:"radial-gradient(ellipse at 55% 115%,#287ba1 0,#152947 45%,#060912 75%)"}
+  {id:"abstract", name:"Abstract Dark", image:"assets/wallpapers/abstract-dark.jpg"},
+  {id:"mountain", name:"Mountain", image:"assets/wallpapers/mountain.jpg"},
+  {id:"ocean", name:"Ocean", image:"assets/wallpapers/ocean.jpg"},
+  {id:"gradient", name:"Gradient", image:"assets/wallpapers/gradient.jpg"},
+  {id:"forest", name:"Forest", image:"assets/wallpapers/forest.jpg"},
+  {id:"space", name:"Space", image:"assets/wallpapers/space.jpg"}
 ];
+function applyWallpaper(id, animate = true) {
+  const desktop = $("#desktop-wallpaper");
+  const selected = wallpapers.find(wallpaper => wallpaper.id === id) || wallpapers[0];
+  document.body.dataset.wallpaper = selected.id;
+  if (!desktop) return;
+  const current = desktop.querySelector(".wallpaper-image.current");
+  desktop.querySelectorAll(".wallpaper-image:not(.current)").forEach(layer => layer.remove());
+  const next = document.createElement("div");
+  next.className = "wallpaper-image";
+  next.style.backgroundImage = 'url("' + selected.image + '")';
+  next.setAttribute("aria-hidden", "true");
+  if (!animate || !current) {
+    desktop.querySelectorAll(".wallpaper-image").forEach(layer => layer.remove());
+    next.classList.add("current", "is-visible");
+    desktop.prepend(next);
+    return;
+  }
+  desktop.append(next);
+  window.requestAnimationFrame(() => window.requestAnimationFrame(() => next.classList.add("is-visible")));
+  if (wallpaperSwapTimer) window.clearTimeout(wallpaperSwapTimer);
+  wallpaperSwapTimer = window.setTimeout(() => {
+    current.remove();
+    next.classList.add("current");
+    wallpaperSwapTimer = 0;
+  }, 720);
+}
 function applySettings() {
-  document.body.dataset.wallpaper = localStorage.getItem("portfolio-wallpaper") || "gradient";
+  const wallpaper = localStorage.getItem("portfolio-wallpaper") || "abstract";
+  if (document.body.dataset.wallpaper !== wallpaper || !$("#desktop-wallpaper .wallpaper-image.current")) applyWallpaper(wallpaper, false);
   document.body.dataset.appearance = localStorage.getItem("portfolio-appearance") || "dark";
   document.body.dataset.textSize = localStorage.getItem("portfolio-text-size") || "medium";
 }
@@ -205,7 +253,7 @@ function renderSettingsPanel(section) {
   $$('[data-settings-tab]').forEach(button => button.classList.toggle("active", button.dataset.settingsTab === section));
   let body = "";
   if (section === "background") {
-    body = '<div class="settings-panel-heading"><h1>Background</h1><p>Choose a wallpaper for your desktop.</p></div><div class="settings-panel-body"><span class="settings-section-label">WALLPAPER</span><p class="settings-help">Select an image to use as your desktop background.</p><div class="wallpaper-grid">' + wallpapers.map(w => '<button class="wallpaper-choice ' + (document.body.dataset.wallpaper === w.id ? "selected" : "") + '" data-wallpaper-choice="' + w.id + '" aria-pressed="' + (document.body.dataset.wallpaper === w.id) + '"><span class="wallpaper-swatch" style="background:' + w.background + '"></span><span>' + w.name + '</span></button>').join("") + '</div></div>';
+    body = '<div class="settings-panel-heading"><h1>Background</h1><p>Choose a wallpaper for your desktop.</p></div><div class="settings-panel-body"><span class="settings-section-label">DESKTOP WALLPAPER</span><p class="settings-help">Select a high-resolution background for your desktop.</p><div class="wallpaper-grid">' + wallpapers.map(w => '<button class="wallpaper-choice ' + (document.body.dataset.wallpaper === w.id ? "selected" : "") + '" data-wallpaper-choice="' + w.id + '" aria-pressed="' + (document.body.dataset.wallpaper === w.id) + '"><span class="wallpaper-swatch" style="background-image:url(\'' + w.image + '\')"></span><span>' + w.name + '</span></button>').join("") + '</div></div>';
   } else if (section === "appearance") {
     body = '<div class="settings-panel-heading"><h1>Appearance</h1><p>Choose how your workspace looks.</p></div><div class="settings-panel-body"><span class="settings-section-label">THEME MODE</span><p class="settings-help">Select a light or dark appearance.</p><div class="appearance-options">' + ["light","dark"].map(mode => '<button class="appearance-choice ' + (document.body.dataset.appearance === mode ? "selected" : "") + '" data-appearance-choice="' + mode + '"><span class="appearance-preview appearance-' + mode + '"></span><strong>' + mode[0].toUpperCase() + mode.slice(1) + '</strong></button>').join("") + '</div><div class="settings-tip">Your choice is saved in this browser.</div></div>';
   } else {
@@ -246,11 +294,30 @@ function askBot(question) {
 }
 function toggleChat(open) {
   const chat = $("#chat-window");
-  chat.classList.toggle("open", open);
-  chat.setAttribute("aria-hidden", String(!open));
-  $("#chat-launcher").setAttribute("aria-expanded", String(open));
-  $("#chat-close-floating").classList.toggle("visible", open);
-  if (open) $("#chat-input").focus();
+  const launcher = $("#chat-launcher");
+  if (chatCloseTimer) window.clearTimeout(chatCloseTimer);
+  if (open) {
+    chat.classList.remove("closing");
+    chat.classList.add("open");
+    chat.setAttribute("aria-hidden", "false");
+    launcher.classList.remove("is-closing");
+    launcher.setAttribute("aria-expanded", "true");
+    $("#chat-close-floating").classList.add("visible");
+    $("#chat-input").focus();
+    return;
+  }
+  if (!chat.classList.contains("open")) return;
+  chat.classList.remove("open");
+  chat.classList.add("closing");
+  chat.setAttribute("aria-hidden", "true");
+  launcher.classList.add("is-closing");
+  launcher.setAttribute("aria-expanded", "false");
+  $("#chat-close-floating").classList.remove("visible");
+  chatCloseTimer = window.setTimeout(() => {
+    chat.classList.remove("closing");
+    launcher.classList.remove("is-closing");
+    chatCloseTimer = 0;
+  }, 240);
 }
 function showToast(message) {
   const toast = $("#toast");
@@ -275,6 +342,17 @@ $("#profile-shortcut").addEventListener("click", event => { event.preventDefault
 $("#trash-shortcut").addEventListener("click", () => { $("#trash-panel").classList.add("open"); $("#trash-panel").setAttribute("aria-hidden", "false"); });
 $("#trash-close").addEventListener("click", () => { $("#trash-panel").classList.remove("open"); $("#trash-panel").setAttribute("aria-hidden", "true"); });
 document.addEventListener("click", event => {
+  const windowControl = event.target.closest("[data-window-action]");
+  if (windowControl) {
+    const action = windowControl.dataset.windowAction;
+    if (action === "maximize") {
+      const maximized = app.classList.toggle("is-maximized");
+      windowControl.setAttribute("aria-pressed", String(maximized));
+    } else if (activePage() !== "home") {
+      location.hash = "#home";
+    }
+    return;
+  }
   const project = event.target.closest("[data-project-index]");
   if (project && activePage() === "projects") { selectedProject = Number(project.dataset.projectIndex); if (projectView === "grid") projectView = "explorer"; renderProjects(); return; }
   const view = event.target.closest("[data-project-view]");
@@ -294,7 +372,7 @@ document.addEventListener("click", event => {
   const settingsTab = event.target.closest("[data-settings-tab]");
   if (settingsTab && activePage() === "settings") { renderSettingsPanel(settingsTab.dataset.settingsTab); return; }
   const wallpaper = event.target.closest("[data-wallpaper-choice]");
-  if (wallpaper && activePage() === "settings") { localStorage.setItem("portfolio-wallpaper", wallpaper.dataset.wallpaperChoice); applySettings(); renderSettingsPanel("background"); return; }
+  if (wallpaper && activePage() === "settings") { localStorage.setItem("portfolio-wallpaper", wallpaper.dataset.wallpaperChoice); applyWallpaper(wallpaper.dataset.wallpaperChoice); renderSettingsPanel("background"); return; }
   const appearance = event.target.closest("[data-appearance-choice]");
   if (appearance && activePage() === "settings") { localStorage.setItem("portfolio-appearance", appearance.dataset.appearanceChoice); applySettings(); renderSettingsPanel("appearance"); return; }
   const textSize = event.target.closest("[data-text-size]");
@@ -310,4 +388,3 @@ document.addEventListener("input", event => {
 applySettings();
 render();
 window.setInterval(updateDate, 30000);
-

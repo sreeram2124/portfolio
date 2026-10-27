@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#15122b">
-  <meta name="description" content="M Sreeram Reddy — Full Stack Engineer in Bengaluru, India.">
+  <meta name="description" content="M Sreeram Reddy — Data Engineer in Bengaluru, India.">
   <title>M Sreeram Reddy — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261027c">
-  <script defer src="script.js?v=20261027c"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261027m">
+  <script defer src="script.js?v=20261027m"></script>
 </head>
 <body>
-  <div class="wallpaper" aria-hidden="true"><div class="wallpaper-orb orb-a"></div><div class="wallpaper-orb orb-b"></div><div class="wallpaper-orb orb-c"></div><div class="wallpaper-noise"></div></div>
+  <div class="wallpaper" id="desktop-wallpaper" aria-hidden="true"><div class="wallpaper-orb orb-a"></div><div class="wallpaper-orb orb-b"></div><div class="wallpaper-orb orb-c"></div><div class="wallpaper-noise"></div></div>
   <header class="topbar">
     <a class="brand" href="#home" aria-label="M Sreeram Reddy home"><span class="brand-icon">S</span><span>M Sreeram Reddy</span></a>
     <nav class="top-nav" aria-label="Portfolio pages">
@@ -49,7 +49,7 @@
   <button class="chat-launcher" id="chat-launcher" aria-label="Chat with AI" aria-expanded="false"><span class="chat-launch-icon">▢</span><span class="chat-pulse"></span></button>
   <button class="chat-close-floating" id="chat-close-floating" aria-label="Close chat">×</button>
   <section class="chat-window" id="chat-window" aria-label="AI conversation" aria-hidden="true">
-    <header class="chat-head"><div class="window-dots"><i></i><i></i><i></i></div><div class="chat-head-title"><span class="bot-avatar">S<span>.</span></span><div><strong>Sreeram’s AI — Full Conversation</strong><small><i></i> Online</small></div></div><div class="chat-window-controls"><button id="chat-minimize" aria-label="Minimize chat">—</button><button id="chat-expand" aria-label="Expand chat">⤢</button><button id="chat-close" aria-label="Close chat">×</button></div></header>
+    <header class="chat-head"><div class="window-dots"><i></i><i></i><i></i></div><div class="chat-head-title"><span class="bot-avatar">S<span>.</span></span><div><strong>Sreeram AI</strong><small><i></i> Online</small></div></div><div class="chat-window-controls"><button id="chat-minimize" aria-label="Minimize chat">—</button><button id="chat-expand" aria-label="Expand chat">⤢</button><button id="chat-close" aria-label="Close chat">×</button></div></header>
     <div class="chat-messages" id="chat-messages"><div class="bot-message">Hi! I’m Sreeram’s AI assistant. How can I help you today?</div><div class="quick-questions"><button data-question="What are Sreeram’s top skills?">What are Sreeram’s top skills?</button><button data-question="Tell me about his projects.">Tell me about his projects.</button><button data-question="How can I contact Sreeram?">How can I contact Sreeram?</button><button data-question="What is his experience?">What is his experience?</button></div></div>
     <form class="chat-form" id="chat-form"><input id="chat-input" type="text" placeholder="Ask me anything…" autocomplete="off" aria-label="Ask me anything"><button type="submit" aria-label="Send message">➤</button></form>
   </section>
@@ -63,9 +63,9 @@
           <div class="portrait-frame"><img src="assets/sreeram-profile.jpg" alt="Portrait of M Sreeram Reddy"><div class="portrait-dots"><i></i><i></i><i></i></div><div class="portrait-caption">BASED IN BENGALURU / OPEN TO ANY WORK MODE</div></div>
         </div>
         <div class="hero-copy">
-          <h1>M Sreeram<br>Reddy</h1>
+          <h1>M Sreeram Reddy</h1>
           <div class="hero-rule"></div>
-          <div class="hero-role">FULL STACK ENGINEER</div>
+          <div class="hero-role">DATA ENGINEER</div>
           <p class="hero-bio">I build useful digital experiences and turn complex data into clear insights. My work spans full stack development, analytics, business intelligence, and applied machine learning.</p>
           <div class="hero-actions"><a class="primary-action" href="#projects"><span>View Projects</span><b>↗</b></a><a class="secondary-action" href="#calendar"><span>▣ &nbsp; Book a Meeting</span><b>↗</b></a><a class="resume-action" href="assets/sreeram-resume.pdf" download><span>↓</span> Resume</a></div>
         </div>
@@ -75,7 +75,7 @@
 
   <script type="text/template" id="projects-template">
     <section class="desktop-window project-window" data-view="explorer">
-      <header class="project-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span id="project-window-title">project.py — M Sreeram Reddy</span><div class="project-title-tools"><button data-project-view="explorer" class="selected" aria-label="Explorer view">▤</button><button data-project-view="grid" aria-label="Grid view">▦</button></div></header>
+      <header class="project-titlebar"><div class="window-dots" role="group" aria-label="Window controls"><button class="window-dot window-close" data-window-action="close" aria-label="Close window"></button><button class="window-dot window-minimize" data-window-action="minimize" aria-label="Minimize window"></button><button class="window-dot window-maximize" data-window-action="maximize" aria-label="Maximize window" aria-pressed="false"></button></div><span id="project-window-title">project.py — M Sreeram Reddy</span><div class="project-title-tools"><button data-project-view="explorer" class="selected" aria-label="Explorer view">▤</button><button data-project-view="grid" aria-label="Grid view">▦</button></div></header>
       <div class="project-workspace">
         <aside class="activity-bar" aria-label="Project tools"><button class="activity-button active" data-project-view="explorer" title="Explorer">▤</button><button class="activity-button" data-project-view="grid" title="Grid View">▦</button><button class="activity-button" title="Source control">⑂</button><button class="activity-button" title="Run projects">▷</button></aside>
         <aside class="explorer-pane"><div class="explorer-title">EXPLORER <button aria-label="More explorer options">···</button></div><div class="folder-title">⌄ &nbsp; SREERAM-PORTFOLIO</div><div class="folder-subtitle">⌄ &nbsp; PROJECTS</div><div id="project-file-list" class="project-file-list"></div></aside>
@@ -98,7 +98,7 @@
 
   <script type="text/template" id="experience-template">
     <section class="desktop-window experience-window">
-      <header class="experience-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><strong id="experience-window-title">Experience</strong><div class="experience-tools"><button title="Share">♧</button><button title="Grid view">▦</button><button title="List view">☰</button><button title="Sort">◷</button></div></header>
+      <header class="experience-titlebar"><div class="window-dots" role="group" aria-label="Window controls"><button class="window-dot window-close" data-window-action="close" aria-label="Close window"></button><button class="window-dot window-minimize" data-window-action="minimize" aria-label="Minimize window"></button><button class="window-dot window-maximize" data-window-action="maximize" aria-label="Maximize window" aria-pressed="false"></button></div><strong id="experience-window-title">Experience</strong><div class="experience-tools"><button title="Share">♧</button><button title="Grid view">▦</button><button title="List view">☰</button><button title="Sort">◷</button></div></header>
       <div class="experience-layout">
         <aside class="experience-sidebar"><label class="experience-search"><span>⌕</span><input id="experience-search" placeholder="Search" aria-label="Search experience"></label><h2>FOLDERS</h2><div class="experience-folder-list" id="experience-folder-list"></div><h2 class="smart-folder-heading">SMART FOLDERS</h2><button class="experience-folder smart-folder" data-exp-folder="recent"><span class="folder-symbol">▤</span><strong>Recently Deleted</strong><small>0</small></button></aside>
         <section class="experience-record-list" id="experience-record-list"></section>
@@ -109,7 +109,7 @@
 
   <script type="text/template" id="calendar-template">
     <section class="calendar-window">
-      <header class="calendar-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>Book a Meeting — M Sreeram Reddy</span></header>
+      <header class="calendar-titlebar"><div class="window-dots" role="group" aria-label="Window controls"><button class="window-dot window-close" data-window-action="close" aria-label="Close window"></button><button class="window-dot window-minimize" data-window-action="minimize" aria-label="Minimize window"></button><button class="window-dot window-maximize" data-window-action="maximize" aria-label="Maximize window" aria-pressed="false"></button></div><span>Book a Meeting — M Sreeram Reddy</span></header>
       <div class="booking-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Schedule a conversation</p></div><div class="booking-links"><a href="https://cal.com/m-sreeram-reddy-d4ftjr?utm_source=chatgpt.com" target="_blank" rel="noreferrer">Open Cal.com ↗</a><a href="https://calendly.com/sreeram2124/new-meeting?utm_source=chatgpt.com" target="_blank" rel="noreferrer">Calendly ↗</a></div></div>
       <div class="calendar-embed" id="cal-embed" aria-label="Cal.com booking calendar"></div>
       <footer class="calendar-footer">Scheduling powered by Cal.com <span>·</span> Bengaluru · India</footer>
@@ -118,9 +118,8 @@
 
   <script type="text/template" id="contact-template">
     <section class="contact-window">
-      <div class="contact-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Full Stack Engineer · Bengaluru, India</p></div></div>
-      <nav class="contact-tabs"><a class="active" href="#contact">✉ &nbsp; Contact</a><a href="#settings">⚙ &nbsp; Appearance</a><a href="#settings">⚙ &nbsp; Desktop &amp; Dock</a><a href="#projects">▣ &nbsp; Projects</a><a href="#home">⌂ &nbsp; About</a></nav>
-      <div class="contact-content">
+      <aside class="contact-sidebar"><div class="window-dots" role="group" aria-label="Window controls"><button class="window-dot window-close" data-window-action="close" aria-label="Close window"></button><button class="window-dot window-minimize" data-window-action="minimize" aria-label="Minimize window"></button><button class="window-dot window-maximize" data-window-action="maximize" aria-label="Maximize window" aria-pressed="false"></button></div><div class="contact-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Data Engineer · Bengaluru, India</p></div></div><span class="contact-sidebar-label">SYSTEM</span><nav class="contact-tabs"><a class="active" href="#contact">✉ &nbsp; Contact</a><a href="#settings">⚙ &nbsp; Appearance</a><a href="#settings">⚙ &nbsp; Desktop &amp; Dock</a><a href="#projects">▣ &nbsp; Projects</a><a href="#home">⌂ &nbsp; About</a></nav></aside>
+      <main class="contact-main"><header class="contact-heading"><h1>Contact</h1></header><div class="contact-content">
         <h2>CONTACT CHANNELS</h2>
         <div class="contact-channel-grid">
           <a class="channel-card" href="mailto:sreeram2124@gmail.com"><span class="channel-icon email-icon">✉</span><strong>Email</strong></a>
@@ -132,7 +131,7 @@
         <div class="direct-details"><a class="detail-row" href="mailto:sreeram2124@gmail.com"><span class="detail-icon">✉</span><strong>Direct Email</strong><code>sreeram2124@gmail.com</code><b>›</b></a><div class="detail-row"><span class="detail-icon location-icon">⌖</span><div><strong>Location</strong><small>Bengaluru, India</small></div><span class="work-mode">OPEN TO ANY WORK MODE</span></div><div class="detail-row"><span class="detail-icon">◷</span><strong>Meeting links</strong><a href="https://calendly.com/sreeram2124/new-meeting?utm_source=chatgpt.com" target="_blank" rel="noreferrer">Cal.com · Calendly ↗</a></div></div>
         <div class="contact-map" role="img" aria-label="Stylized map of Bengaluru, India"><span class="map-road road-one"></span><span class="map-road road-two"></span><span class="map-pin">●</span><strong>BENGALURU</strong><small>INDIA</small></div>
         <p class="contact-note">Open to opportunities and conversations about full stack development, data analytics, business intelligence, and applied machine learning.</p>
-      </div>
+      </div></main>
     </section>
   </script>
 
@@ -140,9 +139,8 @@
     <section class="settings-screen">
       <div class="settings-mobile-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Profile, preferences, and workspace</p></div></div>
       <nav class="settings-mobile-tabs" aria-label="Settings sections"><button class="settings-tab" data-settings-tab="appearance">▱ &nbsp; Appearance</button><button class="settings-tab" data-settings-tab="background">◉ &nbsp; Background</button><button class="settings-tab" data-settings-tab="typography">T &nbsp; Typography</button></nav>
-      <section class="settings-window"><header class="settings-titlebar"><div class="window-dots"><i></i><i></i><i></i></div></header><aside class="settings-sidebar"><span class="settings-sidebar-label">SYSTEM SETTINGS</span><button class="settings-tab" data-settings-tab="appearance"><span>▱</span>Appearance</button><button class="settings-tab" data-settings-tab="background"><span>◉</span>Background</button><button class="settings-tab" data-settings-tab="typography"><span>T</span>Typography</button></aside><main id="settings-panel" class="settings-panel"></main></section>
+      <section class="settings-window"><header class="settings-titlebar"><div class="window-dots" role="group" aria-label="Window controls"><button class="window-dot window-close" data-window-action="close" aria-label="Close window"></button><button class="window-dot window-minimize" data-window-action="minimize" aria-label="Minimize window"></button><button class="window-dot window-maximize" data-window-action="maximize" aria-label="Maximize window" aria-pressed="false"></button></div></header><aside class="settings-sidebar"><span class="settings-sidebar-label">SYSTEM SETTINGS</span><button class="settings-tab" data-settings-tab="appearance"><span>▱</span>Appearance</button><button class="settings-tab" data-settings-tab="background"><span>◉</span>Background</button><button class="settings-tab" data-settings-tab="typography"><span>T</span>Typography</button></aside><main id="settings-panel" class="settings-panel"></main></section>
     </section>
   </script>
 </body>
 </html>
-

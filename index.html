@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101323">
-  <meta name="description" content="M Sreeram Reddy — Full Stack Engineer and data analyst based in Bengaluru, India.">
+  <meta name="theme-color" content="#15122b">
+  <meta name="description" content="M Sreeram Reddy — Full Stack Engineer in Bengaluru, India.">
   <title>M Sreeram Reddy — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="style.css?v=20261027b">
+  <script defer src="script.js?v=20261027b"></script>
 </head>
 <body>
   <div class="wallpaper" aria-hidden="true"><div class="wallpaper-orb orb-a"></div><div class="wallpaper-orb orb-b"></div><div class="wallpaper-orb orb-c"></div><div class="wallpaper-noise"></div></div>
@@ -19,82 +19,130 @@
     <nav class="top-nav" aria-label="Portfolio pages">
       <a href="#home" data-page="home">Home</a><a href="#projects" data-page="projects">Projects</a><a href="#skills" data-page="skills">Skills</a><a href="#experience" data-page="experience">Experience</a><a href="#calendar" data-page="calendar">Calendar</a><a href="#contact" data-page="contact">Contact</a>
     </nav>
-    <div class="system-tray"><span class="tray-icon">▦</span><span class="tray-icon">◷</span><span id="system-date">BENGALURU · IST</span><span>⌁</span><span>◉</span></div>
+    <div class="system-tray"><span class="tray-icon">▦</span><span class="tray-icon">▣</span><span id="system-date">Tue, Oct 27 · 12:00 PM</span><span class="tray-icon">◉</span><span class="tray-icon">⌕</span></div>
     <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation" aria-expanded="false">☰</button>
   </header>
-  <div class="mobile-links" id="mobile-links"><a href="#home">Home</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#calendar">Calendar</a><a href="#contact">Contact</a></div>
+  <div class="mobile-links" id="mobile-links"><a href="#home">Home</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#calendar">Calendar</a><a href="#contact">Contact</a><a href="#settings">Settings</a></div>
 
-  <aside class="side-rail" aria-label="Quick navigation">
-    <a href="#home" data-page="home" class="rail-link active" aria-label="Home" title="Home"><span>⌂</span></a>
-    <a href="#projects" data-page="projects" class="rail-link" aria-label="Projects" title="Projects"><span>‹›</span></a>
-    <a href="#skills" data-page="skills" class="rail-link" aria-label="Skills" title="Skills"><span>▦</span></a>
+  <aside class="side-rail" aria-label="Quick tools">
+    <a href="#projects" data-page="projects" class="rail-link active" aria-label="Projects" title="Projects"><span>▰</span></a>
+    <a href="#skills" data-page="skills" class="rail-link" aria-label="Skills" title="Skills"><span>⚗</span></a>
     <a href="#experience" data-page="experience" class="rail-link" aria-label="Experience" title="Experience"><span>▤</span></a>
-    <a href="#contact" data-page="contact" class="rail-link" aria-label="Contact" title="Contact"><span>✉</span></a>
-    <a href="#settings" data-page="settings" class="rail-link rail-settings" aria-label="Settings" title="Settings"><span>⚙</span></a>
+    <a href="#contact" data-page="contact" class="rail-link" aria-label="Contact" title="Contact"><span>✎</span></a>
   </aside>
 
   <main id="app" class="app-view" tabindex="-1"></main>
 
   <nav class="dock" aria-label="Portfolio dock">
-    <a href="#home" data-page="home" class="dock-link active" title="Home"><span>⌂</span><small>Home</small></a>
-    <a href="#calendar" data-page="calendar" class="dock-link" title="Calendar"><span>▣</span><small>Meet</small></a>
-    <a href="#projects" data-page="projects" class="dock-link" title="Projects"><span>‹›</span><small>Work</small></a>
+    <a href="#home" data-page="home" class="dock-link dock-home active" title="Home"><span>⌂</span><small>Home</small></a>
+    <a href="#calendar" data-page="calendar" class="dock-link dock-calendar" title="Calendar"><span>▣</span><small>Calendar</small></a>
+    <a href="#projects" data-page="projects" class="dock-link" title="Projects"><span>‹›</span><small>Projects</small></a>
     <a href="#skills" data-page="skills" class="dock-link" title="Skills"><span>▦</span><small>Skills</small></a>
-    <a href="#experience" data-page="experience" class="dock-link" title="Experience"><span>▤</span><small>Career</small></a>
+    <a href="#experience" data-page="experience" class="dock-link" title="Experience"><span>▤</span><small>Experience</small></a>
     <a href="#contact" data-page="contact" class="dock-link" title="Contact"><span>✉</span><small>Contact</small></a>
     <a href="#settings" data-page="settings" class="dock-link" title="Settings"><span>⚙</span><small>Settings</small></a>
     <span class="dock-divider"></span>
-    <button class="dock-avatar" id="profile-shortcut" title="Profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"></button>
+    <a class="dock-avatar" id="profile-shortcut" href="#contact" title="Profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"></a>
+    <button class="dock-trash" id="trash-shortcut" title="Trash" aria-label="Trash">▤</button>
   </nav>
 
-  <button class="chat-launcher" id="chat-launcher" aria-label="Chat with Sreeram's portfolio bot" aria-expanded="false"><span class="chat-launch-icon">▢</span><span class="chat-pulse"></span></button>
-  <section class="chat-window" id="chat-window" aria-label="Portfolio chat" aria-hidden="true">
-    <header class="chat-head"><div class="bot-avatar">S<span>.</span></div><div><strong>Ask Sreeram</strong><small><i></i> Portfolio assistant</small></div><button id="chat-close" aria-label="Close chat">×</button></header>
-    <div class="chat-messages" id="chat-messages"><div class="bot-message">Hi! I can answer quick questions about Sreeram’s projects, skills, experience, and availability.</div><div class="quick-questions"><button data-question="What projects has Sreeram built?">Projects</button><button data-question="What skills does Sreeram have?">Skills</button><button data-question="How can I contact Sreeram?">Contact</button></div></div>
-    <form class="chat-form" id="chat-form"><input id="chat-input" type="text" placeholder="Ask a question…" autocomplete="off" aria-label="Ask a question"><button type="submit" aria-label="Send message">↑</button></form>
-    <div class="chat-note">Portfolio FAQ bot · No external AI service</div>
+  <button class="chat-launcher" id="chat-launcher" aria-label="Chat with AI" aria-expanded="false"><span class="chat-launch-icon">▢</span><span class="chat-pulse"></span></button>
+  <button class="chat-close-floating" id="chat-close-floating" aria-label="Close chat">×</button>
+  <section class="chat-window" id="chat-window" aria-label="AI conversation" aria-hidden="true">
+    <header class="chat-head"><div class="window-dots"><i></i><i></i><i></i></div><div class="chat-head-title"><span class="bot-avatar">S<span>.</span></span><div><strong>Sreeram’s AI — Full Conversation</strong><small><i></i> Online</small></div></div><div class="chat-window-controls"><button id="chat-minimize" aria-label="Minimize chat">—</button><button id="chat-expand" aria-label="Expand chat">⤢</button><button id="chat-close" aria-label="Close chat">×</button></div></header>
+    <div class="chat-messages" id="chat-messages"><div class="bot-message">Hi! I’m Sreeram’s AI assistant. How can I help you today?</div><div class="quick-questions"><button data-question="What are Sreeram’s top skills?">What are Sreeram’s top skills?</button><button data-question="Tell me about his projects.">Tell me about his projects.</button><button data-question="How can I contact Sreeram?">How can I contact Sreeram?</button><button data-question="What is his experience?">What is his experience?</button></div></div>
+    <form class="chat-form" id="chat-form"><input id="chat-input" type="text" placeholder="Ask me anything…" autocomplete="off" aria-label="Ask me anything"><button type="submit" aria-label="Send message">➤</button></form>
   </section>
+  <div class="trash-panel" id="trash-panel" aria-hidden="true"><button id="trash-close" aria-label="Close Trash">×</button><span class="trash-icon">▤</span><strong>Trash is Empty</strong><small>Items moved here appear for 30 days.</small></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script type="text/template" id="home-template">
-    <section class="desktop-window home-window">
-      <div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>M_SREERAM_REDDY — PROFILE</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div>
-      <div class="window-content home-content">
-        <div class="portrait-wrap"><div class="portrait-frame"><img src="assets/sreeram-profile.jpg" alt="Portrait of M Sreeram Reddy"><span class="portrait-reflect"></span></div><div class="portrait-caption"><span class="live-dot"></span> BASED IN BENGALURU, INDIA <b>· OPEN TO ANY WORK MODE</b></div><div class="portrait-meta"><span>CS · BIG DATA ANALYTICS</span><span>AVAILABLE FOR OPPORTUNITIES</span></div></div>
-        <div class="home-copy"><div class="file-kicker"><span class="file-icon">⌂</span> WELCOME.TXT <span class="file-dirty"></span></div><div class="home-heading"><span class="eyebrow">FULL STACK ENGINEER</span><h1>M Sreeram<br>Reddy<span class="heading-period">.</span></h1></div><div class="typing-line"><span class="typing-prefix">I work with</span><strong id="rotating-role">data, code & ideas</strong><span class="typing-caret"></span></div><p class="hero-bio">I build useful digital experiences and turn complex data into clear insights. My work sits across full stack development, analytics, business intelligence, and applied machine learning.</p><div class="hero-actions"><a class="primary-action" href="#projects"><span>Explore Projects</span><b>↗</b></a><a class="secondary-action" href="#calendar"><span>Book a Meeting</span><b>↗</b></a><a class="resume-action" href="assets/sreeram-resume.pdf" download><span>↓</span> Resume</a></div><div class="home-footer"><div class="social-line"><a href="https://github.com/sreeram2124" target="_blank" rel="noreferrer">GITHUB ↗</a><span></span><a href="https://www.linkedin.com/in/m-sreeram-reddy-3820b1261/" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span></span><a href="mailto:sreeram2124@gmail.com">EMAIL ↗</a></div><div class="hero-index"><span>01</span><i></i> 06</div></div></div>
+    <section class="hero-window">
+      <div class="hero-content">
+        <div class="portrait-column">
+          <div class="portrait-frame"><img src="assets/sreeram-profile.jpg" alt="Portrait of M Sreeram Reddy"><div class="portrait-dots"><i></i><i></i><i></i></div><div class="portrait-caption">BASED IN BENGALURU / OPEN TO ANY WORK MODE</div></div>
+        </div>
+        <div class="hero-copy">
+          <h1>M Sreeram<br>Reddy</h1>
+          <div class="hero-rule"></div>
+          <div class="hero-role">FULL STACK ENGINEER</div>
+          <p class="hero-bio">I build useful digital experiences and turn complex data into clear insights. My work spans full stack development, analytics, business intelligence, and applied machine learning.</p>
+          <div class="hero-actions"><a class="primary-action" href="#projects"><span>View Projects</span><b>↗</b></a><a class="secondary-action" href="#calendar"><span>▣ &nbsp; Book a Meeting</span><b>↗</b></a><a class="resume-action" href="assets/sreeram-resume.pdf" download><span>↓</span> Resume</a></div>
+        </div>
       </div>
-      <div class="window-status"><span><i></i> SYSTEM ONLINE</span><span>PORTFOLIO.APP</span><span>© 2026 M SREERAM REDDY</span></div>
     </section>
   </script>
 
   <script type="text/template" id="projects-template">
-    <section class="desktop-window page-window project-window">
-      <div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>EXPLORER / PROJECTS</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div>
-      <div class="project-layout"><aside class="explorer"><div class="explorer-head">EXPLORER <button aria-label="Explorer options">···</button></div><div class="folder-title">⌄ &nbsp; SREERAM-PORTFOLIO</div><div class="folder-subtitle">⌄ &nbsp; PROJECTS</div><div id="project-file-list" class="project-file-list"></div><div class="explorer-bottom"><span>OUTLINE</span><span>▸</span></div></aside><section class="editor"><div class="editor-tabs"><span class="editor-tab active"><i>JS</i><b id="active-project-file">chocolate_sales.js</b><button>×</button></span><span class="editor-tab-spacer"></span><button class="editor-more">···</button></div><div class="editor-breadcrumb">projects &nbsp;›&nbsp; <span id="breadcrumb-file">chocolate_sales.js</span></div><div id="project-detail" class="project-detail"></div><div class="editor-foot"><span>UTF-8</span><span>JavaScript</span><span>Ln 1, Col 1</span></div></section></div>
-      <div class="window-status"><span><i></i> 6 PROJECTS</span><span>GIT: MAIN*</span><span>PORTFOLIO.APP</span></div>
+    <section class="desktop-window project-window" data-view="explorer">
+      <header class="project-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span id="project-window-title">project.py — M Sreeram Reddy</span><div class="project-title-tools"><button data-project-view="explorer" class="selected" aria-label="Explorer view">▤</button><button data-project-view="grid" aria-label="Grid view">▦</button></div></header>
+      <div class="project-workspace">
+        <aside class="activity-bar" aria-label="Project tools"><button class="activity-button active" data-project-view="explorer" title="Explorer">▤</button><button class="activity-button" data-project-view="grid" title="Grid View">▦</button><button class="activity-button" title="Source control">⑂</button><button class="activity-button" title="Run projects">▷</button></aside>
+        <aside class="explorer-pane"><div class="explorer-title">EXPLORER <button aria-label="More explorer options">···</button></div><div class="folder-title">⌄ &nbsp; SREERAM-PORTFOLIO</div><div class="folder-subtitle">⌄ &nbsp; PROJECTS</div><div id="project-file-list" class="project-file-list"></div></aside>
+        <section class="code-editor" id="project-editor"></section>
+        <aside class="project-preview" id="project-preview"></aside>
+        <section id="project-grid-view" class="project-grid-view"></section>
+      </div>
+      <footer class="editor-status"><span>⑂ main*</span><span>● 0 &nbsp; ◉ 0</span><span id="editor-position">Ln 1, Col 1</span><span>Spaces: 2</span><span>UTF-8</span><span id="editor-language">PYTHON</span><span>✓ Ready</span></footer>
     </section>
   </script>
 
   <script type="text/template" id="skills-template">
-    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>SKILLS / TOOLKIT</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content"><div class="page-toolbar"><div><div class="file-kicker"><span class="file-icon">▦</span> TOOLKIT.JSON</div><h1 class="page-title">Skills<span>.</span></h1></div><div class="page-indicator">PROFILE / 02</div></div><p class="page-lede">Tools and technologies I’ve used across analytics, software, and applied machine learning.</p><div id="skill-filters" class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="analytics">Analytics & BI</button><button class="filter" data-filter="engineering">Engineering</button><button class="filter" data-filter="data">Data & Cloud</button><button class="filter" data-filter="other">Other</button></div><div id="skills-grid" class="skills-grid"></div><div class="page-footnote">A snapshot of skills from projects, education, and work experience. Proficiency varies by tool.</div></div><div class="window-status"><span><i></i> 4 CATEGORIES</span><span>TOOLS / TECHNOLOGIES</span><span>PORTFOLIO.APP</span></div></section>
+    <section class="skills-window">
+      <header class="skills-heading"><h1>Skills</h1><label class="skill-search"><span>⌕</span><input id="skill-search" type="search" placeholder="App Library" aria-label="Search skills"></label><div class="skills-page-count" id="skills-page-count">Page 1 of 2</div><a class="skills-settings" href="#settings" aria-label="Open settings">⚙</a></header>
+      <nav class="skill-filters" id="skill-filters" aria-label="Filter skills"><button class="skill-filter active" data-filter="all">All</button><button class="skill-filter" data-filter="frontend">Frontend</button><button class="skill-filter" data-filter="backend">Backend</button><button class="skill-filter" data-filter="ai">AI &amp; ML</button><button class="skill-filter" data-filter="data">Data</button><button class="skill-filter" data-filter="tools">Tools &amp; DevOps</button><button class="skill-filter" data-filter="languages">Languages</button></nav>
+      <div class="skill-grid" id="skill-grid"></div>
+      <div class="skill-pagination"><button id="skill-prev" data-page-step="-1" aria-label="Previous skill page">‹</button><div class="skill-dots" id="skill-dots"></div><button id="skill-next" data-page-step="1" aria-label="Next skill page">›</button></div>
+    </section>
   </script>
 
   <script type="text/template" id="experience-template">
-    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>EXPERIENCE / PROFILE</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="experience-layout"><aside class="experience-folders"><div class="explorer-head">FOLDERS</div><button class="folder-button active" data-exp-tab="work"><span>▸</span> Work Experience <small>2</small></button><button class="folder-button" data-exp-tab="education"><span>▸</span> Education <small>1</small></button><button class="folder-button" data-exp-tab="certifications"><span>▸</span> Certifications <small>4</small></button><div class="folder-divider"></div><div class="explorer-head">SMART FOLDERS</div><div class="smart-folder">▱ &nbsp; Recent</div><div class="smart-folder">☆ &nbsp; Highlights</div></aside><div id="experience-content" class="experience-content"></div></div><div class="window-status"><span><i></i> PROFILE RECORDS</span><span>UPDATED OCT 2026</span><span>PORTFOLIO.APP</span></div></section>
+    <section class="desktop-window experience-window">
+      <header class="experience-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><strong id="experience-window-title">Experience</strong><div class="experience-tools"><button title="Share">♧</button><button title="Grid view">▦</button><button title="List view">☰</button><button title="Sort">◷</button></div></header>
+      <div class="experience-layout">
+        <aside class="experience-sidebar"><label class="experience-search"><span>⌕</span><input id="experience-search" placeholder="Search" aria-label="Search experience"></label><h2>FOLDERS</h2><div class="experience-folder-list" id="experience-folder-list"></div><h2 class="smart-folder-heading">SMART FOLDERS</h2><button class="experience-folder smart-folder" data-exp-folder="recent"><span class="folder-symbol">▤</span><strong>Recently Deleted</strong><small>0</small></button></aside>
+        <section class="experience-record-list" id="experience-record-list"></section>
+        <article class="experience-detail" id="experience-detail"></article>
+      </div>
+    </section>
   </script>
 
   <script type="text/template" id="calendar-template">
-    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>CALENDAR / CONNECT</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content calendar-content"><div class="file-kicker"><span class="file-icon">▣</span> OPEN_CALENDAR.EXE</div><div class="calendar-card"><div class="calendar-visual"><div class="calendar-month">OCTOBER <span>2026</span></div><div class="calendar-big">23<span>FRI</span></div><div class="calendar-grid"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>19</span><span>20</span><span>21</span><span>22</span><span class="today">23</span><span>24</span><span>25</span></div></div><div class="calendar-copy"><span class="eyebrow">LET’S FIND A TIME</span><h1 class="page-title">Book a<br>conversation<span>.</span></h1><p class="page-lede">Choose whichever scheduling link works best for you. I’m open to conversations about roles, collaboration, analytics, and software projects.</p><a class="primary-action calendar-cta" href="https://cal.com/m-sreeram-reddy-d4ftjr" target="_blank" rel="noreferrer"><span>Schedule with Cal.com</span><b>↗</b></a><a class="secondary-action calendar-cta" href="https://calendly.com/sreeram2124/new-meeting" target="_blank" rel="noreferrer"><span>Schedule with Calendly</span><b>↗</b></a><small class="muted-note">External scheduling pages open in a new tab.</small></div></div></div><div class="window-status"><span><i></i> SCHEDULING AVAILABLE</span><span>BENGALURU · IST</span><span>PORTFOLIO.APP</span></div></section>
+    <section class="calendar-window">
+      <header class="calendar-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>Book a Meeting — M Sreeram Reddy</span></header>
+      <div class="booking-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Schedule a conversation</p></div><div class="booking-links"><a href="https://cal.com/m-sreeram-reddy-d4ftjr?utm_source=chatgpt.com" target="_blank" rel="noreferrer">Open Cal.com ↗</a><a href="https://calendly.com/sreeram2124/new-meeting?utm_source=chatgpt.com" target="_blank" rel="noreferrer">Calendly ↗</a></div></div>
+      <div class="calendar-embed" id="cal-embed" aria-label="Cal.com booking calendar"></div>
+      <footer class="calendar-footer">Scheduling powered by Cal.com <span>·</span> Bengaluru · India</footer>
+    </section>
   </script>
 
   <script type="text/template" id="contact-template">
-    <section class="desktop-window page-window"><div class="window-titlebar"><div class="window-dots"><i></i><i></i><i></i></div><span>CONTACT / OPEN CHANNEL</span><div class="title-actions"><span>—</span><span>□</span><span>×</span></div></div><div class="page-content contact-content"><div class="contact-copy"><div class="file-kicker"><span class="file-icon">✉</span> LETS_CONNECT.TXT</div><span class="eyebrow"><i class="live-dot"></i> OPEN TO OPPORTUNITIES</span><h1 class="page-title contact-title">Let’s make<br>something useful<span>.</span></h1><p class="page-lede">For early-career opportunities, analytics projects, or a conversation about software and data, reach out.</p><a class="primary-action" href="mailto:sreeram2124@gmail.com"><span>Email Sreeram</span><b>↗</b></a></div><div class="contact-cards"><a class="contact-card" href="mailto:sreeram2124@gmail.com"><span class="contact-icon">✉</span><span><small>EMAIL</small><strong>sreeram2124@gmail.com</strong></span><b>↗</b></a><a class="contact-card" href="https://www.linkedin.com/in/m-sreeram-reddy-3820b1261/" target="_blank" rel="noreferrer"><span class="contact-icon">in</span><span><small>LINKEDIN</small><strong>m-sreeram-reddy</strong></span><b>↗</b></a><a class="contact-card" href="https://github.com/sreeram2124" target="_blank" rel="noreferrer"><span class="contact-icon">⌘</span><span><small>GITHUB</small><strong>sreeram2124</strong></span><b>↗</b></a><a class="contact-card" href="#calendar"><span class="contact-icon">▣</span><span><small>BOOK A MEETING</small><strong>Choose a time to connect</strong></span><b>↗</b></a><div class="contact-location"><span>⌖</span><div><small>LOCATION</small><strong>Bengaluru, India</strong></div><span class="location-status">OPEN TO ANY WORK MODE</span></div></div></div><div class="window-status"><span><i></i> AVAILABLE FOR A CONVERSATION</span><span>BENGALURU · IST</span><span>PORTFOLIO.APP</span></div></section>
+    <section class="contact-window">
+      <div class="contact-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Full Stack Engineer · Bengaluru, India</p></div></div>
+      <nav class="contact-tabs"><a class="active" href="#contact">✉ &nbsp; Contact</a><a href="#settings">⚙ &nbsp; Appearance</a><a href="#settings">⚙ &nbsp; Desktop &amp; Dock</a><a href="#projects">▣ &nbsp; Projects</a><a href="#home">⌂ &nbsp; About</a></nav>
+      <div class="contact-content">
+        <h2>CONTACT CHANNELS</h2>
+        <div class="contact-channel-grid">
+          <a class="channel-card" href="mailto:sreeram2124@gmail.com"><span class="channel-icon email-icon">✉</span><strong>Email</strong></a>
+          <a class="channel-card" href="https://www.linkedin.com/in/m-sreeram-reddy-3820b1261/" target="_blank" rel="noreferrer"><span class="channel-icon linkedin-icon">in</span><strong>LinkedIn</strong></a>
+          <a class="channel-card" href="https://github.com/sreeram2124" target="_blank" rel="noreferrer"><span class="channel-icon github-icon">⌘</span><strong>GitHub</strong></a>
+          <a class="channel-card" href="https://cal.com/m-sreeram-reddy-d4ftjr?utm_source=chatgpt.com" target="_blank" rel="noreferrer"><span class="channel-icon meeting-icon">▣</span><strong>Book a meeting</strong></a>
+        </div>
+        <h2 class="direct-details-title">DIRECT DETAILS</h2>
+        <div class="direct-details"><a class="detail-row" href="mailto:sreeram2124@gmail.com"><span class="detail-icon">✉</span><strong>Direct Email</strong><code>sreeram2124@gmail.com</code><b>›</b></a><div class="detail-row"><span class="detail-icon location-icon">⌖</span><div><strong>Location</strong><small>Bengaluru, India</small></div><span class="work-mode">OPEN TO ANY WORK MODE</span></div><div class="detail-row"><span class="detail-icon">◷</span><strong>Meeting links</strong><a href="https://calendly.com/sreeram2124/new-meeting?utm_source=chatgpt.com" target="_blank" rel="noreferrer">Cal.com · Calendly ↗</a></div></div>
+        <div class="contact-map" role="img" aria-label="Stylized map of Bengaluru, India"><span class="map-road road-one"></span><span class="map-road road-two"></span><span class="map-pin">●</span><strong>BENGALURU</strong><small>INDIA</small></div>
+        <p class="contact-note">Open to opportunities and conversations about full stack development, data analytics, business intelligence, and applied machine learning.</p>
+      </div>
+    </section>
   </script>
 
   <script type="text/template" id="settings-template">
-    <section class="settings-window" aria-label="System settings"><header class="settings-titlebar"><div class="window-dots"><i></i><i></i><i></i></div></header><aside class="settings-sidebar"><span class="settings-sidebar-label">SYSTEM SETTINGS</span><button class="settings-tab" data-settings-tab="appearance"><span>▱</span>Appearance</button><button class="settings-tab" data-settings-tab="background"><span>◉</span>Background</button><button class="settings-tab" data-settings-tab="typography"><span>T</span>Typography</button></aside><main id="settings-panel" class="settings-panel"></main></section>
-  </script>t>
+    <section class="settings-screen">
+      <div class="settings-mobile-profile"><img src="assets/sreeram-profile.jpg" alt="M Sreeram Reddy"><div><h1>M Sreeram Reddy</h1><p>Profile, preferences, and workspace</p></div></div>
+      <nav class="settings-mobile-tabs" aria-label="Settings sections"><button class="settings-tab" data-settings-tab="appearance">▱ &nbsp; Appearance</button><button class="settings-tab" data-settings-tab="background">◉ &nbsp; Background</button><button class="settings-tab" data-settings-tab="typography">T &nbsp; Typography</button></nav>
+      <section class="settings-window"><header class="settings-titlebar"><div class="window-dots"><i></i><i></i><i></i></div></header><aside class="settings-sidebar"><span class="settings-sidebar-label">SYSTEM SETTINGS</span><button class="settings-tab" data-settings-tab="appearance"><span>▱</span>Appearance</button><button class="settings-tab" data-settings-tab="background"><span>◉</span>Background</button><button class="settings-tab" data-settings-tab="typography"><span>T</span>Typography</button></aside><main id="settings-panel" class="settings-panel"></main></section>
+    </section>
+  </script>
 </body>
 </html>
-
-
 

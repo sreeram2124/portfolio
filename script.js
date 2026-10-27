@@ -1,101 +1,311 @@
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+const escapeHTML = value => String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+
 const projects = [
-  {file:"chocolate_sales.js", title:"Chocolate Sales Analytics", kind:"BUSINESS INTELLIGENCE", date:"POWER BI · DAX · POWER QUERY", desc:"An interactive sales dashboard exploring product performance, profitability, shipment trends, and regional distribution.", stack:["Power BI","DAX","Power Query","Data Visualization"], url:"https://github.com/sreeram2124/Chocolate-Sales-PowerBI-Dashboard", code:["const dashboard = {","  name: 'Chocolate Sales Analytics',","  focus: ['sales', 'profit', 'shipments'],","  tools: ['Power BI', 'DAX', 'Power Query'],","  output: 'interactive business insights'","};"]},
-  {file:"global_warming.py", title:"Global Warming Analytics Dashboard", kind:"CLIMATE DATA", date:"POWER BI · PYTHON · DAX", desc:"A climate analytics project using cleaned temperature and emissions data, interactive filters, and regional drill-downs to make long-term patterns easier to explore.", stack:["Power BI","Python","Pandas","DAX","Climate Data"], url:"https://github.com/sreeram2124/GlobalWarming-power-BI-project", code:["const climateDashboard = {","  question: 'How are climate patterns changing?',","  prepare: ['clean', 'model', 'validate'],","  explore: ['temperature', 'emissions', 'region'],","  view: 'interactive Power BI report'","};"]},
-  {file:"wildfire_aqi.py", title:"Wildfire Smoke & AQI Trends", kind:"ENVIRONMENTAL DATA", date:"NASA FIRMS · AIR QUALITY · PYTHON", desc:"An environmental data project exploring wildfire signals from NASA FIRMS alongside air-quality trends and geospatial patterns.", stack:["Python","NASA FIRMS","Air Quality","Geospatial Data"], url:"https://github.com/sreeram2124/wildfire-smoke-prediction-and-AQI-trends-using-NASA-FIRMS", code:["const environmentStudy = {","  signals: ['NASA FIRMS', 'air quality'],","  methods: ['explore', 'compare', 'visualize'],","  focus: 'wildfire smoke and AQI trends',","  goal: 'make environmental data easier to read'","};"]},
-  {file:"smart_city.ts", title:"Smart City Data Explorer", kind:"GEOSPATIAL ANALYTICS", date:"NASA FIRMS · GEO DATA · SMART CITY", desc:"A smart-city themed project that explores environmental information and fire activity through a geospatial lens.", stack:["Geospatial Data","NASA FIRMS","Smart City","Data Exploration"], url:"https://github.com/sreeram2124/SMART-CITY-NASA-FIRMS", code:["const cityExplorer = {","  view: 'geospatial',","  layers: ['city context', 'fire activity'],","  source: 'NASA FIRMS',","  purpose: 'explore environmental signals'","};"]},
-  {file:"fraud_detection.py", title:"Credit Card Fraud Detection", kind:"APPLIED MACHINE LEARNING", date:"PYTHON · CLASSIFICATION · POWER BI", desc:"A transaction-risk analysis project covering exploratory analysis, imbalanced data, classification models, feature engineering, and fraud-trend reporting.", stack:["Python","Pandas","Logistic Regression","Random Forest","Power BI"], url:"https://github.com/sreeram2124/CREDIT-CARD-FRAUD-DETECTION", code:["const fraudAnalysis = {","  task: 'transaction risk classification',","  models: ['Logistic Regression', 'Random Forest'],","  workflow: ['EDA', 'features', 'evaluation'],","  report: 'fraud trends and model metrics'","};"]},
-  {file:"air_quality.py", title:"Air Quality Prediction", kind:"PREDICTIVE ANALYTICS", date:"PYTHON · AIR QUALITY · MODELLING", desc:"A machine-learning project exploring air-quality data and predictive modelling. See the repository for implementation details.", stack:["Python","Machine Learning","Air Quality","Prediction"], url:"https://github.com/sreeram2124/Air-Quality-Prediction", code:["const airQualityModel = {","  domain: 'air quality',","  stages: ['prepare data', 'fit model', 'review'],","  goal: 'explore air-quality prediction',","  status: 'see source repository'","};"]}
+  {file:"chocolate_sales.pbix", title:"Chocolate Sales Analytics", category:"Analytics", description:"Interactive business intelligence dashboard exploring sales, profit, shipments, products, and regional performance.", stack:["Power BI","DAX","Power Query"], repo:"Chocolate-Sales-PowerBI-Dashboard", code:["dashboard = {","  'focus': ['sales', 'profit', 'shipments'],","  'tools': ['Power BI', 'DAX', 'Power Query'],","  'output': 'interactive business insights'","}"]},
+  {file:"global_warming.pbix", title:"Global Warming Analytics Dashboard", category:"Analytics", description:"A climate data dashboard for exploring temperature and emissions patterns with interactive filtering and regional drill-downs.", stack:["Power BI","Python","Pandas","DAX"], repo:"GlobalWarming-power-BI-project", code:["climate_dashboard = {","  'question': 'How are climate patterns changing?',","  'prepare': ['clean', 'model', 'validate'],","  'explore': ['temperature', 'emissions', 'region']","}"]},
+  {file:"wildfire_aqi.py", title:"Wildfire Smoke & AQI Trends", category:"AI & ML", description:"Environmental data exploration combining wildfire signals from NASA FIRMS with air quality and geospatial trends.", stack:["Python","NASA FIRMS","Air Quality","Geospatial Data"], repo:"wildfire-smoke-prediction-and-AQI-trends-using-NASA-FIRMS", code:["environment_study = {","  'signals': ['NASA FIRMS', 'air quality'],","  'methods': ['explore', 'compare', 'visualize'],","  'focus': 'wildfire smoke and AQI trends'","}"]},
+  {file:"smart_city.py", title:"Smart City Data Explorer", category:"Data", description:"A geospatial exploration project using environmental and fire activity information from NASA FIRMS.", stack:["Python","NASA FIRMS","Geospatial Data"], repo:"SMART-CITY-NASA-FIRMS", code:["city_explorer = {","  'view': 'geospatial',","  'layers': ['city context', 'fire activity'],","  'source': 'NASA FIRMS'","}"]},
+  {file:"fraud_detection.ipynb", title:"Credit Card Fraud Detection", category:"AI & ML", description:"Transaction risk analysis with exploratory analysis, feature engineering, classification, evaluation, and fraud reporting.", stack:["Python","Pandas","Classification","Power BI"], repo:"CREDIT-CARD-FRAUD-DETECTION", code:["fraud_analysis = {","  'task': 'transaction risk classification',","  'workflow': ['EDA', 'features', 'evaluation'],","  'report': 'fraud trends and model metrics'","}"]},
+  {file:"air_quality.ipynb", title:"Air Quality Prediction", category:"AI & ML", description:"Machine learning exploration of air quality data and predictive modelling.", stack:["Python","Machine Learning","Air Quality"], repo:"Air-Quality-Prediction", code:["air_quality_model = {","  'domain': 'air quality',","  'stages': ['prepare data', 'fit model', 'review'],","  'goal': 'explore air quality prediction'","}"]},
+  {file:"image_classification.ipynb", title:"Dog vs Cat Image Classification", category:"AI & ML", description:"Deep learning image classification project for distinguishing dog and cat images.", stack:["Python","Deep Learning","Computer Vision"], repo:"Dog-vs-Cat-Image-Classification-Deep-Learning", code:["image_classifier = {","  'task': 'image classification',","  'classes': ['dog', 'cat'],","  'approach': 'deep learning'","}"]},
+  {file:"attendance_system.py", title:"Face Recognition Attendance System", category:"AI & ML", description:"Attendance management project using face recognition to assist identity-based attendance tracking.", stack:["Python","Computer Vision","Face Recognition"], repo:"Attendance-Management-system-using-face-recognition-master", code:["attendance_system = {","  'workflow': ['capture', 'recognize', 'record'],","  'focus': 'attendance management',","  'method': 'face recognition'","}"]},
+  {file:"potato_disease.py", title:"Potato Disease Detection", category:"AI & ML", description:"Image-based plant disease detection project using machine learning techniques.", stack:["Python","Deep Learning","Image Classification"], repo:"potato-disease-detection-main", code:["plant_model = {","  'domain': 'plant health',","  'input': 'potato leaf image',","  'task': 'disease detection'","}"]},
+  {file:"cgpa_calculator.java", title:"CGPA Calculator", category:"Java", description:"A utility project for calculating academic grade point averages.", stack:["Java","Application Development"], repo:"cgpa-calculator", code:["public class CgpaCalculator {","  public static void main(String[] args) {","    System.out.println(\"Calculate CGPA\");","  }","}"]},
+  {file:"order_management.java", title:"Order Management System", category:"Java", description:"A software project for organizing order management workflows.", stack:["Java","Database"], repo:"order-management-system", code:["public class OrderManagement {","  // Manage and track orders","  void createOrder() { }","  void updateOrder() { }","}"]},
+  {file:"train_reservation.java", title:"Train Reservation System", category:"Java", description:"A reservation system project for managing train booking workflows.", stack:["Java","Application Development"], repo:"TrainReservationSystem", code:["public class TrainReservation {","  // Search routes and manage bookings","  void reserveSeat() { }","}"]}
+].map(project => Object.assign(project, {url:"https://github.com/sreeram2124/" + project.repo}));
+
+const skillItems = [
+  ["Python","languages","Py"],["Java","languages","☕"],["SQL","languages","▤"],["JavaScript","languages","JS"],
+  ["Power BI","data","▥"],["DAX","data","ƒx"],["Excel","data","▦"],["Tableau","data","▨"],
+  ["Pandas","data","Pd"],["NumPy","data","№"],["Data Visualization","data","◫"],["Statistics","data","∑"],
+  ["Business Analysis","data","◉"],["KPI Tracking","data","↗"],["Forecasting","data","⌁"],["Data Cleaning","data","⌕"],
+  ["Machine Learning","ai","✳"],["Deep Learning","ai","◉"],["Computer Vision","ai","◈"],["Feature Engineering","ai","⚙"],
+  ["ETL Pipelines","backend","⇄"],["Data Modeling","backend","◇"],["JDBC","backend","↔"],["Collections","backend","▧"],
+  ["PostgreSQL","backend","▤"],["MySQL","backend","▤"],["MongoDB","backend","◉"],["AWS","tools","☁"],
+  ["OCI","tools","☁"],["Git","tools","⑂"],["GitHub","tools","⌘"],["Linux","tools","⌘"],
+  ["Power Query","tools","↻"],["Requirements Gathering","tools","☷"],["Data Integration","backend","⇄"],["HTML","frontend","5"],
+  ["CSS","frontend","3"],["React","frontend","⚛"],["Responsive Design","frontend","▣"],["UI Development","frontend","◩"]
+].map(([name, category, icon]) => ({name, category, icon}));
+
+const experienceData = {
+  work: [
+    {kind:"APPRENTICESHIP", title:"Java Full Stack Apprentice", org:"LTIMindtree", location:"Navi Mumbai, India", date:"Jun 2026 — Jul 2026", body:"Worked on internal tooling and data integration. Built reusable DAOs and JDBC connectors, designed PostgreSQL schemas with data integrity in mind, and collaborated with cross-functional teams.", highlights:["Built reusable Java DAOs and JDBC connectors","Designed PostgreSQL schemas","Supported data integration for internal tools"], tags:["Java","JDBC","PostgreSQL","Data Integration"]},
+    {kind:"INTERNSHIP", title:"AI & ML Intern", org:"Kodacy", location:"Remote", date:"Sep 2023 — Oct 2023", body:"Developed Python ETL pipelines and interactive Power BI dashboards to support data interpretation and KPI tracking.", highlights:["Optimized Python ETL pipelines","Built interactive KPI dashboards","Worked with analytics and machine learning workflows"], tags:["Python","ETL","Power BI","Machine Learning"]}
+  ],
+  achievements: [
+    {kind:"CERTIFICATE", title:"Google Data Analytics Professional Certificate", org:"Google", location:"Online", date:"2023", body:"Professional learning in data analytics, including data preparation, analysis, visualization, and communicating findings.", highlights:["Data cleaning and analysis","Visualization and reporting"], tags:["Data Analytics"]},
+    {kind:"CERTIFICATE", title:"IBM Data Science Professional Certificate", org:"IBM", location:"Online", date:"2023", body:"Professional learning in data science and applied data workflows.", highlights:["Data science foundations","Applied analytics"], tags:["Data Science"]},
+    {kind:"CERTIFICATE", title:"AWS Cloud Solutions Architect", org:"Amazon Web Services", location:"Online", date:"2023", body:"Cloud architecture learning focused on AWS services and solution design.", highlights:["Cloud architecture foundations"], tags:["AWS","Cloud"]},
+    {kind:"CERTIFICATE", title:"Oracle Cloud Infrastructure Foundations Associate", org:"Oracle", location:"Online", date:"2024", body:"Foundational learning in Oracle Cloud Infrastructure.", highlights:["OCI platform foundations"], tags:["OCI","Cloud"]}
+  ],
+  education: [
+    {kind:"ACADEMIC EDUCATION", title:"B.Tech, Computer Science & Engineering", org:"SRM Institute of Science and Technology", location:"India", date:"Jun 2022 — May 2026", body:"Specialization in Big Data Analytics. Graduated with a CGPA of 9.01 / 10.", highlights:["Specialization: Big Data Analytics","CGPA: 9.01 / 10"], tags:["Computer Science","Big Data Analytics"]}
+  ]
+};
+const folders = [
+  {id:"work", label:"Work Experience", icon:"▰"},
+  {id:"achievements", label:"Achievements", icon:"✧"},
+  {id:"education", label:"Academic Education", icon:"▤"}
 ];
-const skills = [
-  {category:"analytics", title:"Analytics & BI", icon:"▥", note:"Turn data into useful decisions.", tags:["SQL","Python","Pandas","NumPy","Power BI","DAX","Excel (Advanced)","Tableau","Dashboarding","KPI Tracking","Business Analysis","Forecasting","Statistics"]},
-  {category:"engineering", title:"Software & Data Engineering", icon:"‹›", note:"Build, integrate, and move data.", tags:["ETL Pipelines","Data Modeling","Java","JDBC","Collections","Git","Linux"]},
-  {category:"data", title:"Cloud & Databases", icon:"▦", note:"Work across cloud platforms and data stores.", tags:["AWS","OCI","PostgreSQL","MySQL","MongoDB"]},
-  {category:"other", title:"Tools & Methods", icon:"⌘", note:"Practical workflows for analysis and delivery.", tags:["Power Query","Data Cleaning","Feature Engineering","Data Visualization","Requirements Gathering"]}
-];
-const work = [
-  {type:"WORK EXPERIENCE", title:"Apprentice · Java Full Stack", place:"LTIMindtree · Navi Mumbai", date:"Jun 2026 — Jul 2026", desc:"Developed reusable DAOs and JDBC connectors to streamline data integration for internal tooling projects. Designed PostgreSQL schemas with attention to data integrity and query optimization, and collaborated with cross-functional teams to deliver data-driven solutions.", tags:["Java","JDBC","PostgreSQL","Data Integration"]},
-  {type:"INTERNSHIP", title:"AI & ML Intern", place:"Kodacy · Remote", date:"Sep 2023 — Oct 2023", desc:"Engineered optimized Python ETL pipelines that reduced data-processing latency by 35%. Built interactive Power BI dashboards to track KPIs and improve data interpretation efficiency by 40%.", tags:["Python","ETL","Power BI","Machine Learning"]}
-];
-const education = [{type:"EDUCATION",title:"B.Tech · Computer Science & Engineering",place:"SRM Institute of Science and Technology",date:"Jun 2022 — May 2026",desc:"Specialization in Big Data Analytics. Graduated with a CGPA of 9.01 / 10.",tags:["Big Data Analytics","CGPA 9.01 / 10"]}];
-const certifications = [
-  {type:"CERTIFICATION",title:"Google Data Analytics Professional Certificate",place:"Google",date:"Sep 2023",desc:"Professional certificate in data analytics.",tags:["Data Analytics"]},
-  {type:"CERTIFICATION",title:"IBM Data Science Professional Certificate",place:"IBM",date:"Oct 2023",desc:"Professional certificate in data science.",tags:["Data Science"]},
-  {type:"CERTIFICATION",title:"AWS Cloud Solutions Architect",place:"Amazon Web Services",date:"Dec 2023",desc:"Cloud architecture certification.",tags:["AWS","Cloud"]},
-  {type:"CERTIFICATION",title:"Oracle Cloud Infrastructure Foundations Associate",place:"Oracle",date:"Jan 2024",desc:"Foundational certification in Oracle Cloud Infrastructure.",tags:["OCI","Cloud"]}
-];
-const app = document.getElementById("app");
+
+const app = $("#app");
 const pageNames = ["home","projects","skills","experience","calendar","contact","settings"];
-let currentProject = 0;
-const htmlEscape = value => String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char]));
-function pageFromHash(){const page=location.hash.replace(/^#\/?/,"").toLowerCase();return pageNames.includes(page)?page:"home";}
-function template(name){return document.getElementById(`${name}-template`).innerHTML.trim();}
-function updateNavigation(page){document.querySelectorAll("[data-page]").forEach(link=>{const active=link.dataset.page===page;link.classList.toggle("active",active);if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});}
-function render(page=pageFromHash()){
-  app.innerHTML=template(page);
-  updateNavigation(page);
-  document.title=`${page[0].toUpperCase()+page.slice(1)} — M Sreeram Reddy`;
-  renderCalendarDate();
-  if(page==="projects")renderProjects();
-  if(page==="skills")renderSkills();
-  if(page==="experience")renderExperience("work");
-  if(page==="calendar")renderCalendarDate();
-  if(page==="settings")initSettings();
-  app.focus({preventScroll:true});
-  document.getElementById("mobile-links").classList.remove("open");
-  document.getElementById("mobile-menu").setAttribute("aria-expanded","false");
-}
-function renderProjects(){
-  const list=document.getElementById("project-file-list");
-  list.innerHTML=projects.map((project,index)=>`<button class="project-file ${index===currentProject?"active":""}" data-project-index="${index}"><span>▣</span><span>${htmlEscape(project.file)}</span><span class="file-extension">${project.file.endsWith(".py")?"PY":"JS"}</span></button>`).join("");
-  list.querySelectorAll("[data-project-index]").forEach(button=>button.addEventListener("click",()=>{currentProject=Number(button.dataset.projectIndex);renderProjects();}));
-  const project=projects[currentProject];
-  document.getElementById("active-project-file").textContent=project.file;
-  document.getElementById("breadcrumb-file").textContent=project.file;
-  const code=project.code.map((line,index)=>`<div class="code-line"><span class="line-number">${index+1}</span><span>${colourize(line)}</span></div>`).join("");
-  document.getElementById("project-detail").innerHTML=`<div class="code-meta"><span>${project.kind}</span><span>UPDATED 2026</span><span>UTF-8</span></div><div class="code-block">${code}</div><h2 class="code-title">${htmlEscape(project.title)}</h2><p class="project-description">${htmlEscape(project.desc)}</p><div class="stack-row">${project.stack.map(tag=>`<span class="stack-chip">${htmlEscape(tag)}</span>`).join("")}</div><a class="project-open" href="${project.url}" target="_blank" rel="noreferrer">OPEN GITHUB REPOSITORY ↗</a>`;
-}
-function colourize(line){let escaped=htmlEscape(line);escaped=escaped.replace(/\b(const|let|return)\b/g,'<span class="code-key">$1</span>').replace(/'([^']*)'/g,'<span class="code-string">\'$1\'</span>').replace(/(dashboard|climateDashboard|environmentStudy|cityExplorer|fraudAnalysis|airQualityModel)/g,'<span class="code-var">$1</span>');return escaped;}
-function renderSkills(filter="all"){
-  const grid=document.getElementById("skills-grid");
-  grid.innerHTML=skills.filter(skill=>filter==="all"||skill.category===filter).map(skill=>`<article class="skill-card"><div class="skill-card-head"><span class="skill-card-icon">${skill.icon}</span><div><h3>${htmlEscape(skill.title)}</h3><p>${htmlEscape(skill.note)}</p></div></div><div class="skill-chips">${skill.tags.map(tag=>`<span>${htmlEscape(tag)}</span>`).join("")}</div></article>`).join("");
-  document.querySelectorAll(".filter").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(item=>item.classList.toggle("active",item===button));renderSkills(button.dataset.filter);}));
-}
-function renderExperience(tab){
-  const entries=tab==="work"?work:tab==="education"?education:certifications;
-  const content=document.getElementById("experience-content");
-  content.innerHTML=`<h1 class="experience-title">${tab==="work"?"Work Experience":tab==="education"?"Academic Education":"Certifications"}<span class="experience-count">${entries.length}</span></h1>${entries.map(entry=>`<article class="experience-record"><div class="record-top"><span class="record-label">${entry.type}</span><span class="record-date">${entry.date}</span></div><h3>${htmlEscape(entry.title)}</h3><div class="record-place">${htmlEscape(entry.place)}</div><p>${htmlEscape(entry.desc)}</p><div class="record-tags">${entry.tags.map(tag=>`<span>${htmlEscape(tag)}</span>`).join("")}</div></article>`).join("")}`;
-  document.querySelectorAll("[data-exp-tab]").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("[data-exp-tab]").forEach(item=>item.classList.toggle("active",item===button));renderExperience(button.dataset.expTab);}));
-}
-function renderCalendarDate(){
-  const now=new Date();
-  const local=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",month:"long",year:"numeric"}).format(now).toUpperCase();
-  const day=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",day:"2-digit"}).format(now);
-  const weekday=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",weekday:"short"}).format(now).toUpperCase();
-  const monthYear=document.querySelector(".calendar-month");if(monthYear)monthYear.innerHTML=`${local.split(" ")[0]} <span>${local.split(" ")[1]}</span>`;
-  const big=document.querySelector(".calendar-big");if(big)big.innerHTML=`${Number(day)}<span>${weekday}</span>`;
-  const dateLabel=document.getElementById("system-date");if(dateLabel)dateLabel.textContent=`${new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",weekday:"short",month:"short",day:"numeric"}).format(now)} · ${new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",hour:"numeric",minute:"2-digit",hour12:true}).format(now)} IST`;
-}
-const wallpaperOptions=[{id:"aurora",name:"Aurora",style:"linear-gradient(135deg,#f2a06e,#b75fc4 48%,#331580)"},{id:"forest",name:"Forest",style:"linear-gradient(135deg,#b7c99a,#387969 50%,#142e3c)"},{id:"city",name:"City at dusk",style:"linear-gradient(135deg,#f4a365,#a44672 52%,#28305d)"},{id:"ocean",name:"Ocean",style:"linear-gradient(135deg,#a4e2de,#3389b5 48%,#122e5b)"},{id:"mountains",name:"Mountains",style:"linear-gradient(135deg,#e1b99a,#8274a5 50%,#263453)"},{id:"space",name:"Earth at night",style:"radial-gradient(ellipse at 50% 115%,#2783ad,#10203f 54%,#050812 75%)"}];
-function applySettings(){document.body.dataset.wallpaper=localStorage.getItem("portfolio-wallpaper")||"aurora";document.body.dataset.appearance=localStorage.getItem("portfolio-appearance")||"dark";document.body.dataset.textSize=localStorage.getItem("portfolio-text-size")||"medium";}
-function renderSettingsPanel(tab){
- const panel=document.getElementById("settings-panel");if(!panel)return;
- document.querySelectorAll("[data-settings-tab]").forEach(button=>button.classList.toggle("active",button.dataset.settingsTab===tab));
- if(tab==="background")panel.innerHTML=`<div class="settings-panel-heading"><h1>Background</h1><p>Choose a desktop wallpaper.</p></div><div class="settings-panel-body"><span class="settings-section-label">WALLPAPER</span><p class="settings-help">Select an image to use as your desktop background.</p><div class="wallpaper-grid">${wallpaperOptions.map(option=>`<button class="wallpaper-choice ${document.body.dataset.wallpaper===option.id?"selected":""}" data-wallpaper-choice="${option.id}" aria-pressed="${document.body.dataset.wallpaper===option.id}"><span class="wallpaper-swatch" style="background:${option.style}"></span><span>${option.name}</span></button>`).join("")}</div></div>`;
- if(tab==="appearance")panel.innerHTML=`<div class="settings-panel-heading"><h1>Appearance</h1><p>Personalize the look of your workspace.</p></div><div class="settings-panel-body"><span class="settings-section-label">COLOR MODE</span><p class="settings-help">Choose the color tone for the workspace.</p><div class="appearance-options"><button class="appearance-choice ${document.body.dataset.appearance==="dark"?"selected":""}" data-appearance-choice="dark"><span class="appearance-preview appearance-dark"></span><strong>Dark</strong><small>Default</small></button><button class="appearance-choice ${document.body.dataset.appearance==="dim"?"selected":""}" data-appearance-choice="dim"><span class="appearance-preview appearance-dim"></span><strong>Dim</strong><small>Low contrast</small></button><button class="appearance-choice ${document.body.dataset.appearance==="midnight"?"selected":""}" data-appearance-choice="midnight"><span class="appearance-preview appearance-midnight"></span><strong>Midnight</strong><small>Deep blue</small></button></div><div class="settings-tip">Your preference is saved in this browser.</div></div>`;
- if(tab==="typography")panel.innerHTML=`<div class="settings-panel-heading"><h1>Typography</h1></div><div class="settings-panel-body"><span class="settings-section-label">TEXT SIZE</span><p class="settings-help">Adjust the system-wide font size for better readability.</p><div class="text-size-options">${["small","medium","large","extra-large"].map((size,i)=>`<button class="text-size-choice size-${size} ${document.body.dataset.textSize===size?"selected":""}" data-text-size="${size}"><strong>AA</strong><small>${["SMALL","MEDIUM","LARGE","EXTRA LARGE"][i]}</small></button>`).join("")}</div><div class="typography-sample"><span>“The quick brown fox jumps over the lazy dog.”</span><small>PREVIEW TEXT</small></div></div>`;
-}
-function initSettings(){applySettings();const initial=localStorage.getItem("portfolio-settings-tab")||"background";renderSettingsPanel(initial);document.querySelectorAll("[data-settings-tab]").forEach(button=>button.addEventListener("click",()=>{localStorage.setItem("portfolio-settings-tab",button.dataset.settingsTab);renderSettingsPanel(button.dataset.settingsTab);}));document.getElementById("settings-panel").addEventListener("click",event=>{const wallpaper=event.target.closest("[data-wallpaper-choice]");const appearance=event.target.closest("[data-appearance-choice]");const size=event.target.closest("[data-text-size]");if(wallpaper){localStorage.setItem("portfolio-wallpaper",wallpaper.dataset.wallpaperChoice);applySettings();renderSettingsPanel("background");}if(appearance){localStorage.setItem("portfolio-appearance",appearance.dataset.appearanceChoice);applySettings();renderSettingsPanel("appearance");}if(size){localStorage.setItem("portfolio-text-size",size.dataset.textSize);applySettings();renderSettingsPanel("typography");}});}
-function answerFor(question){const q=question.toLowerCase();if(/project|work|built|github/.test(q))return "Sreeram’s portfolio highlights six projects: Chocolate Sales Analytics, a Global Warming dashboard, Wildfire Smoke & AQI Trends, Smart City Data Explorer, Credit Card Fraud Detection, and Air Quality Prediction. Each project links to its GitHub repository.";if(/skill|technology|tool|stack/.test(q))return "His toolkit includes SQL, Python, Pandas, NumPy, Power BI, DAX, Excel, Tableau, ETL, Java, JDBC, Git, Linux, AWS, OCI, PostgreSQL, MySQL, and MongoDB.";if(/experience|job|work|intern/.test(q))return "Sreeram completed an AI & ML internship at Kodacy (Sep–Oct 2023) and a Java Full Stack apprenticeship at LTIMindtree (Jun–Jul 2026). See the Experience page for details.";if(/education|degree|college|srm|cgpa/.test(q))return "He earned a B.Tech in Computer Science & Engineering, specializing in Big Data Analytics, from SRM Institute of Science and Technology (Jun 2022–May 2026), with a CGPA of 9.01/10.";if(/contact|email|linkedin|reach/.test(q))return "You can reach Sreeram at sreeram2124@gmail.com, connect on LinkedIn at linkedin.com/in/m-sreeram-reddy-3820b1261, or use either booking link on the Calendar page.";if(/available|location|remote|bengaluru|bangalore/.test(q))return "Sreeram is based in Bengaluru, India and is open to any work mode. He is open to opportunities and conversations.";if(/resume|cv/.test(q))return "You can download Sreeram’s resume using the Resume button on the home page or in Settings.";return "I can help with Sreeram’s projects, skills, experience, education, resume, location, or contact details. What would you like to know?";}
-function addMessage(text,kind){const box=document.getElementById("chat-messages");const node=document.createElement("div");node.className=kind==="user"?"user-message":"bot-message";node.textContent=text;box.appendChild(node);box.scrollTop=box.scrollHeight;}
-function sendQuestion(question){const cleaned=question.trim();if(!cleaned)return;addMessage(cleaned,"user");window.setTimeout(()=>addMessage(answerFor(cleaned),"bot"),260);}
-window.addEventListener("hashchange",()=>render());
-const launcher=document.getElementById("chat-launcher"),chat=document.getElementById("chat-window");function toggleChat(open){chat.classList.toggle("open",open);chat.setAttribute("aria-hidden",String(!open));launcher.setAttribute("aria-expanded",String(open));if(open)document.getElementById("chat-input").focus();}
-launcher.addEventListener("click",()=>toggleChat(!chat.classList.contains("open")));document.getElementById("chat-close").addEventListener("click",()=>toggleChat(false));document.addEventListener("keydown",event=>{if(event.key==="Escape")toggleChat(false);});
-document.getElementById("chat-form").addEventListener("submit",event=>{event.preventDefault();const input=document.getElementById("chat-input");sendQuestion(input.value);input.value="";});document.querySelectorAll("[data-question]").forEach(button=>button.addEventListener("click",()=>sendQuestion(button.dataset.question)));
-document.getElementById("mobile-menu").addEventListener("click",event=>{const open=!document.getElementById("mobile-links").classList.contains("open");document.getElementById("mobile-links").classList.toggle("open",open);event.currentTarget.setAttribute("aria-expanded",String(open));});
-document.getElementById("profile-shortcut").addEventListener("click",()=>{location.hash="#home";});
-render();window.setInterval(renderCalendarDate,30000);
+let selectedProject = 0;
+let projectView = "explorer";
+let projectFilter = "All";
+let skillFilter = "all";
+let skillPage = 0;
+let experienceFolder = "work";
+let selectedExperience = 0;
+let experienceQuery = "";
+let settingsSection = localStorage.getItem("portfolio-settings-tab") || "background";
+let toastTimer;
 
+function activePage() {
+  const route = location.hash.replace(/^#\/?/, "").toLowerCase();
+  return pageNames.includes(route) ? route : "home";
+}
+function sourceTemplate(page) {
+  const template = $("#" + page + "-template");
+  return template ? template.innerHTML.trim() : "";
+}
+function updateNav(page) {
+  $$('[data-page]').forEach(link => {
+    const current = link.dataset.page === page;
+    link.classList.toggle("active", current);
+    if (current) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current");
+  });
+}
+function render(page = activePage()) {
+  app.innerHTML = sourceTemplate(page);
+  updateNav(page);
+  document.title = (page[0].toUpperCase() + page.slice(1)) + " — M Sreeram Reddy";
+  if (page === "projects") renderProjects();
+  if (page === "skills") renderSkills();
+  if (page === "experience") renderExperience();
+  if (page === "settings") initSettings();
+  if (page === "calendar") mountCalEmbed();
+  updateDate();
+  $("#mobile-links").classList.remove("open");
+  $("#mobile-menu").setAttribute("aria-expanded", "false");
+}
+function updateDate() {
+  const now = new Date();
+  const date = new Intl.DateTimeFormat("en-US", {timeZone:"Asia/Kolkata", weekday:"short", month:"short", day:"numeric"}).format(now);
+  const time = new Intl.DateTimeFormat("en-US", {timeZone:"Asia/Kolkata", hour:"numeric", minute:"2-digit", hour12:true}).format(now);
+  const label = $("#system-date");
+  if (label) label.textContent = date + " · " + time + " IST";
+}
+function mountCalEmbed() {
+  const element = $("#cal-embed");
+  if (!element) return;
+  if (!window.Cal) {
+    (function (C, A, L) {
+      const queue = function (api, args) { api.q.push(args); };
+      const doc = C.document;
+      C.Cal = C.Cal || function () {
+        const cal = C.Cal;
+        const args = arguments;
+        if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; doc.head.appendChild(doc.createElement("script")).src = A; cal.loaded = true; }
+        if (args[0] === L) {
+          const api = function () { queue(api, arguments); };
+          const namespace = args[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") { cal.ns[namespace] = api; queue(cal, args); queue(cal, ["initNamespace", namespace]); }
+          else queue(cal, args);
+          return;
+        }
+        queue(cal, args);
+      };
+    })(window, "https://cal.com/embed.js", "init");
+  }
+  window.Cal("init", "sreeramPortfolio", {origin:"https://cal.com"});
+  window.Cal.ns.sreeramPortfolio("inline", {calLink:"m-sreeram-reddy-d4ftjr", elementOrSelector:element, config:{layout:"month_view", theme:"dark"}});
+}
 
+function renderProjects() {
+  const list = $("#project-file-list");
+  if (list) list.innerHTML = projects.map((project, index) => '<button class="project-file ' + (index === selectedProject ? "active" : "") + '" data-project-index="' + index + '"><span class="project-file-icon">▣</span><span>' + escapeHTML(project.file) + '</span><span class="file-extension">' + escapeHTML(project.file.split(".").pop().toUpperCase()) + '</span></button>').join("");
+  const project = projects[selectedProject];
+  const title = $("#project-window-title");
+  if (title) title.textContent = project.file + " — M Sreeram Reddy";
+  const editor = $("#project-editor");
+  if (editor) editor.innerHTML = '<div class="editor-tabs"><div class="editor-tab"><i>◈</i>' + escapeHTML(project.file) + '</div><span class="editor-tab-spacer"></span><button class="editor-more" aria-label="More editor actions">···</button></div><div class="editor-breadcrumb">projects <span>›</span> ' + escapeHTML(project.file) + '</div><div class="project-code"><div class="code-meta"><span>' + escapeHTML(project.category.toUpperCase()) + '</span><span>UTF-8</span></div>' + project.code.map((line, i) => '<div class="code-line"><span class="line-number">' + (i + 1) + '</span><code>' + escapeHTML(line) + '</code></div>').join("") + '<div class="project-editor-note">// Explore the repository for source files, documentation, and implementation details.</div></div></div>';
+  const preview = $("#project-preview");
+  if (preview) preview.innerHTML = '<div class="preview-topline"><span>PROJECT PREVIEW</span><button aria-label="Preview options">···</button></div><div class="preview-art art-' + (selectedProject % 6) + '"><span class="art-mark">' + ["◫","◌","✳","⌖","⌁","▥"][selectedProject % 6] + '</span><span class="art-label">' + escapeHTML(project.category.toUpperCase()) + '</span></div><div class="preview-body"><span class="preview-kicker">FEATURED PROJECT</span><h2>' + escapeHTML(project.title) + '</h2><p>' + escapeHTML(project.description) + '</p><div class="preview-stack">' + project.stack.map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div><a class="project-open" href="' + project.url + '" target="_blank" rel="noreferrer">VIEW ON GITHUB <b>↗</b></a></div>';
+  const grid = $("#project-grid-view");
+  if (grid) grid.innerHTML = '<div class="project-grid-toolbar"><div><span class="preview-kicker">REPOSITORY</span><h2>Projects</h2></div><label><span>⌕</span><input type="search" id="project-search" placeholder="Search projects"></label><div class="project-grid-filters">' + ["All","AI & ML","Analytics","Data","Java"].map(filter => '<button class="project-grid-filter ' + (projectFilter === filter ? "active" : "") + '" data-project-filter="' + escapeHTML(filter) + '">' + escapeHTML(filter) + '</button>').join("") + '</div></div><div class="project-cards">' + filteredProjects("").map(projectCard).join("") + '</div>';
+  const window = $(".project-window");
+  if (window) window.dataset.view = projectView;
+  $$('[data-project-view]').forEach(button => button.classList.toggle("selected", button.dataset.projectView === projectView));
+}
+function filteredProjects(query) {
+  return projects.filter(project => (projectFilter === "All" || project.category === projectFilter) && (project.title + " " + project.description + " " + project.stack.join(" ")).toLowerCase().includes(query.toLowerCase()));
+}
+function projectCard(project) {
+  const index = projects.indexOf(project);
+  return '<article class="project-card"><button class="project-card-open" data-project-index="' + index + '"><div class="project-card-art art-' + (index % 6) + '"><span>' + ["◫","◌","✳","⌖","⌁","▥"][index % 6] + '</span><small>' + escapeHTML(project.category.toUpperCase()) + '</small></div><div class="project-card-body"><span class="project-card-file">' + escapeHTML(project.file) + '</span><h3>' + escapeHTML(project.title) + '</h3><p>' + escapeHTML(project.description) + '</p><div class="preview-stack">' + project.stack.slice(0, 4).map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div></div></button><a class="project-card-link" target="_blank" rel="noreferrer" href="' + project.url + '" aria-label="Open ' + escapeHTML(project.title) + ' on GitHub">↗</a></article>';
+}
 
+function renderSkills(query = "") {
+  const grid = $("#skill-grid");
+  if (!grid) return;
+  const items = skillItems.filter(skill => (skillFilter === "all" || skill.category === skillFilter) && skill.name.toLowerCase().includes(query.toLowerCase()));
+  const perPage = window.innerWidth <= 760 ? 18 : 32;
+  const pages = Math.max(1, Math.ceil(items.length / perPage));
+  skillPage = Math.min(skillPage, pages - 1);
+  grid.innerHTML = items.slice(skillPage * perPage, (skillPage + 1) * perPage).map(skill => '<button class="skill-icon-card" title="' + escapeHTML(skill.name) + '" aria-label="' + escapeHTML(skill.name) + '"><span class="skill-app-icon skill-' + escapeHTML(skill.category) + '">' + escapeHTML(skill.icon) + '</span><span>' + escapeHTML(skill.name) + '</span></button>').join("");
+  const count = $("#skills-page-count");
+  if (count) count.textContent = "Page " + (skillPage + 1) + " of " + pages;
+  const dots = $("#skill-dots");
+  if (dots) dots.innerHTML = Array.from({length:pages}, (_, i) => '<button class="' + (i === skillPage ? "active" : "") + '" data-skill-page="' + i + '" aria-label="Page ' + (i + 1) + '"></button>').join("");
+  const prev = $("#skill-prev"), next = $("#skill-next");
+  if (prev) prev.disabled = skillPage === 0;
+  if (next) next.disabled = skillPage >= pages - 1;
+}
+
+function renderExperience() {
+  const foldersNode = $("#experience-folder-list");
+  if (foldersNode) foldersNode.innerHTML = folders.map(folder => '<button class="experience-folder ' + (experienceFolder === folder.id ? "active" : "") + '" data-exp-folder="' + folder.id + '"><span class="folder-symbol">' + folder.icon + '</span><strong>' + folder.label + '</strong><small>' + experienceData[folder.id].length + '</small></button>').join("");
+  const allEntries = experienceData[experienceFolder] || [];
+  const filtered = allEntries.filter(entry => (entry.title + " " + entry.org + " " + entry.location + " " + entry.body).toLowerCase().includes(experienceQuery.toLowerCase()));
+  selectedExperience = Math.min(selectedExperience, Math.max(0, filtered.length - 1));
+  const list = $("#experience-record-list");
+  if (list) list.innerHTML = '<div class="record-list-heading"><span>' + (folders.find(f => f.id === experienceFolder)?.label || "Recently Deleted") + '</span><small>' + filtered.length + ' items</small></div>' + filtered.map((entry, index) => '<button class="experience-record-row ' + (index === selectedExperience ? "active" : "") + '" data-exp-index="' + index + '"><span class="record-row-icon">' + (entry.kind === "CERTIFICATE" ? "✧" : entry.kind === "ACADEMIC EDUCATION" ? "▤" : "▰") + '</span><span><strong>' + escapeHTML(entry.title) + '</strong><small>' + escapeHTML(entry.org) + ' · ' + escapeHTML(entry.date) + '</small></span><b>›</b></button>').join("") || '<div class="empty-records">No matching items</div>';
+  const selected = filtered[selectedExperience];
+  const detail = $("#experience-detail");
+  if (!detail) return;
+  if (!selected) { detail.innerHTML = '<div class="empty-detail"><span>▤</span><strong>Recently Deleted</strong><p>There are no items in Recently Deleted.</p></div>'; return; }
+  detail.innerHTML = '<div class="experience-detail-actions"><button title="Share" aria-label="Share">↗</button><button title="More options" aria-label="More options">···</button></div><div class="detail-document-icon">' + (selected.kind === "CERTIFICATE" ? "✧" : selected.kind === "ACADEMIC EDUCATION" ? "▤" : "▰") + '</div><span class="detail-kind">' + escapeHTML(selected.kind) + '</span><h1>' + escapeHTML(selected.title) + '</h1><div class="detail-org">' + escapeHTML(selected.org) + '</div><div class="detail-meta"><span>⌖ &nbsp;' + escapeHTML(selected.location) + '</span><span>◷ &nbsp;' + escapeHTML(selected.date) + '</span></div><p class="detail-description">' + escapeHTML(selected.body) + '</p><h2>KEY HIGHLIGHTS</h2><ul>' + selected.highlights.map(text => '<li>' + escapeHTML(text) + '</li>').join("") + '</ul><div class="record-tags">' + selected.tags.map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div>';
+}
+
+const wallpapers = [
+  {id:"abstract", name:"Abstract Dark", background:"linear-gradient(130deg,#e99a6b 0%,#c56caa 38%,#6530a7 68%,#211875 100%)"},
+  {id:"mountain", name:"Mountain", background:"linear-gradient(150deg,#e1c4a7 0%,#8c7894 47%,#263451 100%)"},
+  {id:"ocean", name:"Ocean", background:"linear-gradient(155deg,#a5ddd5 0%,#338bb3 48%,#122e5c 100%)"},
+  {id:"gradient", name:"Gradient", background:"linear-gradient(132deg,#e89268 0%,#b76dc4 31%,#6029aa 64%,#23167c 100%)"},
+  {id:"forest", name:"Forest", background:"linear-gradient(145deg,#c9d7a4 0%,#507965 47%,#163746 100%)"},
+  {id:"space", name:"Space", background:"radial-gradient(ellipse at 55% 115%,#287ba1 0,#152947 45%,#060912 75%)"}
+];
+function applySettings() {
+  document.body.dataset.wallpaper = localStorage.getItem("portfolio-wallpaper") || "gradient";
+  document.body.dataset.appearance = localStorage.getItem("portfolio-appearance") || "dark";
+  document.body.dataset.textSize = localStorage.getItem("portfolio-text-size") || "medium";
+}
+function renderSettingsPanel(section) {
+  const panel = $("#settings-panel");
+  if (!panel) return;
+  settingsSection = section;
+  localStorage.setItem("portfolio-settings-tab", section);
+  $$('[data-settings-tab]').forEach(button => button.classList.toggle("active", button.dataset.settingsTab === section));
+  let body = "";
+  if (section === "background") {
+    body = '<div class="settings-panel-heading"><h1>Background</h1><p>Choose a wallpaper for your desktop.</p></div><div class="settings-panel-body"><span class="settings-section-label">WALLPAPER</span><p class="settings-help">Select an image to use as your desktop background.</p><div class="wallpaper-grid">' + wallpapers.map(w => '<button class="wallpaper-choice ' + (document.body.dataset.wallpaper === w.id ? "selected" : "") + '" data-wallpaper-choice="' + w.id + '" aria-pressed="' + (document.body.dataset.wallpaper === w.id) + '"><span class="wallpaper-swatch" style="background:' + w.background + '"></span><span>' + w.name + '</span></button>').join("") + '</div></div>';
+  } else if (section === "appearance") {
+    body = '<div class="settings-panel-heading"><h1>Appearance</h1><p>Choose how your workspace looks.</p></div><div class="settings-panel-body"><span class="settings-section-label">THEME MODE</span><p class="settings-help">Select a light or dark appearance.</p><div class="appearance-options">' + ["light","dark"].map(mode => '<button class="appearance-choice ' + (document.body.dataset.appearance === mode ? "selected" : "") + '" data-appearance-choice="' + mode + '"><span class="appearance-preview appearance-' + mode + '"></span><strong>' + mode[0].toUpperCase() + mode.slice(1) + '</strong></button>').join("") + '</div><div class="settings-tip">Your choice is saved in this browser.</div></div>';
+  } else {
+    body = '<div class="settings-panel-heading"><h1>Typography</h1><p>Adjust the interface text size.</p></div><div class="settings-panel-body"><span class="settings-section-label">TEXT SIZE</span><p class="settings-help">Choose a comfortable text size for your workspace.</p><div class="text-size-options">' + ["small","medium","large","extra-large"].map((size, i) => '<button class="text-size-choice size-' + size + ' ' + (document.body.dataset.textSize === size ? "selected" : "") + '" data-text-size="' + size + '"><strong>AA</strong><small>' + ["SMALL","MEDIUM","LARGE","EXTRA LARGE"][i] + '</small></button>').join("") + '</div><div class="typography-sample"><span>The quick brown fox jumps over the lazy dog.</span><small>PREVIEW TEXT</small></div></div>';
+  }
+  panel.innerHTML = body;
+}
+function initSettings() {
+  applySettings();
+  renderSettingsPanel(settingsSection);
+}
+
+function botAnswer(question) {
+  const q = question.toLowerCase();
+  if (/project|github|built|portfolio/.test(q)) return "Sreeram's projects include analytics dashboards, climate and air quality exploration, wildfire and geospatial work, fraud detection, and computer vision. Open the Projects app to browse the repositories on GitHub.";
+  if (/skill|technology|tool|stack/.test(q)) return "His skills include Python, Java, SQL, Power BI, DAX, Excel, Tableau, Pandas, NumPy, JavaScript, ETL, databases, AWS, OCI, Git, and machine learning.";
+  if (/experience|job|intern|apprentice/.test(q)) return "Sreeram worked as an AI & ML Intern at Kodacy and as a Java Full Stack Apprentice at LTIMindtree. The Experience app has his work, achievements, and education details.";
+  if (/education|degree|college|srm|cgpa/.test(q)) return "He completed a B.Tech in Computer Science & Engineering with a specialization in Big Data Analytics at SRM Institute of Science and Technology. His CGPA was 9.01/10.";
+  if (/contact|email|linkedin|reach/.test(q)) return "Email Sreeram at sreeram2124@gmail.com or connect on LinkedIn at linkedin.com/in/m-sreeram-reddy-3820b1261. You can also book a meeting from the Calendar app.";
+  if (/available|location|remote|bengaluru|bangalore/.test(q)) return "Sreeram is based in Bengaluru, India and is open to on-site, hybrid, or remote opportunities.";
+  if (/resume|cv/.test(q)) return "Use the Resume button on the Home app to download Sreeram's resume.";
+  if (/book|meeting|calendar/.test(q)) return "You can choose an available time through Cal.com or Calendly from the Calendar app.";
+  return "I can answer questions about Sreeram's projects, skills, experience, education, resume, location, or contact details. What would you like to know?";
+}
+function addChatMessage(text, type) {
+  const messages = $("#chat-messages");
+  const node = document.createElement("div");
+  node.className = type === "user" ? "user-message" : "bot-message";
+  node.textContent = text;
+  messages.appendChild(node);
+  messages.scrollTop = messages.scrollHeight;
+}
+function askBot(question) {
+  const text = question.trim();
+  if (!text) return;
+  addChatMessage(text, "user");
+  window.setTimeout(() => addChatMessage(botAnswer(text), "bot"), 260);
+}
+function toggleChat(open) {
+  const chat = $("#chat-window");
+  chat.classList.toggle("open", open);
+  chat.setAttribute("aria-hidden", String(!open));
+  $("#chat-launcher").setAttribute("aria-expanded", String(open));
+  $("#chat-close-floating").classList.toggle("visible", open);
+  if (open) $("#chat-input").focus();
+}
+function showToast(message) {
+  const toast = $("#toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+window.addEventListener("hashchange", () => render());
+window.addEventListener("resize", () => { if (activePage() === "skills") renderSkills($("#skill-search")?.value || ""); });
+$("#chat-launcher").addEventListener("click", () => toggleChat(!$("#chat-window").classList.contains("open")));
+$("#chat-close").addEventListener("click", () => toggleChat(false));
+$("#chat-close-floating").addEventListener("click", () => toggleChat(false));
+$("#chat-minimize").addEventListener("click", () => toggleChat(false));
+$("#chat-expand").addEventListener("click", () => $("#chat-window").classList.toggle("expanded"));
+$("#chat-form").addEventListener("submit", event => { event.preventDefault(); const input = $("#chat-input"); askBot(input.value); input.value = ""; });
+document.addEventListener("keydown", event => { if (event.key === "Escape") { toggleChat(false); $("#trash-panel").classList.remove("open"); } });
+$("#mobile-menu").addEventListener("click", event => { const links = $("#mobile-links"); const open = !links.classList.contains("open"); links.classList.toggle("open", open); event.currentTarget.setAttribute("aria-expanded", String(open)); });
+$("#profile-shortcut").addEventListener("click", event => { event.preventDefault(); location.hash = "#home"; });
+$("#trash-shortcut").addEventListener("click", () => { $("#trash-panel").classList.add("open"); $("#trash-panel").setAttribute("aria-hidden", "false"); });
+$("#trash-close").addEventListener("click", () => { $("#trash-panel").classList.remove("open"); $("#trash-panel").setAttribute("aria-hidden", "true"); });
+document.addEventListener("click", event => {
+  const project = event.target.closest("[data-project-index]");
+  if (project && activePage() === "projects") { selectedProject = Number(project.dataset.projectIndex); if (projectView === "grid") projectView = "explorer"; renderProjects(); return; }
+  const view = event.target.closest("[data-project-view]");
+  if (view && activePage() === "projects") { projectView = view.dataset.projectView; renderProjects(); return; }
+  const filter = event.target.closest("[data-project-filter]");
+  if (filter && activePage() === "projects") { projectFilter = filter.dataset.projectFilter; renderProjects(); return; }
+  const skillCategory = event.target.closest("[data-filter]");
+  if (skillCategory && activePage() === "skills") { skillFilter = skillCategory.dataset.filter; skillPage = 0; $$(".skill-filter").forEach(button => button.classList.toggle("active", button === skillCategory)); renderSkills($("#skill-search").value); return; }
+  const skillPageButton = event.target.closest("[data-skill-page]");
+  if (skillPageButton && activePage() === "skills") { skillPage = Number(skillPageButton.dataset.skillPage); renderSkills($("#skill-search").value); return; }
+  const step = event.target.closest("[data-page-step]");
+  if (step && activePage() === "skills") { skillPage += Number(step.dataset.pageStep); renderSkills($("#skill-search").value); return; }
+  const folder = event.target.closest("[data-exp-folder]");
+  if (folder && activePage() === "experience") { experienceFolder = folder.dataset.expFolder; selectedExperience = 0; renderExperience(); return; }
+  const record = event.target.closest("[data-exp-index]");
+  if (record && activePage() === "experience") { selectedExperience = Number(record.dataset.expIndex); renderExperience(); return; }
+  const settingsTab = event.target.closest("[data-settings-tab]");
+  if (settingsTab && activePage() === "settings") { renderSettingsPanel(settingsTab.dataset.settingsTab); return; }
+  const wallpaper = event.target.closest("[data-wallpaper-choice]");
+  if (wallpaper && activePage() === "settings") { localStorage.setItem("portfolio-wallpaper", wallpaper.dataset.wallpaperChoice); applySettings(); renderSettingsPanel("background"); return; }
+  const appearance = event.target.closest("[data-appearance-choice]");
+  if (appearance && activePage() === "settings") { localStorage.setItem("portfolio-appearance", appearance.dataset.appearanceChoice); applySettings(); renderSettingsPanel("appearance"); return; }
+  const textSize = event.target.closest("[data-text-size]");
+  if (textSize && activePage() === "settings") { localStorage.setItem("portfolio-text-size", textSize.dataset.textSize); applySettings(); renderSettingsPanel("typography"); return; }
+  const question = event.target.closest("[data-question]");
+  if (question) askBot(question.dataset.question);
+});
+document.addEventListener("input", event => {
+  if (event.target.id === "skill-search") { skillPage = 0; renderSkills(event.target.value); const search = $("#skill-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
+  if (event.target.id === "experience-search") { experienceQuery = event.target.value; selectedExperience = 0; renderExperience(); const search = $("#experience-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
+  if (event.target.id === "project-search") { const grid = $("#project-grid-view"); const cards = $(".project-cards", grid); if (cards) cards.innerHTML = filteredProjects(event.target.value).map(projectCard).join(""); const search = $("#project-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
+});
+applySettings();
+render();
+window.setInterval(updateDate, 30000);
 

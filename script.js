@@ -132,6 +132,8 @@ function renderProjects() {
   const project = projects[selectedProject];
   const title = $("#project-window-title");
   if (title) title.textContent = project.file + " — M Sreeram Reddy";
+  const language = $("#editor-language");
+  if (language) language.textContent = project.file.split(".").pop().toUpperCase();
   const editor = $("#project-editor");
   if (editor) editor.innerHTML = '<div class="editor-tabs"><div class="editor-tab"><i>◈</i>' + escapeHTML(project.file) + '</div><span class="editor-tab-spacer"></span><button class="editor-more" aria-label="More editor actions">···</button></div><div class="editor-breadcrumb">projects <span>›</span> ' + escapeHTML(project.file) + '</div><div class="project-code"><div class="code-meta"><span>' + escapeHTML(project.category.toUpperCase()) + '</span><span>UTF-8</span></div>' + project.code.map((line, i) => '<div class="code-line"><span class="line-number">' + (i + 1) + '</span><code>' + escapeHTML(line) + '</code></div>').join("") + '<div class="project-editor-note">// Explore the repository for source files, documentation, and implementation details.</div></div></div>';
   const preview = $("#project-preview");

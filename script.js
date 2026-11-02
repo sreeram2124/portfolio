@@ -239,7 +239,7 @@ function renderSkills(query = "", animate = false) {
   const grid = $("#skill-grid");
   if (!grid) return;
   const items = skillItems.filter(skill => (skillFilter === "all" || skill.category === skillFilter) && skill.name.toLowerCase().includes(query.toLowerCase()));
-  const perPage = window.innerWidth < 391 ? 12 : window.innerWidth < 761 ? 15 : window.innerWidth < 1501 ? 18 : 32;
+  const perPage = window.innerWidth < 391 ? 12 : window.innerWidth < 761 ? 15 : window.innerWidth < 1280 ? 18 : 32;
   const pages = Math.max(1, Math.ceil(items.length / perPage));
   skillPage = Math.min(skillPage, pages - 1);
   if (skillMotionTimer) window.clearTimeout(skillMotionTimer);

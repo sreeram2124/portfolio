@@ -73,6 +73,7 @@ let skillMotionTimer = 0;
 let experienceMotionTimer = 0;
 let skillPageDirection = 1;
 const textBaseSizes = new WeakMap();
+const textOriginalInlineSizes = new WeakMap();
 const textSizeScales = {small:.88, medium:1, large:1.12, "extra-large":1.24};
 const heroRoles = ["DATA ENGINEER","DATA ANALYST","BI DEVELOPER","AI/ML ENGINEER"];
 
@@ -341,14 +342,12 @@ function applyTextSize(animate = false) {
   document.body.style.setProperty("--portfolio-text-scale", String(scale));
   const targets = Array.from(document.body.querySelectorAll("body *")).filter(isTextElement);
   targets.forEach(element => {
-    const base = textBaseSizes.get(element);
-    if (base) element.style.fontSize = base + "px";
+    if (!textOriginalInlineSizes.has(element)) textOriginalInlineSizes.set(element, element.style.fontSize);
+    element.style.fontSize = textOriginalInlineSizes.get(element);
   });
   targets.forEach(element => {
-    if (!textBaseSizes.has(element)) {
-      const base = Number.parseFloat(getComputedStyle(element).fontSize);
-      textBaseSizes.set(element, Number.isFinite(base) ? base : 16);
-    }
+    const base = Number.parseFloat(getComputedStyle(element).fontSize);
+    textBaseSizes.set(element, Number.isFinite(base) ? base : 16);
   });
   if (animate) {
     document.body.classList.add("text-size-transition");
@@ -474,12 +473,9 @@ function showToast(message) {
 }
 
 window.addEventListener("hashchange", () => render());
-window.addEventListener("resize", () => { if (activePage() === "skills") renderSkills($("#skill-search")?.value || ""); });
+window.addEventListener("resize", () => { applyTextSize(); if (activePage() === "skills") renderSkills($("#skill-search")?.value || ""); });
 $("#chat-launcher").addEventListener("click", () => toggleChat(!$("#chat-window").classList.contains("open")));
-$("#chat-close").addEventListener("click", () => toggleChat(false));
 $("#chat-close-floating").addEventListener("click", () => toggleChat(false));
-$("#chat-minimize").addEventListener("click", () => toggleChat(false));
-$("#chat-expand").addEventListener("click", event => { const expanded = $("#chat-window").classList.toggle("expanded"); event.currentTarget.setAttribute("aria-pressed", String(expanded)); });
 $("#chat-form").addEventListener("submit", event => { event.preventDefault(); const input = $("#chat-input"); askBot(input.value); input.value = ""; });
 document.addEventListener("keydown", event => { if (event.key === "Escape") { toggleChat(false); $("#trash-panel").classList.remove("open"); } });
 $("#mobile-menu").addEventListener("click", event => { const links = $("#mobile-links"); const open = !links.classList.contains("open"); links.classList.toggle("open", open); event.currentTarget.setAttribute("aria-expanded", String(open)); });

@@ -66,6 +66,15 @@ let toastTimer;
 let renderTimer = 0;
 let chatCloseTimer = 0;
 let wallpaperSwapTimer = 0;
+let minimizeTimer = 0;
+let textScaleFrame = 0;
+let heroRoleTimer = 0;
+let skillMotionTimer = 0;
+let experienceMotionTimer = 0;
+let skillPageDirection = 1;
+const textBaseSizes = new WeakMap();
+const textSizeScales = {small:.88, medium:1, large:1.12, "extra-large":1.24};
+const heroRoles = ["DATA ENGINEER","DATA ANALYST","BI DEVELOPER","AI/ML ENGINEER"];
 
 function activePage() {
   const route = location.hash.replace(/^#\/?/, "").toLowerCase();
@@ -83,10 +92,14 @@ function updateNav(page) {
   });
 }
 function renderPage(page) {
+  stopHeroRoleAnimation();
   window.scrollTo(0, 0);
   app.innerHTML = sourceTemplate(page);
   app.dataset.page = page;
+  app.removeAttribute("aria-hidden");
+  app.classList.remove("is-minimized", "page-minimizing");
   app.classList.remove("page-exiting", "page-minimizing", "page-entering", "is-maximized");
+  $$('.dock-link').forEach(link => link.classList.remove("is-minimized"));
   requestAnimationFrame(() => app.classList.add("page-entering"));
   window.setTimeout(() => app.classList.remove("page-entering"), 480);
   updateNav(page);
@@ -96,6 +109,8 @@ function renderPage(page) {
   if (page === "experience") renderExperience();
   if (page === "settings") initSettings();
   if (page === "calendar") mountCalEmbed();
+  if (page === "home") startHeroRoleAnimation();
+  applyTextSize();
   updateDate();
   $("#mobile-links").classList.remove("open");
   $("#mobile-menu").setAttribute("aria-expanded", "false");
@@ -119,6 +134,38 @@ function updateDate() {
   const time = new Intl.DateTimeFormat("en-US", {timeZone:"Asia/Kolkata", hour:"numeric", minute:"2-digit", hour12:true}).format(now);
   const label = $("#system-date");
   if (label) label.textContent = date + " · " + time + " IST";
+}
+function stopHeroRoleAnimation() {
+  if (heroRoleTimer) window.clearTimeout(heroRoleTimer);
+  heroRoleTimer = 0;
+}
+function startHeroRoleAnimation() {
+  stopHeroRoleAnimation();
+  const roleNode = $("#hero-role-text");
+  if (!roleNode || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let roleIndex = 0;
+  let position = heroRoles[0].length;
+  let deleting = false;
+  const step = () => {
+    if (!roleNode.isConnected) return;
+    const role = heroRoles[roleIndex];
+    if (deleting) {
+      position -= 1;
+      roleNode.textContent = role.slice(0, Math.max(position, 0));
+      if (position <= 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % heroRoles.length;
+        heroRoleTimer = window.setTimeout(step, 180);
+      } else heroRoleTimer = window.setTimeout(step, 54);
+      return;
+    }
+    const nextRole = heroRoles[roleIndex];
+    position += 1;
+    roleNode.textContent = nextRole.slice(0, position);
+    if (position >= nextRole.length) heroRoleTimer = window.setTimeout(() => { deleting = true; step(); }, 1750);
+    else heroRoleTimer = window.setTimeout(step, 82);
+  };
+  heroRoleTimer = window.setTimeout(() => { deleting = true; step(); }, 2050);
 }
 function mountCalEmbed() {
   const element = $("#cal-embed");
@@ -144,7 +191,7 @@ function mountCalEmbed() {
     })(window, "https://cal.com/embed.js", "init");
   }
   window.Cal("init", "sreeramPortfolio", {origin:"https://cal.com"});
-  window.Cal.ns.sreeramPortfolio("inline", {calLink:"m-sreeram-reddy-d4ftjr", elementOrSelector:element, config:{layout:"month_view", theme:"dark"}});
+  window.Cal.ns.sreeramPortfolio("inline", {calLink:"m-sreeram-reddy-d4ftjr/15min", elementOrSelector:element, config:{layout:"month_view", theme:document.body.dataset.appearance === "light" ? "light" : "dark"}});
 }
 
 function renderProjects() {
@@ -163,7 +210,21 @@ function renderProjects() {
   if (grid) grid.innerHTML = '<div class="project-grid-toolbar"><div><span class="preview-kicker">REPOSITORY</span><h2>Projects</h2></div><label><span>⌕</span><input type="search" id="project-search" placeholder="Search projects"></label><div class="project-grid-filters">' + ["All","AI & ML","Analytics","Data","Java"].map(filter => '<button class="project-grid-filter ' + (projectFilter === filter ? "active" : "") + '" data-project-filter="' + escapeHTML(filter) + '">' + escapeHTML(filter) + '</button>').join("") + '</div></div><div class="project-cards">' + filteredProjects("").map(projectCard).join("") + '</div>';
   const window = $(".project-window");
   if (window) window.dataset.view = projectView;
-  $$('[data-project-view]').forEach(button => button.classList.toggle("selected", button.dataset.projectView === projectView));
+  const toolView = $("#project-tool-view");
+  if (toolView) {
+    const toolContent = {
+      source: ["SOURCE CONTROL", "Project repositories", "All portfolio projects are versioned on GitHub.", "Open a project from Explorer to inspect its repository link."],
+      run: ["RUN AND DEBUG", "Project workspace", "These projects are presented as portfolio case studies.", "Choose a project in Explorer to review its tools and implementation notes."],
+      extensions: ["EXTENSIONS", "Data and development tools", "Python · Java · SQL · Power BI · Tableau", "Additional skills and technologies are available in the Skills app."],
+      account: ["ACCOUNTS", "M Sreeram Reddy", "GitHub · sreeram2124", "LinkedIn · m-sreeram-reddy-3820b1261"]
+    }[projectView];
+    toolView.innerHTML = toolContent ? '<div class="tool-view-heading">' + toolContent[0] + '</div><div class="tool-view-content"><span class="tool-view-icon">' + (projectView === "source" ? "⑂" : projectView === "run" ? "▷" : projectView === "extensions" ? "✣" : "◉") + '</span><h2>' + toolContent[1] + '</h2><p>' + toolContent[2] + '</p><small>' + toolContent[3] + '</small></div>' : '';
+  }
+  $$('[data-project-view]').forEach(button => {
+    const selected = button.dataset.projectView === projectView;
+    button.classList.toggle("selected", selected);
+    button.classList.toggle("active", button.classList.contains("activity-button") && selected);
+  });
 }
 function filteredProjects(query) {
   return projects.filter(project => (projectFilter === "All" || project.category === projectFilter) && (project.title + " " + project.description + " " + project.stack.join(" ")).toLowerCase().includes(query.toLowerCase()));
@@ -173,24 +234,32 @@ function projectCard(project) {
   return '<article class="project-card"><button class="project-card-open" data-project-index="' + index + '"><div class="project-card-art art-' + (index % 6) + '"><span>' + ["◫","◌","✳","⌖","⌁","▥"][index % 6] + '</span><small>' + escapeHTML(project.category.toUpperCase()) + '</small></div><div class="project-card-body"><span class="project-card-file">' + escapeHTML(project.file) + '</span><h3>' + escapeHTML(project.title) + '</h3><p>' + escapeHTML(project.description) + '</p><div class="preview-stack">' + project.stack.slice(0, 4).map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div></div></button><a class="project-card-link" target="_blank" rel="noreferrer" href="' + project.url + '" aria-label="Open ' + escapeHTML(project.title) + ' on GitHub">↗</a></article>';
 }
 
-function renderSkills(query = "") {
+function renderSkills(query = "", animate = false) {
   const grid = $("#skill-grid");
   if (!grid) return;
   const items = skillItems.filter(skill => (skillFilter === "all" || skill.category === skillFilter) && skill.name.toLowerCase().includes(query.toLowerCase()));
-  const perPage = window.innerWidth < 640 ? 16 : 18;
+  const perPage = window.innerWidth < 391 ? 12 : window.innerWidth < 761 ? 15 : window.innerWidth < 1501 ? 18 : 32;
   const pages = Math.max(1, Math.ceil(items.length / perPage));
   skillPage = Math.min(skillPage, pages - 1);
+  if (skillMotionTimer) window.clearTimeout(skillMotionTimer);
+  grid.classList.remove("is-transitioning");
+  grid.dataset.motion = skillPageDirection === 0 ? "filter" : skillPageDirection < 0 ? "previous" : "next";
+  if (animate) {
+    void grid.offsetWidth;
+    grid.classList.add("is-transitioning");
+    skillMotionTimer = window.setTimeout(() => { grid.classList.remove("is-transitioning"); skillMotionTimer = 0; }, 380);
+  }
   grid.innerHTML = items.slice(skillPage * perPage, (skillPage + 1) * perPage).map(skill => '<button class="skill-icon-card" title="' + escapeHTML(skill.name) + '" aria-label="' + escapeHTML(skill.name) + '"><span class="skill-app-icon skill-' + escapeHTML(skill.category) + '" style="--skill-bg:' + escapeHTML(skill.background) + '"><img src="assets/skills/' + escapeHTML(skill.icon) + '" alt="" loading="lazy"></span><span>' + escapeHTML(skill.name) + '</span></button>').join("");
   const count = $("#skills-page-count");
   if (count) count.textContent = "Page " + (skillPage + 1) + " of " + pages;
   const dots = $("#skill-dots");
-  if (dots) dots.innerHTML = Array.from({length:pages}, (_, i) => '<button class="' + (i === skillPage ? "active" : "") + '" data-skill-page="' + i + '" aria-label="Page ' + (i + 1) + '"></button>').join("");
+  if (dots) dots.innerHTML = Array.from({length:pages}, (_, i) => '<button class="' + (i === skillPage ? "active" : "") + '" data-skill-page="' + i + '" aria-label="Go to skill page ' + (i + 1) + '" title="Page ' + (i + 1) + '"></button>').join("");
   const prev = $("#skill-prev"), next = $("#skill-next");
   if (prev) prev.disabled = skillPage === 0;
   if (next) next.disabled = skillPage >= pages - 1;
 }
 
-function renderExperience() {
+function renderExperience(animate = false) {
   const foldersNode = $("#experience-folder-list");
   if (foldersNode) foldersNode.innerHTML = folders.map(folder => '<button class="experience-folder ' + (experienceFolder === folder.id ? "active" : "") + '" data-exp-folder="' + folder.id + '"><span class="folder-symbol">' + folder.icon + '</span><strong>' + folder.label + '</strong><small>' + experienceData[folder.id].length + '</small></button>').join("");
   const allEntries = experienceData[experienceFolder] || [];
@@ -201,8 +270,21 @@ function renderExperience() {
   const selected = filtered[selectedExperience];
   const detail = $("#experience-detail");
   if (!detail) return;
-  if (!selected) { detail.innerHTML = '<div class="empty-detail"><span>▤</span><strong>Recently Deleted</strong><p>There are no items in Recently Deleted.</p></div>'; return; }
-  detail.innerHTML = '<div class="experience-detail-actions"><button title="Share" aria-label="Share">↗</button><button title="More options" aria-label="More options">···</button></div><div class="detail-document-icon">' + (selected.kind === "CERTIFICATE" ? "✧" : selected.kind === "ACADEMIC EDUCATION" ? "▤" : "▰") + '</div><span class="detail-kind">' + escapeHTML(selected.kind) + '</span><h1>' + escapeHTML(selected.title) + '</h1><div class="detail-org">' + escapeHTML(selected.org) + '</div><div class="detail-meta"><span>⌖ &nbsp;' + escapeHTML(selected.location) + '</span><span>◷ &nbsp;' + escapeHTML(selected.date) + '</span></div><p class="detail-description">' + escapeHTML(selected.body) + '</p><h2>KEY HIGHLIGHTS</h2><ul>' + selected.highlights.map(text => '<li>' + escapeHTML(text) + '</li>').join("") + '</ul><div class="record-tags">' + selected.tags.map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div>';
+  if (!selected) detail.innerHTML = '<div class="empty-detail"><span>▤</span><strong>Recently Deleted</strong><p>There are no items in Recently Deleted.</p></div>';
+  else detail.innerHTML = '<div class="experience-detail-actions"><button title="Share" aria-label="Share">↗</button><button title="More options" aria-label="More options">···</button></div><div class="detail-document-icon">' + (selected.kind === "CERTIFICATE" ? "✧" : selected.kind === "ACADEMIC EDUCATION" ? "▤" : "▰") + '</div><span class="detail-kind">' + escapeHTML(selected.kind) + '</span><h1>' + escapeHTML(selected.title) + '</h1><div class="detail-org">' + escapeHTML(selected.org) + '</div><div class="detail-meta"><span>⌖ &nbsp;' + escapeHTML(selected.location) + '</span><span>◷ &nbsp;' + escapeHTML(selected.date) + '</span></div><p class="detail-description">' + escapeHTML(selected.body) + '</p><h2>KEY HIGHLIGHTS</h2><ul>' + selected.highlights.map(text => '<li>' + escapeHTML(text) + '</li>').join("") + '</ul><div class="record-tags">' + selected.tags.map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div>';
+  if (animate && list) {
+    if (experienceMotionTimer) window.clearTimeout(experienceMotionTimer);
+    list.classList.remove("is-switching");
+    detail.classList.remove("is-switching");
+    void list.offsetWidth;
+    list.classList.add("is-switching");
+    detail.classList.add("is-switching");
+    experienceMotionTimer = window.setTimeout(() => {
+      list.classList.remove("is-switching");
+      detail.classList.remove("is-switching");
+      experienceMotionTimer = 0;
+    }, 340);
+  }
 }
 
 const wallpapers = [
@@ -244,6 +326,67 @@ function applySettings() {
   if (document.body.dataset.wallpaper !== wallpaper || !$("#desktop-wallpaper .wallpaper-image.current")) applyWallpaper(wallpaper, false);
   document.body.dataset.appearance = localStorage.getItem("portfolio-appearance") || "dark";
   document.body.dataset.textSize = localStorage.getItem("portfolio-text-size") || "medium";
+  document.body.style.setProperty("--portfolio-text-scale", String(textSizeScales[document.body.dataset.textSize] || 1));
+  applyTextSize();
+}
+function isTextElement(element) {
+  if (["SCRIPT","STYLE","TEMPLATE","SVG","PATH"].includes(element.tagName)) return false;
+  if (/^(INPUT|TEXTAREA|SELECT|OPTION)$/.test(element.tagName)) return true;
+  return Array.from(element.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+}
+function applyTextSize(animate = false) {
+  const size = localStorage.getItem("portfolio-text-size") || "medium";
+  const scale = textSizeScales[size] || 1;
+  document.body.dataset.textSize = size;
+  document.body.style.setProperty("--portfolio-text-scale", String(scale));
+  const targets = Array.from(document.body.querySelectorAll("body *")).filter(isTextElement);
+  targets.forEach(element => {
+    const base = textBaseSizes.get(element);
+    if (base) element.style.fontSize = base + "px";
+  });
+  targets.forEach(element => {
+    if (!textBaseSizes.has(element)) {
+      const base = Number.parseFloat(getComputedStyle(element).fontSize);
+      textBaseSizes.set(element, Number.isFinite(base) ? base : 16);
+    }
+  });
+  if (animate) {
+    document.body.classList.add("text-size-transition");
+    void document.body.offsetWidth;
+  }
+  targets.forEach(element => { element.style.fontSize = (textBaseSizes.get(element) * scale) + "px"; });
+  if (animate) window.setTimeout(() => document.body.classList.remove("text-size-transition"), 360);
+}
+function observeTextSizeTargets() {
+  const observer = new MutationObserver(() => {
+    if (textScaleFrame) return;
+    textScaleFrame = requestAnimationFrame(() => { textScaleFrame = 0; applyTextSize(); });
+  });
+  observer.observe(document.body, {childList:true, subtree:true});
+}
+function minimizeApp() {
+  if (minimizeTimer) window.clearTimeout(minimizeTimer);
+  app.classList.remove("page-entering", "is-maximized", "is-minimized");
+  const maximizeControl = app.querySelector('[data-window-action="maximize"]');
+  if (maximizeControl) maximizeControl.setAttribute("aria-pressed", "false");
+  app.setAttribute("aria-hidden", "true");
+  app.classList.add("page-minimizing");
+  minimizeTimer = window.setTimeout(() => {
+    app.classList.remove("page-minimizing");
+    app.classList.add("is-minimized");
+    $$('.dock-link[data-page]').forEach(link => link.classList.toggle("is-minimized", link.dataset.page === app.dataset.page));
+    minimizeTimer = 0;
+  }, 360);
+}
+function restoreMinimizedApp() {
+  if (!app.classList.contains("is-minimized")) return;
+  if (minimizeTimer) window.clearTimeout(minimizeTimer);
+  minimizeTimer = 0;
+  app.classList.remove("is-minimized", "page-minimizing", "page-exiting");
+  app.removeAttribute("aria-hidden");
+  $$('.dock-link').forEach(link => link.classList.remove("is-minimized"));
+  app.classList.add("page-entering");
+  window.setTimeout(() => app.classList.remove("page-entering"), 480);
 }
 function renderSettingsPanel(section) {
   const panel = $("#settings-panel");
@@ -255,11 +398,12 @@ function renderSettingsPanel(section) {
   if (section === "background") {
     body = '<div class="settings-panel-heading"><h1>Background</h1><p>Choose a wallpaper for your desktop.</p></div><div class="settings-panel-body"><span class="settings-section-label">DESKTOP WALLPAPER</span><p class="settings-help">Select a high-resolution background for your desktop.</p><div class="wallpaper-grid">' + wallpapers.map(w => '<button class="wallpaper-choice ' + (document.body.dataset.wallpaper === w.id ? "selected" : "") + '" data-wallpaper-choice="' + w.id + '" aria-pressed="' + (document.body.dataset.wallpaper === w.id) + '"><span class="wallpaper-swatch" style="background-image:url(\'' + w.image + '\')"></span><span>' + w.name + '</span></button>').join("") + '</div></div>';
   } else if (section === "appearance") {
-    body = '<div class="settings-panel-heading"><h1>Appearance</h1><p>Choose how your workspace looks.</p></div><div class="settings-panel-body"><span class="settings-section-label">THEME MODE</span><p class="settings-help">Select a light or dark appearance.</p><div class="appearance-options">' + ["light","dark"].map(mode => '<button class="appearance-choice ' + (document.body.dataset.appearance === mode ? "selected" : "") + '" data-appearance-choice="' + mode + '"><span class="appearance-preview appearance-' + mode + '"></span><strong>' + mode[0].toUpperCase() + mode.slice(1) + '</strong></button>').join("") + '</div><div class="settings-tip">Your choice is saved in this browser.</div></div>';
+    body = '<div class="settings-panel-heading"><h1>Appearance</h1><p>Choose how your workspace looks.</p></div><div class="settings-panel-body"><span class="settings-section-label">THEME MODE</span><p class="settings-help">Choose between light and dark system appearance.</p><div class="appearance-options">' + ["light","dark"].map(mode => '<button class="appearance-choice ' + (document.body.dataset.appearance === mode ? "selected" : "") + '" data-appearance-choice="' + mode + '" aria-pressed="' + (document.body.dataset.appearance === mode) + '"><span class="appearance-preview appearance-' + mode + '"></span><strong>' + mode[0].toUpperCase() + mode.slice(1) + '</strong></button>').join("") + '</div></div>';
   } else {
-    body = '<div class="settings-panel-heading"><h1>Typography</h1><p>Adjust the interface text size.</p></div><div class="settings-panel-body"><span class="settings-section-label">TEXT SIZE</span><p class="settings-help">Choose a comfortable text size for your workspace.</p><div class="text-size-options">' + ["small","medium","large","extra-large"].map((size, i) => '<button class="text-size-choice size-' + size + ' ' + (document.body.dataset.textSize === size ? "selected" : "") + '" data-text-size="' + size + '"><strong>AA</strong><small>' + ["SMALL","MEDIUM","LARGE","EXTRA LARGE"][i] + '</small></button>').join("") + '</div><div class="typography-sample"><span>The quick brown fox jumps over the lazy dog.</span><small>PREVIEW TEXT</small></div></div>';
+    body = '<div class="settings-panel-heading"><h1>Typography</h1><p>Adjust the interface text size.</p></div><div class="settings-panel-body"><span class="settings-section-label">TEXT SIZE</span><p class="settings-help">Choose a comfortable text size for your workspace.</p><div class="text-size-options">' + ["small","medium","large","extra-large"].map((size, i) => '<button class="text-size-choice size-' + size + ' ' + (document.body.dataset.textSize === size ? "selected" : "") + '" data-text-size="' + size + '" aria-pressed="' + (document.body.dataset.textSize === size) + '"><strong>AA</strong><small>' + ["SMALL","MEDIUM","LARGE","EXTRA LARGE"][i] + '</small></button>').join("") + '</div><div class="typography-sample"><span>The quick brown fox jumps over the lazy dog.</span><small>PREVIEW TEXT</small></div></div>';
   }
   panel.innerHTML = body;
+  applyTextSize();
 }
 function initSettings() {
   applySettings();
@@ -299,6 +443,7 @@ function toggleChat(open) {
   if (open) {
     chat.classList.remove("closing");
     chat.classList.add("open");
+    chat.dataset.windowState = "open";
     chat.setAttribute("aria-hidden", "false");
     launcher.classList.remove("is-closing");
     launcher.setAttribute("aria-expanded", "true");
@@ -334,7 +479,7 @@ $("#chat-launcher").addEventListener("click", () => toggleChat(!$("#chat-window"
 $("#chat-close").addEventListener("click", () => toggleChat(false));
 $("#chat-close-floating").addEventListener("click", () => toggleChat(false));
 $("#chat-minimize").addEventListener("click", () => toggleChat(false));
-$("#chat-expand").addEventListener("click", () => $("#chat-window").classList.toggle("expanded"));
+$("#chat-expand").addEventListener("click", event => { const expanded = $("#chat-window").classList.toggle("expanded"); event.currentTarget.setAttribute("aria-pressed", String(expanded)); });
 $("#chat-form").addEventListener("submit", event => { event.preventDefault(); const input = $("#chat-input"); askBot(input.value); input.value = ""; });
 document.addEventListener("keydown", event => { if (event.key === "Escape") { toggleChat(false); $("#trash-panel").classList.remove("open"); } });
 $("#mobile-menu").addEventListener("click", event => { const links = $("#mobile-links"); const open = !links.classList.contains("open"); links.classList.toggle("open", open); event.currentTarget.setAttribute("aria-expanded", String(open)); });
@@ -342,15 +487,39 @@ $("#profile-shortcut").addEventListener("click", event => { event.preventDefault
 $("#trash-shortcut").addEventListener("click", () => { $("#trash-panel").classList.add("open"); $("#trash-panel").setAttribute("aria-hidden", "false"); });
 $("#trash-close").addEventListener("click", () => { $("#trash-panel").classList.remove("open"); $("#trash-panel").setAttribute("aria-hidden", "true"); });
 document.addEventListener("click", event => {
+  const chatControl = event.target.closest("[data-chat-control]");
+  if (chatControl) {
+    const action = chatControl.dataset.chatControl;
+    if (action === "expand") {
+      const expanded = $("#chat-window").classList.toggle("expanded");
+      chatControl.setAttribute("aria-pressed", String(expanded));
+    } else {
+      const chat = $("#chat-window");
+      chat.dataset.windowState = action === "minimize" ? "minimized" : "closed";
+      toggleChat(false);
+    }
+    return;
+  }
+  const pageLink = event.target.closest("[data-page]");
+  if (pageLink && app.classList.contains("is-minimized")) {
+    if (pageLink.dataset.page === app.dataset.page) {
+      event.preventDefault();
+      restoreMinimizedApp();
+      return;
+    }
+    app.classList.remove("is-minimized", "page-minimizing");
+    app.removeAttribute("aria-hidden");
+    $$('.dock-link').forEach(link => link.classList.remove("is-minimized"));
+  }
   const windowControl = event.target.closest("[data-window-action]");
   if (windowControl) {
     const action = windowControl.dataset.windowAction;
     if (action === "maximize") {
       const maximized = app.classList.toggle("is-maximized");
       windowControl.setAttribute("aria-pressed", String(maximized));
-    } else if (activePage() !== "home") {
-      location.hash = "#home";
-    }
+    } else if (action === "minimize") minimizeApp();
+    else if (activePage() === "home") showToast("Home is your desktop.");
+    else location.hash = "#home";
     return;
   }
   const project = event.target.closest("[data-project-index]");
@@ -360,15 +529,15 @@ document.addEventListener("click", event => {
   const filter = event.target.closest("[data-project-filter]");
   if (filter && activePage() === "projects") { projectFilter = filter.dataset.projectFilter; renderProjects(); return; }
   const skillCategory = event.target.closest("[data-filter]");
-  if (skillCategory && activePage() === "skills") { skillFilter = skillCategory.dataset.filter; skillPage = 0; $$(".skill-filter").forEach(button => button.classList.toggle("active", button === skillCategory)); renderSkills($("#skill-search").value); return; }
+  if (skillCategory && activePage() === "skills") { skillFilter = skillCategory.dataset.filter; skillPage = 0; skillPageDirection = 0; $$(".skill-filter").forEach(button => button.classList.toggle("active", button === skillCategory)); renderSkills($("#skill-search").value, true); return; }
   const skillPageButton = event.target.closest("[data-skill-page]");
-  if (skillPageButton && activePage() === "skills") { skillPage = Number(skillPageButton.dataset.skillPage); renderSkills($("#skill-search").value); return; }
+  if (skillPageButton && activePage() === "skills") { const targetPage = Number(skillPageButton.dataset.skillPage); skillPageDirection = Math.sign(targetPage - skillPage) || 1; skillPage = targetPage; renderSkills($("#skill-search").value, true); return; }
   const step = event.target.closest("[data-page-step]");
-  if (step && activePage() === "skills") { skillPage += Number(step.dataset.pageStep); renderSkills($("#skill-search").value); return; }
+  if (step && activePage() === "skills") { skillPageDirection = Number(step.dataset.pageStep); skillPage += skillPageDirection; renderSkills($("#skill-search").value, true); return; }
   const folder = event.target.closest("[data-exp-folder]");
-  if (folder && activePage() === "experience") { experienceFolder = folder.dataset.expFolder; selectedExperience = 0; renderExperience(); return; }
+  if (folder && activePage() === "experience") { experienceFolder = folder.dataset.expFolder; selectedExperience = 0; renderExperience(true); return; }
   const record = event.target.closest("[data-exp-index]");
-  if (record && activePage() === "experience") { selectedExperience = Number(record.dataset.expIndex); renderExperience(); return; }
+  if (record && activePage() === "experience") { selectedExperience = Number(record.dataset.expIndex); renderExperience(true); return; }
   const settingsTab = event.target.closest("[data-settings-tab]");
   if (settingsTab && activePage() === "settings") { renderSettingsPanel(settingsTab.dataset.settingsTab); return; }
   const wallpaper = event.target.closest("[data-wallpaper-choice]");
@@ -376,15 +545,21 @@ document.addEventListener("click", event => {
   const appearance = event.target.closest("[data-appearance-choice]");
   if (appearance && activePage() === "settings") { localStorage.setItem("portfolio-appearance", appearance.dataset.appearanceChoice); applySettings(); renderSettingsPanel("appearance"); return; }
   const textSize = event.target.closest("[data-text-size]");
-  if (textSize && activePage() === "settings") { localStorage.setItem("portfolio-text-size", textSize.dataset.textSize); applySettings(); renderSettingsPanel("typography"); return; }
+  if (textSize && activePage() === "settings") {
+    localStorage.setItem("portfolio-text-size", textSize.dataset.textSize);
+    $$('[data-text-size]').forEach(button => { const selected = button.dataset.textSize === textSize.dataset.textSize; button.classList.toggle("selected", selected); button.setAttribute("aria-pressed", String(selected)); });
+    applyTextSize(true);
+    return;
+  }
   const question = event.target.closest("[data-question]");
   if (question) askBot(question.dataset.question);
 });
 document.addEventListener("input", event => {
-  if (event.target.id === "skill-search") { skillPage = 0; renderSkills(event.target.value); const search = $("#skill-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
+  if (event.target.id === "skill-search") { skillPage = 0; skillPageDirection = 0; renderSkills(event.target.value, true); const search = $("#skill-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
   if (event.target.id === "experience-search") { experienceQuery = event.target.value; selectedExperience = 0; renderExperience(); const search = $("#experience-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
   if (event.target.id === "project-search") { const grid = $("#project-grid-view"); const cards = $(".project-cards", grid); if (cards) cards.innerHTML = filteredProjects(event.target.value).map(projectCard).join(""); const search = $("#project-search"); if (search) { search.focus(); search.setSelectionRange(search.value.length, search.value.length); } }
 });
+observeTextSizeTargets();
 applySettings();
 render();
 window.setInterval(updateDate, 30000);

@@ -2,6 +2,36 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 const escapeHTML = value => String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
 
+function projectFileIcon(file) {
+  const extension = String(file).split(".").pop().toLowerCase();
+  const codeExtensions = new Set(["py", "java", "js", "ts", "tsx", "jsx", "ipynb", "sql"]);
+  const color = extension === "json" ? "#facc15" : ["ts", "tsx", "js", "jsx"].includes(extension) ? "#93c5fd" : "#60a5fa";
+  const inside = extension === "json"
+    ? '<path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1"/>'
+    : extension === "pbix"
+      ? '<path d="M8 17v-4M12 17V9M16 17v-6"/>'
+      : codeExtensions.has(extension)
+        ? '<path d="m10 12.5-2 2.5 2 2.5m4-5 2 2.5-2 2.5"/>'
+        : '<path d="M8 13h8M8 17h8"/>';
+  return '<span class="project-file-icon project-file-icon--' + escapeHTML(extension) + '" style="--file-icon-color:' + color + '" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>' + inside + '</svg></span>';
+}
+
+function highlightCodeLine(line) {
+  const source = String(line);
+  if (/^\s*(\/\/|#)/.test(source)) return '<span class="syntax-comment">' + escapeHTML(source) + '</span>';
+  let html = "", cursor = 0;
+  const strings = /(['"])(.*?)\1/g;
+  let match;
+  while ((match = strings.exec(source))) {
+    html += escapeHTML(source.slice(cursor, match.index));
+    const key = /^\s*:/.test(source.slice(strings.lastIndex));
+    html += '<span class="' + (key ? "syntax-key" : "syntax-string") + '">' + escapeHTML(match[0]) + '</span>';
+    cursor = strings.lastIndex;
+  }
+  html += escapeHTML(source.slice(cursor));
+  return html;
+}
+
 const projects = [
   {file:"chocolate_sales.pbix", title:"Chocolate Sales Analytics", category:"Analytics", description:"Interactive business intelligence dashboard exploring sales, profit, shipments, products, and regional performance.", stack:["Power BI","DAX","Power Query"], repo:"Chocolate-Sales-PowerBI-Dashboard", code:["dashboard = {","  'focus': ['sales', 'profit', 'shipments'],","  'tools': ['Power BI', 'DAX', 'Power Query'],","  'output': 'interactive business insights'","}"]},
   {file:"global_warming.pbix", title:"Global Warming Analytics Dashboard", category:"Analytics", description:"A climate data dashboard for exploring temperature and emissions patterns with interactive filtering and regional drill-downs.", stack:["Power BI","Python","Pandas","DAX"], repo:"GlobalWarming-power-BI-project", code:["climate_dashboard = {","  'question': 'How are climate patterns changing?',","  'prepare': ['clean', 'model', 'validate'],","  'explore': ['temperature', 'emissions', 'region']","}"]},
@@ -118,6 +148,10 @@ function renderPage(page) {
 }
 function render(page = activePage()) {
   if (renderTimer) window.clearTimeout(renderTimer);
+  if (page === "calendar" && app.dataset.page === page && !app.classList.contains("is-minimized") && !app.classList.contains("page-minimizing")) {
+    updateNav(page);
+    return;
+  }
   if (app.dataset.page && app.dataset.page !== page) {
     app.classList.remove("page-entering", "is-maximized");
     app.classList.add("page-exiting");
@@ -191,20 +225,23 @@ function mountCalEmbed() {
       };
     })(window, "https://cal.com/embed.js", "init");
   }
-  window.Cal("init", "sreeramPortfolio", {origin:"https://cal.com"});
+  if (!window.__sreeramCalInitialized) {
+    window.Cal("init", "sreeramPortfolio", {origin:"https://cal.com"});
+    window.__sreeramCalInitialized = true;
+  }
   window.Cal.ns.sreeramPortfolio("inline", {calLink:"m-sreeram-reddy-d4ftjr/15min", elementOrSelector:element, config:{layout:"month_view", theme:document.body.dataset.appearance === "light" ? "light" : "dark"}});
 }
 
 function renderProjects() {
   const list = $("#project-file-list");
-  if (list) list.innerHTML = projects.map((project, index) => '<button class="project-file ' + (index === selectedProject ? "active" : "") + '" data-project-index="' + index + '"><span class="project-file-icon">▣</span><span>' + escapeHTML(project.file) + '</span><span class="file-extension">' + escapeHTML(project.file.split(".").pop().toUpperCase()) + '</span></button>').join("");
+  if (list) list.innerHTML = projects.map((project, index) => '<button class="project-file ' + (index === selectedProject ? "active" : "") + '" data-project-index="' + index + '">' + projectFileIcon(project.file) + '<span>' + escapeHTML(project.file) + '</span><span class="file-extension">' + escapeHTML(project.file.split(".").pop().toUpperCase()) + '</span></button>').join("");
   const project = projects[selectedProject];
   const title = $("#project-window-title");
   if (title) title.textContent = project.file + " — M Sreeram Reddy";
   const language = $("#editor-language");
   if (language) language.textContent = project.file.split(".").pop().toUpperCase();
   const editor = $("#project-editor");
-  if (editor) editor.innerHTML = '<div class="editor-tabs"><div class="editor-tab"><i>◈</i>' + escapeHTML(project.file) + '</div><span class="editor-tab-spacer"></span><button class="editor-more" aria-label="More editor actions">···</button></div><div class="editor-breadcrumb">projects <span>›</span> ' + escapeHTML(project.file) + '</div><div class="project-code"><div class="code-meta"><span>' + escapeHTML(project.category.toUpperCase()) + '</span><span>UTF-8</span></div>' + project.code.map((line, i) => '<div class="code-line"><span class="line-number">' + (i + 1) + '</span><code>' + escapeHTML(line) + '</code></div>').join("") + '<div class="project-editor-note">// Explore the repository for source files, documentation, and implementation details.</div></div></div>';
+  if (editor) editor.innerHTML = '<div class="editor-tabs"><div class="editor-tab">' + projectFileIcon(project.file) + escapeHTML(project.file) + '</div><span class="editor-tab-spacer"></span><button class="editor-more" aria-label="More editor actions">···</button></div><div class="editor-breadcrumb">projects <span>›</span> ' + escapeHTML(project.file) + '</div><div class="project-code"><div class="code-meta"><span>' + escapeHTML(project.category.toUpperCase()) + '</span><span>UTF-8</span></div>' + project.code.map((line, i) => '<div class="code-line"><span class="line-number">' + (i + 1) + '</span><code>' + highlightCodeLine(line) + '</code></div>').join("") + '<div class="project-editor-note">// Explore the repository for source files, documentation, and implementation details.</div></div></div>';
   const preview = $("#project-preview");
   if (preview) preview.innerHTML = '<div class="preview-topline"><span>PROJECT PREVIEW</span><button aria-label="Preview options">···</button></div><div class="preview-art art-' + (selectedProject % 6) + '"><span class="art-mark">' + ["◫","◌","✳","⌖","⌁","▥"][selectedProject % 6] + '</span><span class="art-label">' + escapeHTML(project.category.toUpperCase()) + '</span></div><div class="preview-body"><span class="preview-kicker">FEATURED PROJECT</span><h2>' + escapeHTML(project.title) + '</h2><p>' + escapeHTML(project.description) + '</p><div class="preview-stack">' + project.stack.map(tag => '<span>' + escapeHTML(tag) + '</span>').join("") + '</div><a class="project-open" href="' + project.url + '" target="_blank" rel="noreferrer">VIEW ON GITHUB <b>↗</b></a></div>';
   const grid = $("#project-grid-view");
